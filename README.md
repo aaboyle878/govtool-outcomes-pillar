@@ -1,6 +1,7 @@
-# Boilerplate Project Documents
+# 🚀 Govtool Outcomes Pillar
 
-Welcome to the official repository for the Web App Boilerplate.
+Welcome to the official repository for the Govtool Outcomes Pillar backend.
+
 
 ## Table of content:
 
@@ -23,8 +24,7 @@ Welcome to the official repository for the Web App Boilerplate.
 
 ## Introduction
 
-This document serves as a comprehensive guide for setting up the full stack of our application, which includes the backend, frontend, and database components.
-
+This document serves as a comprehensive guide for setting up the backend and database components of the outcomes pillar.
 ## Prerequisites
 
 - Node.js installed - [Download link](https://nodejs.org/en/download/).
@@ -33,11 +33,11 @@ This document serves as a comprehensive guide for setting up the full stack of o
 
 ## Tech stack:
 
-**Server:** [Node](https://nodejs.org/en/about/), [Strapi](https://docs.strapi.io/developer-docs/latest/getting-started/introduction.html)
+**Server:** [Node](https://nodejs.org/en/about/)
 
 **Database:** [PostgreSQL](https://www.postgresql.org/)
 
-**Frontend:** [Next.js](https://nextjs.org/)
+**Frontend:** [NestJS](https://nextjs.org/)
 
 **Container:** [Docker](https://docs.docker.com/get-started/)
 
