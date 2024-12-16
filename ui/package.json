@@ -1,16 +1,31 @@
 {
   "name": "@intersect.mbo/govtool-outcomes-pillar-ui",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Governance actions outcomes ui",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
-    "rollup": "rollup -c --bundleConfigAsCjs",
-    "prepublishOnly": "npm run build:rollup"
+    "build": "rollup -c --bundleConfigAsCjs",
+    "prepublishOnly": "npm run build"
   },
-  "author": "",
+  "contributors": [
+    {
+      "name": "Lido Nation",
+      "email": "hello@lidonation.com",
+      "url": "https://www.lidonation.com/en"
+    }
+  ],
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IntersectMBO/govtool-outcomes-pillar"
+  },
+  "homepage": "https://github.com/IntersectMBO/govtool-outcomes-pillar",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.1",
     "@rollup/plugin-json": "^6.1.0",
