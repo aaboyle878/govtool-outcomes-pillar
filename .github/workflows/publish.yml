@@ -1,0 +1,92 @@
+name: Publish NPM package
+
+on:
+  push:
+    branches:
+      - dev
+      - 'release/*'
+      
+  create:
+    branches:
+      - 'release/*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      # Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      # Ensure jq is installed
+      - name: Install jq
+        run: |
+          if ! command -v jq &> /dev/null; then
+            sudo apt-get update && sudo apt-get install -y jq
+          fi
+
+      # Install dependencies
+      - name: Install dependencies
+        working-directory: ui
+        run: npm install
+
+      # Modify package.json for dev branch
+      - name: Modify package.json for dev
+        if: github.ref == 'refs/heads/dev'
+        run: |
+          jq '.name = "@lidonation/govtool-outcomes-pillar-ui"' ui/package.json > ui/package.tmp.json && mv ui/package.tmp.json ui/package.json
+
+      # Build the package
+      - name: Build
+        working-directory: ui
+        run: npm run build
+
+      # Set the npm token based on the branch
+      - name: Set NPM Token
+        run: |
+          if [[ "${GITHUB_REF}" == "refs/heads/dev" ]]; then
+            echo "NODE_AUTH_TOKEN=${{ secrets.NPM_TOKEN_DEV }}" >> $GITHUB_ENV
+          elif [[ "${GITHUB_REF}" == refs/heads/release/* ]]; then
+            echo "NODE_AUTH_TOKEN=${{ secrets.NPM_TOKEN_RELEASE }}" >> $GITHUB_ENV
+          fi
+
+      # Publish to NPM
+      - name: Publish to NPM
+        working-directory: ui
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ env.NODE_AUTH_TOKEN }}
+
+      # Tag the new release in Git
+      - name: Tag release
+        run: |
+          set -e
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Get the current version from package.json
+
+          VERSION=$(jq -r .version ui/package.json)
+
+          # Prepare the tag
+
+          if [[ "${GITHUB_REF}" == "refs/heads/dev" ]]; then
+            TAG="${VERSION}"
+          elif [[ "${GITHUB_REF}" == refs/heads/release/* ]]; then
+            PRE_RELEASE_IDENTIFIER=${GITHUB_REF##*/}
+            PRE_RELEASE_IDENTIFIER=$(echo "$PRE_RELEASE_IDENTIFIER" | awk -F'-' '{print $2}')  # Extract pre-release identifier
+            TAG="${VERSION}${PRE_RELEASE_IDENTIFIER:+-$PRE_RELEASE_IDENTIFIER}"
+          fi
+
+          # Create and push the tag
+          git tag -a "$TAG" -m "Version $TAG"
+          git push origin "$TAG"
