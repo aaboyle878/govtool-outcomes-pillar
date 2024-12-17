@@ -1,6 +1,6 @@
 {
   "name": "@intersect.mbo/govtool-outcomes-pillar-ui",
-  "version": "0.1.0",
+  "version": "1.0.7",
   "description": "Governance actions outcomes ui",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -23,7 +23,7 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/IntersectMBO/govtool-outcomes-pillar"
+    "url": "git+https://github.com/IntersectMBO/govtool-outcomes-pillar.git"
   },
   "homepage": "https://github.com/IntersectMBO/govtool-outcomes-pillar",
   "devDependencies": {
