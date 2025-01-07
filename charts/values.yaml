@@ -1,0 +1,25 @@
+namespace: outcomes-preview
+
+image:
+  repository: registry.lidonation.com/voltaire/govtool-outcomes-pillar/outcomes.1694.io
+  tag: 'latest'
+  pullPolicy: IfNotPresent
+  pullSecret: 'outcomes-registry-deploy-token'
+  replicaCount: 1
+
+ingress:
+  enabled: true
+  controller:
+    headers:
+      HTTPS: "on"
+  annotations: { kubernetes.io/ingress.class: traefik, cert-manager.io/cluster-issuer: letsencrypt-issuer, traefik.ingress.kubernetes.io/router.entrypoints: "websecure,web" }
+  hosts:
+  - outcomes-preview.1694.io
+  tls:
+  - hosts:
+    - "'*.1694.io'"
+    secretName: wildcard-1694-tls
+
+cardano_node:
+  - tcp_host: "lidolovelace-cardano-relay-1-service"
+  - tcp_port: "30111"
