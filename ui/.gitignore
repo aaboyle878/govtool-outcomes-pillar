@@ -7,6 +7,7 @@
 .env/
 .env
 .envrc
+.idea
 
 
 # testing
