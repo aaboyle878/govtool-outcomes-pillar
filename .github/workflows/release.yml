@@ -26,19 +26,19 @@ jobs:
       - name: Install dependencies
         run: |
           cd ui
-          npm ci
+          yarn install --frozen-lockfile
 
       # Build the project
       - name: Build
         run: |
           cd ui
-          npm run build
+          yarn build
 
       # Audit signatures
       - name: Audit
         run: |
           cd ui
-          npm audit signatures
+          yarn audit --groups dependencies
 
       # Release
       - name: Release
