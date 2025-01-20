@@ -27,30 +27,42 @@ jobs:
         run: |
           cd ui
 <<<<<<< HEAD
+<<<<<<< HEAD
           yarn install --frozen-lockfile
 =======
           npm ci
 >>>>>>> 8f6b877 (chore: cleanup)
+=======
+          yarn install --frozen-lockfile
+>>>>>>> 97bbd6c (chore: cleanup)
 
       # Build the project
       - name: Build
         run: |
           cd ui
 <<<<<<< HEAD
+<<<<<<< HEAD
           yarn build
 =======
           npm run build
 >>>>>>> 8f6b877 (chore: cleanup)
+=======
+          yarn build
+>>>>>>> 97bbd6c (chore: cleanup)
 
       # Audit signatures
       - name: Audit
         run: |
           cd ui
 <<<<<<< HEAD
+<<<<<<< HEAD
           yarn audit --groups dependencies
 =======
           npm audit signatures
 >>>>>>> 8f6b877 (chore: cleanup)
+=======
+          yarn audit --groups dependencies
+>>>>>>> 97bbd6c (chore: cleanup)
 
       # Release
       - name: Release

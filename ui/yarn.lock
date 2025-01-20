@@ -112,6 +112,9 @@
     fastq "^1.6.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 97bbd6c (chore: cleanup)
 "@npmcli/agent@^3.0.0":
   version "3.0.0"
   resolved "https://registry.npmjs.org/@npmcli/agent/-/agent-3.0.0.tgz"
@@ -372,8 +375,11 @@
   dependencies:
     "@octokit/openapi-types" "^22.2.0"
 
+<<<<<<< HEAD
 =======
 >>>>>>> e34ca5b (test that normal commits don't publish to npm)
+=======
+>>>>>>> 97bbd6c (chore: cleanup)
 "@parcel/watcher-android-arm64@2.5.0":
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/@parcel/watcher-android-arm64/-/watcher-android-arm64-2.5.0.tgz#e32d3dda6647791ee930556aee206fcd5ea0fb7a"
@@ -417,19 +423,27 @@
 "@parcel/watcher-linux-x64-glibc@2.5.0":
   version "2.5.0"
 <<<<<<< HEAD
+<<<<<<< HEAD
   resolved "https://registry.npmjs.org/@parcel/watcher-linux-x64-glibc/-/watcher-linux-x64-glibc-2.5.0.tgz"
 =======
   resolved "https://registry.yarnpkg.com/@parcel/watcher-linux-x64-glibc/-/watcher-linux-x64-glibc-2.5.0.tgz#2e254600fda4e32d83942384d1106e1eed84494d"
 >>>>>>> e34ca5b (test that normal commits don't publish to npm)
+=======
+  resolved "https://registry.npmjs.org/@parcel/watcher-linux-x64-glibc/-/watcher-linux-x64-glibc-2.5.0.tgz"
+>>>>>>> 97bbd6c (chore: cleanup)
   integrity sha512-d9AOkusyXARkFD66S6zlGXyzx5RvY+chTP9Jp0ypSTC9d4lzyRs9ovGf/80VCxjKddcUvnsGwCHWuF2EoPgWjw==
 
 "@parcel/watcher-linux-x64-musl@2.5.0":
   version "2.5.0"
 <<<<<<< HEAD
+<<<<<<< HEAD
   resolved "https://registry.npmjs.org/@parcel/watcher-linux-x64-musl/-/watcher-linux-x64-musl-2.5.0.tgz"
 =======
   resolved "https://registry.yarnpkg.com/@parcel/watcher-linux-x64-musl/-/watcher-linux-x64-musl-2.5.0.tgz#01fcea60fedbb3225af808d3f0a7b11229792eef"
 >>>>>>> e34ca5b (test that normal commits don't publish to npm)
+=======
+  resolved "https://registry.npmjs.org/@parcel/watcher-linux-x64-musl/-/watcher-linux-x64-musl-2.5.0.tgz"
+>>>>>>> 97bbd6c (chore: cleanup)
   integrity sha512-iqOC+GoTDoFyk/VYSFHwjHhYrk8bljW6zOhPuhi5t9ulqiYq1togGJB5e3PwYVFFfeVgc6pbz3JdQyDoBszVaA==
 
 "@parcel/watcher-win32-arm64@2.5.0":
@@ -627,19 +641,27 @@
 "@rollup/rollup-linux-x64-gnu@4.29.1":
   version "4.29.1"
 <<<<<<< HEAD
+<<<<<<< HEAD
   resolved "https://registry.npmjs.org/@rollup/rollup-linux-x64-gnu/-/rollup-linux-x64-gnu-4.29.1.tgz"
 =======
   resolved "https://registry.yarnpkg.com/@rollup/rollup-linux-x64-gnu/-/rollup-linux-x64-gnu-4.29.1.tgz#f4c95b26f4ad69ebdb64b42f0ae4da2a0f617958"
 >>>>>>> e34ca5b (test that normal commits don't publish to npm)
+=======
+  resolved "https://registry.npmjs.org/@rollup/rollup-linux-x64-gnu/-/rollup-linux-x64-gnu-4.29.1.tgz"
+>>>>>>> 97bbd6c (chore: cleanup)
   integrity sha512-87xYCwb0cPGZFoGiErT1eDcssByaLX4fc0z2nRM6eMtV9njAfEE6OW3UniAoDhX4Iq5xQVpE6qO9aJbCFumKYQ==
 
 "@rollup/rollup-linux-x64-musl@4.29.1":
   version "4.29.1"
 <<<<<<< HEAD
+<<<<<<< HEAD
   resolved "https://registry.npmjs.org/@rollup/rollup-linux-x64-musl/-/rollup-linux-x64-musl-4.29.1.tgz"
 =======
   resolved "https://registry.yarnpkg.com/@rollup/rollup-linux-x64-musl/-/rollup-linux-x64-musl-4.29.1.tgz#ab7be89192f72beb9ea6e2386186fefde4f69d82"
 >>>>>>> e34ca5b (test that normal commits don't publish to npm)
+=======
+  resolved "https://registry.npmjs.org/@rollup/rollup-linux-x64-musl/-/rollup-linux-x64-musl-4.29.1.tgz"
+>>>>>>> 97bbd6c (chore: cleanup)
   integrity sha512-xufkSNppNOdVRCEC4WKvlR1FBDyqCSCpQeMMgv9ZyXqqtKBfkw1yfGMTUTs9Qsl6WQbJnsGboWCp7pJGkeMhKA==
 
 "@rollup/rollup-win32-arm64-msvc@4.29.1":
@@ -658,6 +680,9 @@
   integrity sha512-+10CMg9vt1MoHj6x1pxyjPSMjHTIlqs8/tBztXvPAx24SKs9jwVnKqHJumlH/IzhaPUaj3T6T6wfZr8okdXaIg==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 97bbd6c (chore: cleanup)
 "@sec-ant/readable-stream@^0.4.1":
   version "0.4.1"
   resolved "https://registry.npmjs.org/@sec-ant/readable-stream/-/readable-stream-0.4.1.tgz"
@@ -800,8 +825,11 @@
   resolved "https://registry.npmjs.org/@sindresorhus/merge-streams/-/merge-streams-4.0.0.tgz"
   integrity sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==
 
+<<<<<<< HEAD
 =======
 >>>>>>> e34ca5b (test that normal commits don't publish to npm)
+=======
+>>>>>>> 97bbd6c (chore: cleanup)
 "@trysound/sax@0.2.0":
   version "0.2.0"
   resolved "https://registry.npmjs.org/@trysound/sax/-/sax-0.2.0.tgz"
@@ -3741,6 +3769,9 @@ randombytes@^2.1.0:
     safe-buffer "^5.1.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 97bbd6c (chore: cleanup)
 rc@^1.2.8:
   version "1.2.8"
   resolved "https://registry.npmjs.org/rc/-/rc-1.2.8.tgz"
@@ -3751,8 +3782,11 @@ rc@^1.2.8:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+<<<<<<< HEAD
 =======
 >>>>>>> e34ca5b (test that normal commits don't publish to npm)
+=======
+>>>>>>> 97bbd6c (chore: cleanup)
 react-dom@^18.3.1:
   version "18.3.1"
   resolved "https://registry.npmjs.org/react-dom/-/react-dom-18.3.1.tgz"
@@ -4158,6 +4192,9 @@ smob@^1.0.0:
   integrity sha512-g6T+p7QO8npa+/hNx9ohv1E5pVCmWrVCUzUXJyLdMmftX6ER0oiWY/w9knEonLpnOp6b6FenKnMfR8gqwWdwig==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 97bbd6c (chore: cleanup)
 socks-proxy-agent@^8.0.3:
   version "8.0.5"
   resolved "https://registry.yarnpkg.com/socks-proxy-agent/-/socks-proxy-agent-8.0.5.tgz#b9cdb4e7e998509d7659d689ce7697ac21645bee"
@@ -4175,8 +4212,11 @@ socks@^2.8.3:
     ip-address "^9.0.5"
     smart-buffer "^4.2.0"
 
+<<<<<<< HEAD
 =======
 >>>>>>> e34ca5b (test that normal commits don't publish to npm)
+=======
+>>>>>>> 97bbd6c (chore: cleanup)
 "source-map-js@>=0.6.2 <2.0.0", source-map-js@^1.2.1:
   version "1.2.1"
   resolved "https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.1.tgz"
@@ -4583,6 +4623,9 @@ turbo-stream@2.4.0:
   integrity sha512-FHncC10WpBd2eOmGwpmQsWLDoK4cqsA/UT/GqNoaKOQnT8uzhtCbg3EoUDMvqpOSAI0S26mr0rkjzbOO6S3v1g==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 97bbd6c (chore: cleanup)
 type-fest@^1.0.1:
   version "1.4.0"
   resolved "https://registry.npmjs.org/type-fest/-/type-fest-1.4.0.tgz"
@@ -4598,8 +4641,11 @@ type-fest@^4.6.0, type-fest@^4.7.1:
   resolved "https://registry.npmjs.org/type-fest/-/type-fest-4.31.0.tgz"
   integrity sha512-yCxltHW07Nkhv/1F6wWBr8kz+5BGMfP+RbRSYFnegVb0qV/UMT0G0ElBloPVerqn4M2ZV80Ir1FtCcYv1cT6vQ==
 
+<<<<<<< HEAD
 =======
 >>>>>>> e34ca5b (test that normal commits don't publish to npm)
+=======
+>>>>>>> 97bbd6c (chore: cleanup)
 typescript@^5.7.2:
   version "5.7.2"
   resolved "https://registry.npmjs.org/typescript/-/typescript-5.7.2.tgz"
