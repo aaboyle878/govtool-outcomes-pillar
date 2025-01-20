@@ -26,25 +26,41 @@ jobs:
       - name: Install dependencies
         run: |
           cd ui
+<<<<<<< HEAD
           yarn install --frozen-lockfile
+=======
+          npm ci
+>>>>>>> 8f6b877 (chore: cleanup)
 
       # Build the project
       - name: Build
         run: |
           cd ui
+<<<<<<< HEAD
           yarn build
+=======
+          npm run build
+>>>>>>> 8f6b877 (chore: cleanup)
 
       # Audit signatures
       - name: Audit
         run: |
           cd ui
+<<<<<<< HEAD
           yarn audit --groups dependencies
+=======
+          npm audit signatures
+>>>>>>> 8f6b877 (chore: cleanup)
 
       # Release
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+<<<<<<< HEAD
           NPM_TOKEN: ${{ secrets.NPM_TOKEN_UI_WRITE }}
+=======
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+>>>>>>> 8f6b877 (chore: cleanup)
         run: |
           cd ui
           npx semantic-release
