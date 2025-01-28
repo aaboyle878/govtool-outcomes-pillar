@@ -12,10 +12,10 @@ export default function GovernanceActionStatusChip({ status }: GovernanceActionS
             fontSize: "12px",
             color:
               status === "Ratified"
-                ? "positiveGreen"
+                ? "#00B83D"
                 : status === "Expired"
-                ? "errorRed"
-                : "accentYellow",
+                ? "#FF2616"
+                : "#FFC916",
           }}
         >
           {status}
