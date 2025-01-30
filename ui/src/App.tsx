@@ -4,8 +4,6 @@ import "./index.scss";
 import { theme } from "./theme";
 import OutcomesPage from "./Pages/Outcomes";
 
-function App() {
-
   return (
     <div
       className="App"
