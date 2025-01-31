@@ -130,8 +130,8 @@ build_govtool:
     - auto-deploy create_secret
     - |
       # Set secrets
-      cp "$ENV_FILE" ./charts/app_env 
-      cat ./charts/app_env
+      # cp "$ENV_FILE" ./charts/app_env 
+      # cat ./charts/app_env
       echo "$INGRESS_HOST" "$NAMESPACE"
 
       DEPLOYMENT_NAME="outcomes-$CI_ENVIRONMENT_SLUG"
