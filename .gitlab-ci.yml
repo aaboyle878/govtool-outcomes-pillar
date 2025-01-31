@@ -51,10 +51,11 @@ yarn:
     export NODE_OPTIONS=--max-old-space-size=8192
 
     if [[ "$ENVIRONMENT" != "mainnet" ]]; then
-        echo "$ENV_FILE_PREVIEW" > ./backend/.env 
-    else 
-        echo "Using mainnet environment";
-        echo "$ENV_FILE_MAINNET" > ./backend/.env;
+      echo "Using preview environment";
+      printf "%s" "$ENV_FILE_PREVIEW" > ./backend/.env;
+    else
+      echo "Using mainnet environment";
+      printf "%s" "$ENV_FILE_MAINNET" > ./backend/.env;
     fi
 
     cat ./backend/.env
