@@ -21,42 +21,40 @@ interface SortComponentProps {
     value: string;
     label: string;
   }[];
-  anchorEl: null | HTMLElement;
-  setAnchorEl: Dispatch<SetStateAction<null | HTMLElement>>;
-  sortOpen: boolean;
 }
 
 export default function SortComponent({
   selectedSorting,
   setSelectedSorting,
   sortOptions,
-  sortOpen,
-  anchorEl,
-  setAnchorEl,
 }: SortComponentProps) {
   const {
     palette: { primaryBlue, neutralWhite },
   } = theme;
 
   const [isHovered, setIsHovered] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const handleShowOptions = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const open = Boolean(anchorEl);
 
   return (
     <Box>
       <Button
         id="fade-button"
-        aria-controls={sortOpen ? "fade-menu" : undefined}
+        aria-controls={open ? "fade-menu" : undefined}
         aria-haspopup="true"
-        aria-expanded={sortOpen ? "true" : undefined}
+        aria-expanded={open ? "true" : undefined}
         sx={{
-          backgroundColor: sortOpen ? "secondary.main" : "neutralWhite",
+          backgroundColor: open ? "secondary.main" : "neutralWhite",
           border: 1,
-          borderColor: sortOpen ? "secondary.main" : "secondaryBlue",
+          borderColor: open ? "secondary.main" : "secondaryBlue",
           borderRadius: 10,
           fontSize: 14,
           fontWeight: 500,
@@ -81,12 +79,12 @@ export default function SortComponent({
         >
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <UpDownArrowsIcon
-              color={isHovered || sortOpen ? neutralWhite : primaryBlue}
+              color={isHovered || open ? neutralWhite : primaryBlue}
             />
           </Box>
           <Typography
             sx={{
-              color: isHovered || sortOpen ? "neutralWhite" : "primaryBlue",
+              color: isHovered || open ? "neutralWhite" : "primaryBlue",
               fontWeight: 500,
               paddingLeft: 0.5,
             }}
@@ -101,13 +99,18 @@ export default function SortComponent({
           "aria-labelledby": "fade-button",
         }}
         anchorEl={anchorEl}
-        open={sortOpen}
+        open={open}
         onClose={handleClose}
         TransitionComponent={Fade}
-        sx={{marginTop: 1}}
+        sx={{ marginTop: 1 }}
       >
         <MenuItem>
-          <Box display="flex" justifyContent="space-between" marginBottom={1} width="100%">
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            marginBottom={1}
+            width="100%"
+          >
             <Typography
               sx={{ color: "neutralGray", fontWeight: 500, fontSize: "14px" }}
             >
@@ -128,7 +131,7 @@ export default function SortComponent({
           <Divider sx={{ marginBottom: 2, backgroundColor: "neutralGray" }} />
         </MenuItem>
         {sortOptions.map((option, index) => (
-          <MenuItem>
+          <MenuItem key={index}>
             <Box
               sx={{
                 width: "100%",
@@ -138,7 +141,6 @@ export default function SortComponent({
                 alignItems: "center",
                 gap: 1,
               }}
-              key={index}
             >
               <FormLabel sx={{ fontSize: "14px" }}>{option.label}</FormLabel>
               <Checkbox

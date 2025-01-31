@@ -33,6 +33,7 @@
   "homepage": "https://github.com/IntersectMBO/govtool-outcomes-pillar",
   "devDependencies": {
     "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.7",
     "@babel/preset-react": "^7.26.3",
     "@babel/preset-typescript": "^7.26.0",
     "@rollup/plugin-babel": "^6.0.4",
@@ -41,6 +42,7 @@
     "@rollup/plugin-node-resolve": "^15.3.0",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.1",
+    "@types/node": "^22.12.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@types/react-router-dom": "^5.3.3",
@@ -63,7 +65,11 @@
   },
   "dependencies": {
     "@fontsource/poppins": "^5.0.14",
-    "@intersect.mbo/intersectmbo.org-icons-set": "^1.0.8"
+    "@intersect.mbo/intersectmbo.org-icons-set": "^1.0.8",
+    "axios": "^1.7.9",
+    "bech32": "^2.0.0",
+    "buffer": "^6.0.3",
+    "react-query": "^3.39.3"
   },
   "peerDependencies": {
     "@emotion/react": "^11.11.4",

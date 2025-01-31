@@ -10,24 +10,29 @@ export default function GovernanceActionCardElement({
   description,
 }: GovernanceActionCardElementProps) {
   return (
-      <Box>
-        <Typography
-          sx={{ fontSize: "12px", color: "neutralGray", marginBottom: 1 }}
-        >
-          {title}
-        </Typography>
-        <Typography
-          sx={{
-            fontSize: "14px",
-            display: "-webkit-box",
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-            WebkitLineClamp: 2,
-            width: "100%"
-          }}
-        >
-          {description}
-        </Typography>
-      </Box>
+    <Box>
+      <Typography
+        sx={{
+          fontSize: "12px",
+          color: "neutralGray",
+          marginBottom: 1,
+          fontWeight: 500,
+        }}
+      >
+        {title}
+      </Typography>
+      <Typography
+        sx={{
+          fontSize: "14px",
+          display: "-webkit-box",
+          WebkitBoxOrient: "vertical",
+          overflow: "hidden",
+          WebkitLineClamp: 2,
+          width: "100%",
+        }}
+      >
+        {description}
+      </Typography>
+    </Box>
   );
 }

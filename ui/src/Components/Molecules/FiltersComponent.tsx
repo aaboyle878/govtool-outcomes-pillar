@@ -24,19 +24,15 @@ interface FilterComponentProps {
     value: string;
     label: string;
   }[];
-  filtersOpen: boolean;
-  anchorEl: null | HTMLElement;
-  setAnchorEl: Dispatch<SetStateAction<null | HTMLElement>>;
 }
 export default function FiltersComponent({
   selectedFilters,
   setSelectedFilters,
   options,
   statusOptions,
-  filtersOpen,
-  anchorEl,
-  setAnchorEl,
 }: FilterComponentProps) {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
   const {
     palette: { primaryBlue, neutralWhite },
   } = theme;
@@ -63,13 +59,13 @@ export default function FiltersComponent({
     <Box>
       <Button
         id="fade-button"
-        aria-controls={filtersOpen ? "fade-menu" : undefined}
+        aria-controls={open ? "fade-menu" : undefined}
         aria-haspopup="true"
-        aria-expanded={filtersOpen ? "true" : undefined}
+        aria-expanded={open ? "true" : undefined}
         sx={{
-          backgroundColor: filtersOpen ? "secondary.main" : "neutralWhite",
+          backgroundColor: open ? "secondary.main" : "neutralWhite",
           border: 1,
-          borderColor: filtersOpen ? "secondary.main" : "secondaryBlue",
+          borderColor: open ? "secondary.main" : "secondaryBlue",
           borderRadius: 10,
           fontSize: 14,
           fontWeight: 500,
@@ -96,12 +92,12 @@ export default function FiltersComponent({
             <IconFilter
               width={18}
               height={18}
-              fill={isHovered || filtersOpen ? neutralWhite : primaryBlue}
+              fill={isHovered || open ? neutralWhite : primaryBlue}
             />
           </Box>
           <Typography
             sx={{
-              color: isHovered || filtersOpen ? "neutralWhite" : "primaryBlue",
+              color: isHovered || open ? "neutralWhite" : "primaryBlue",
               fontWeight: 500,
               paddingLeft: 0.5,
             }}
@@ -116,7 +112,7 @@ export default function FiltersComponent({
           "aria-labelledby": "fade-button",
         }}
         anchorEl={anchorEl}
-        open={filtersOpen}
+        open={open}
         onClose={handleClose}
         TransitionComponent={Fade}
         sx={{ marginTop: 1 }}
@@ -148,7 +144,7 @@ export default function FiltersComponent({
           <Divider sx={{ marginBottom: 2, backgroundColor: "neutralGray" }} />
         </MenuItem>
         {options.map((option, index) => (
-          <MenuItem>
+          <MenuItem key={index}>
             <Box
               sx={{
                 width: "100%",
@@ -158,7 +154,6 @@ export default function FiltersComponent({
                 alignItems: "center",
                 gap: 1,
               }}
-              key={index}
             >
               <FormLabel sx={{ fontSize: "14px" }}>{option.label}</FormLabel>
               <Checkbox
@@ -191,7 +186,7 @@ export default function FiltersComponent({
           <Divider sx={{ marginBottom: 2, backgroundColor: "neutralGray" }} />
         </MenuItem>
         {statusOptions.map((option, index) => (
-          <MenuItem>
+          <MenuItem key={index}>
             <Box
               sx={{
                 width: "100%",
@@ -201,7 +196,6 @@ export default function FiltersComponent({
                 alignItems: "center",
                 gap: 1,
               }}
-              key={index}
             >
               <FormLabel sx={{ fontSize: "14px" }}>{option.label}</FormLabel>
               <Checkbox
