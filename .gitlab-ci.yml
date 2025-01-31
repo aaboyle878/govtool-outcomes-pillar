@@ -53,11 +53,10 @@ yarn:
 
     if [[ "$ENVIRONMENT" != "mainnet" ]]; then
       echo "Using preview environment";
-      printf "%s" "$ENV_FILE_PREVIEW" > ./backend/.env;
-      cat $ENV_FILE_PREVIEW
+      cp "$ENV_FILE_PREVIEW" ./backend/.env;
     else
       echo "Using mainnet environment";
-      printf "%s" "$ENV_FILE_MAINNET" > ./backend/.env;
+      cp "$ENV_FILE_MAINNET" ./backend/.env;
     fi
 
     cat ./backend/.env
