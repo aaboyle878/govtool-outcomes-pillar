@@ -11,10 +11,10 @@ const getDefaultBaseURL = (): string => {
     }
 
     if (hostname.includes("preview.")) {
-      return "https://outcomes-preview.1694.io";
+      return "https://outcomes-preview.1694.io/api";
     }
   }
-  return "https://outcomes.1694.io";
+  return "https://outcomes.1694.io/api";
 };
 
 export const setAxiosBaseURL = (baseURL?: string) => {
