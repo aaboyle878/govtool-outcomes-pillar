@@ -134,18 +134,9 @@ build_govtool:
     - auto-deploy create_secret
     - |
       # Set secrets
-      # cp "$ENV_FILE" ./charts/app_env 
+      cp "$ENV_FILE" ./charts/backend/app_env 
 
-
-      if [[ "$ENVIRONMENT" != "mainnet" ]]; then
-        echo "Using preview environment";
-        cp "$ENV_FILE_PREVIEW" ./charts/app_env ;
-      else
-        echo "Using mainnet environment";
-        cp "$ENV_FILE_MAINNET" ./charts/app_env ;
-      fi
-
-      cat ./charts/app_env
+      cat ./charts/backend/app_env
       echo "$INGRESS_HOST" "$NAMESPACE"
 
       DEPLOYMENT_NAME="outcomes-$CI_ENVIRONMENT_SLUG"
