@@ -1,107 +1,161 @@
-import { Box, Button, Card, CardContent, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardActions,
+  Typography,
+  Link,
+} from "@mui/material";
 import GovernanceActionCardHeader from "./GovernanceActionCardHeader";
 import GovernanceActionCardElement from "./GovernanceActionCardElement";
 import GovernanceActionCardIdElement from "./GovernanceActionCardIdElement";
+import { useEffect, useState } from "react";
+import { getGovActionMetadata } from "../../services/requests/getGovActionMetadata";
+import { encodeCIP129Identifier, getProposalStatus } from "../../lib/utils";
+import GovernanceActionStatus from "../Atoms/GovernanceActionStatus";
+import { urls } from "../../consts/urls";
+
 interface GovernanceActionCardProps {
-  dateSubmitted: string;
-  epoch: number;
-  status: string;
-  title: string;
-  abstract: string;
-  governanceActionType: string;
-  governanceActionID: string;
-  cipGovernanceActionID: string;
-  statusDate: string;
-  statusEpoch: Number;
+  action: GovernanceAction;
 }
 
-function GovernanceActionCard({
-  dateSubmitted,
-  epoch,
-  status,
-  title,
-  abstract,
-  governanceActionType,
-  governanceActionID,
-  cipGovernanceActionID,
-  statusDate,
-  statusEpoch,
-}: GovernanceActionCardProps) {
+function GovernanceActionCard({ action }: GovernanceActionCardProps) {
+  const [metadata, setMetadata] = useState<any>(null);
+  const [metadataValid, setMetadataValid] = useState<any>(true);
+
+  useEffect(() => {
+    const fetchMetadata = async () => {
+      if (action.title === null && action.url && !metadata) {
+        try {
+          const fetchedMetadata = await getGovActionMetadata(action?.url);
+
+          if (
+            fetchedMetadata?.body?.title === "" ||
+            fetchedMetadata?.body?.abstract === ""
+          ) {
+            setMetadataValid(false);
+          }
+
+          setMetadata(fetchedMetadata);
+        } catch (error) {
+          console.error("Error fetching metadata:", error);
+          setMetadataValid(false);
+        }
+      }
+    };
+
+    fetchMetadata();
+  }, [action, metadata]);
+
+  const idCIP105 = () => {
+    return `${action?.tx_hash}#${action?.index}`;
+  };
+
+  const idCIP129 = encodeCIP129Identifier({
+    txID: action?.tx_hash,
+    index: action?.index.toString(16).padStart(2, "0"),
+    bech32Prefix: "gov_action",
+  });
+
+  const status = getProposalStatus(action?.status);
 
   return (
     <Card
       sx={{
-        backgroundColor: "transparent",
-        padding: 2,
+        width: "100%",
+        height: "100%",
         borderRadius: "20px",
+        display: "flex",
+        padding: 2,
+        flexDirection: "column",
+        justifyContent: "space-between",
+        boxShadow: "0px 4px 15px 0px #DDE3F5",
+        backgroundColor: !metadataValid
+          ? "rgba(251, 235, 235, 0.50)"
+          : "rgba(255, 255, 255, 0.3)",
+        ...(!metadataValid && {
+          border:
+            status === "Live"
+              ? "1px solid #FFCBAD"
+              : !metadataValid
+              ? "1px solid #F6D5D5"
+              : "1px solid #C0E4BA",
+        }),
       }}
     >
       <CardContent>
         <GovernanceActionCardHeader
-          dateSubmitted={dateSubmitted}
-          epochSubmitted={epoch}
-          status={status}
-          title={title}
+          dateSubmitted={action.time}
+          epochSubmitted={action.epoch_no}
+          status={action.status}
         />
+
+        {metadataValid && (
+          <>
+            <Box sx={{ marginTop: 3 }}>
+              <Typography sx={{ fontWeight: 600 }}>
+                {action.title || metadata?.body?.title}
+              </Typography>
+            </Box>
+            <Box sx={{ marginTop: 2 }}>
+              <GovernanceActionCardElement
+                title="Abstract"
+                description={action.abstract || metadata?.body?.abstract}
+              />
+            </Box>
+          </>
+        )}
+        {!metadataValid && (
+          <Box sx={{ marginTop: 3 }}>
+            <Typography sx={{ fontWeight: 600, color: "errorRed" }}>
+              Data not processable
+            </Typography>
+          </Box>
+        )}
         <Box sx={{ marginTop: 2 }}>
           <GovernanceActionCardElement
-            title="Abstract"
-            description={abstract}
-          />
-        </Box>
-        <Box sx={{ marginTop: 2 }}>
-          <GovernanceActionCardElement
-            title=" Governance Action Type"
-            description={governanceActionType}
+            title="Governance Action Type"
+            description={action?.type}
           />
         </Box>
         <Box sx={{ marginTop: 2 }}>
           <GovernanceActionCardIdElement
             title="Governance Action ID"
-            id={governanceActionID}
+            id={idCIP105()}
           />
         </Box>
         <Box sx={{ marginTop: 2 }}>
           <GovernanceActionCardIdElement
-            title="(CIP-129)Governance Action ID"
-            id={cipGovernanceActionID}
+            title="(CIP-129) Governance Action ID"
+            id={idCIP129}
           />
         </Box>
-        <Box display="flex" justifyContent="center" marginTop={3}>
-          <Typography
-            sx={{
-              fontSize: "14px",
-              color: status === "Expired" ? "errorRed" : "positiveGreen",
-            }}
-          >
-            {status}:{" "}
-            <Typography
-              sx={{
-                fontSize: "14px",
-                fontWeight: "bold",
-                color: status === "Expired" ? "errorRed" : "positiveGreen",
-              }}
-              component="span"
-            >
-              {statusDate}
-            </Typography>{" "}
-            {`(Epoch ${statusEpoch})`}
-          </Typography>
-        </Box>
-        <Box display="flex" justifyContent="center" marginTop={3}>
-          <Button
-            variant="contained"
-            sx={{
-              borderRadius: "50px",
-              color: "neutralWhite",
-              backgroundColor: "primaryBlue",
-              width: "100%",
-            }}
-          >
-            View Details
-          </Button>
+        <Box display="flex" justifyContent="center" marginTop={2}>
+          <GovernanceActionStatus action={action} />
         </Box>
       </CardContent>
+      <CardActions>
+        <Button
+          variant="contained"
+          sx={{
+            borderRadius: "50px",
+            color: "neutralWhite",
+            backgroundColor: "primaryBlue",
+            width: "100%",
+          }}
+        >
+          <Link
+            href={`${urls.govtools}/governance_actions/${idCIP105()}`}
+            color="inherit"
+            underline="hover"
+            target="_blank"
+            rel="noreferrer"
+          >
+            View Details
+          </Link>
+        </Button>
+      </CardActions>
     </Card>
   );
 }

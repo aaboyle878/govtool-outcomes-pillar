@@ -12,6 +12,11 @@ export class GovernanceActionsController {
     return this.governanceActionsService.findAll();
   }
 
+  @Get("/metadata")
+  findMetadata(@Query("url") url: string) {
+    return this.governanceActionsService.findMetadata(url);
+  }
+
   @Get(":id")
   findOne(@Param("id") id: string, @Query("index") index: number) {
     const govActionId = `${id}#${index}`;

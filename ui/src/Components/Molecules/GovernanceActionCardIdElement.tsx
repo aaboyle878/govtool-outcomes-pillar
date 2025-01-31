@@ -10,7 +10,6 @@ export default function GovernanceActionCardIdElement({
   title,
   id,
 }: GovernanceActionCardIdElementProps) {
-
   const { addSuccessAlert } = useSnackbar();
 
   const handleCopyClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -20,7 +19,14 @@ export default function GovernanceActionCardIdElement({
   };
   return (
     <Box>
-      <Typography sx={{ fontSize: "12px", color: "neutralGray", marginBottom: 1 }}>
+      <Typography
+        sx={{
+          fontSize: "12px",
+          color: "neutralGray",
+          marginBottom: 1,
+          fontWeight: 500,
+        }}
+      >
         {title}
       </Typography>
       <Box
@@ -31,35 +37,36 @@ export default function GovernanceActionCardIdElement({
           gap: 1,
         }}
       >
-        <Box
+        <Typography
           sx={{
-            maxWidth: "100%",
+            maxWidth: "85%",
             overflow: "hidden",
             textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+            fontSize: "14px",
+            color: "primaryBlue",
           }}
         >
-          <Typography sx={{ fontSize: "14px", color: "primaryBlue"}}>
-            {id}
-          </Typography>
-        </Box>
+          {id}
+        </Typography>
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
           }}
         >
-            <Box
-              sx={{
-                justifyContent: "center",
-                alignItems: "center",
-                cursor: "pointer",
-                display: "flex",
-              }}
-              onClick={handleCopyClick}
-              aria-label="Copy to clipboard"
-            >
-              <CopyIcon width={24} height={24} />
-            </Box>
+          <Box
+            sx={{
+              justifyContent: "center",
+              alignItems: "center",
+              cursor: "pointer",
+              display: "flex",
+            }}
+            onClick={handleCopyClick}
+            aria-label="Copy to clipboard"
+          >
+            <CopyIcon width={24} height={24} />
+          </Box>
         </Box>
       </Box>
     </Box>

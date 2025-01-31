@@ -25,12 +25,6 @@ interface SearchFiltersSortBarProps {
   }[];
   selectedSorting: string;
   setSelectedSorting: Dispatch<SetStateAction<string>>;
-  sortOpen: boolean;
-  filtersOpen: boolean;
-  anchorElFilters: null | HTMLElement;
-  setAnchorElFilters: Dispatch<SetStateAction<null | HTMLElement>>;
-  anchorElSort: null | HTMLElement;
-  setAnchorElSort: Dispatch<SetStateAction<null | HTMLElement>>;
 }
 
 export default function SearchFiltersSortBar({
@@ -46,22 +40,21 @@ export default function SearchFiltersSortBar({
     sortOptions,
     selectedSorting,
     setSelectedSorting,
-    sortOpen,
-    filtersOpen,
-    anchorElFilters,
-    setAnchorElFilters,
-    anchorElSort,
-    setAnchorElSort
   } = props;
 
   const {
     palette: { neutralGray },
   } = theme;
 
-  const {isMobile} = useScreenDimension();
+  const { isMobile } = useScreenDimension();
 
   return (
-    <Box display="flex" justifyContent="space-between" marginBottom={4} gap={isMobile ? 1 : 1.5}>
+    <Box
+      display="flex"
+      justifyContent="space-between"
+      marginBottom={4}
+      gap={isMobile ? 1 : 1.5}
+    >
       <InputBase
         inputProps={{ "data-testid": "search-input" }}
         onChange={(e) => setSearchText(e.target.value)}
@@ -86,17 +79,11 @@ export default function SearchFiltersSortBar({
         statusOptions={statusOptions}
         selectedFilters={selectedFilters}
         setSelectedFilters={setSelectedFilters}
-        filtersOpen={filtersOpen}
-        anchorEl={anchorElFilters}
-        setAnchorEl={setAnchorElFilters}
       />
       <SortComponent
         selectedSorting={selectedSorting}
         setSelectedSorting={setSelectedSorting}
         sortOptions={sortOptions}
-        sortOpen={sortOpen}
-        anchorEl={anchorElSort}
-        setAnchorEl={setAnchorElSort}
       />
     </Box>
   );
