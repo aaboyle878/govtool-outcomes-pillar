@@ -52,7 +52,7 @@ yarn:
 
     if [[ "$ENVIRONMENT" == "preview" ]]; then
         cp ./backend/.env.example ./backend/.env 
-    else [[ "$ENVIRONMENT" == "mainnet" ]]; then
+    else 
         echo "Using mainnet environment";
         echo "$ENV_FILE_MAINNET" > .env;
     fi
