@@ -56,6 +56,8 @@ yarn:
         echo "Using mainnet environment";
         echo "$ENV_FILE_MAINNET" > ./backend/.env;
     fi
+
+    cat ./backend/.env
       
     cd ./backend
     yarn install --ignore-engines
