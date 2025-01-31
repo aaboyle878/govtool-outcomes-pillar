@@ -48,9 +48,9 @@ spec:
           requests:
             cpu: 50m
             memory: 256Mi
-        envFrom:
-          - secretRef:
-              name: "{{ $.Chart.Name }}-secrets"
+        # envFrom:
+        #   - secretRef:
+        #       name: "{{ $.Chart.Name }}-secrets"
         ports:
           - name: node
             containerPort: 3000
