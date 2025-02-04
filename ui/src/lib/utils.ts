@@ -32,6 +32,22 @@ export const encodeCIP129Identifier = ({
   return bech32.encode(bech32Prefix, words);
 };
 
+/**
+ * Decodes a CIP129 identifier.
+ * @param cip129Identifier - The CIP129 identifier to decode.
+ * @returns An object containing the decoded transaction ID, index, and prefix.
+ */
+export const decodeCIP129Identifier = (cip129Identifier: string) => {
+  const { prefix, words } = bech32.decode(cip129Identifier);
+  const buffer = Buffer.from(bech32.fromWords(words));
+  const txID = buffer.subarray(0, 32).toString("hex");
+  const index = buffer.subarray(32).toString("hex");
+  return { txID, index, prefix };
+};
+
+export const getFullGovActionId = (txHash: string, index: number | string) =>
+  `${txHash}#${index}`;
+
 export function getProposalStatus(status: Status): string {
   if (status.enacted_epoch !== null) {
     return "Enacted";

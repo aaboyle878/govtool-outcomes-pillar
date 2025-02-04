@@ -8,7 +8,6 @@ import GovernanceActionsList from "../Components/Molecules/GovernanceActionsList
 
 export default function OutcomesPage() {
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-  const [searchText, setSearchText] = useState("");
   const [selectedSorting, setSelectedSorting] = useState("");
 
   return (
@@ -17,8 +16,6 @@ export default function OutcomesPage() {
         filterOptions={GOVERNANCE_ACTION_FILTERS}
         statusOptions={GOVERNANCE_ACTION_STATUS_FILTERS}
         sortOptions={GOVERNANCE_ACTION_SORT_OPTIONS}
-        searchText={searchText}
-        setSearchText={setSearchText}
         selectedFilters={selectedFilters}
         setSelectedFilters={setSelectedFilters}
         selectedSorting={selectedSorting}

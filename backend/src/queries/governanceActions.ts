@@ -197,5 +197,10 @@ FROM
     LEFT JOIN EpochBlocks enacted_block ON enacted_block.epoch_no = gov_action_proposal.enacted_epoch
     LEFT JOIN EpochBlocks dropped_block ON dropped_block.epoch_no = gov_action_proposal.dropped_epoch
     LEFT JOIN EpochBlocks expired_block ON expired_block.epoch_no = gov_action_proposal.expired_epoch
+WHERE
+    (COALESCE($1, '') = '' OR
+    off_chain_vote_gov_action_data.title ILIKE '%' || $1 || '%' OR
+    off_chain_vote_gov_action_data.abstract ILIKE '%' || $1 || '%' OR
+    concat(encode(creator_tx.hash, 'hex'), '#', gov_action_proposal.index) ILIKE '%' || $1 || '%')
 ORDER BY creator_block.epoch_no DESC
 LIMIT 20`;

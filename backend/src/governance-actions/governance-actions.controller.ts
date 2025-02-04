@@ -8,8 +8,8 @@ export class GovernanceActionsController {
   ) {}
 
   @Get()
-  findAll() {
-    return this.governanceActionsService.findAll();
+  findAll(@Query("search") search: string) {
+    return this.governanceActionsService.findAll(search);
   }
 
   @Get("/metadata")
