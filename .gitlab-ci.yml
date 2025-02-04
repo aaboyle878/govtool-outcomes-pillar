@@ -141,7 +141,7 @@ build_govtool:
           -f ./charts/values.yaml \
           --set namespace=$NAMESPACE \
           --set ingress.hosts[0]=$INGRESS_HOST \
-          --set image.backend.tag=$CI_APPLICATION_TAG
+          --set image.backend.tag=$CI_APPLICATION_TAG \
           --set cardano_node[0].tcp_host=$NODE_TCP_HOST \
           --set cardano_node[0].tcp_port=$NODE_TCP_PORT
 
@@ -155,7 +155,7 @@ build_govtool:
           --create-namespace \
           -f ./charts/values.yaml \
           --set namespace=$NAMESPACE \
-          --set services.image.govtool.tag=$CI_APPLICATION_TAG
+          --set services.image.govtool.tag=$CI_APPLICATION_TAG \
           --set ingress.hosts[0]=$INGRESS_HOST
   rules:
     - if: '$DEPLOY_WEBSITE == "true"'
