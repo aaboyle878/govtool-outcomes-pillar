@@ -16,8 +16,11 @@ export class GovernanceActionsService {
     private readonly httpService: HttpService,
     private readonly configService: ConfigService
   ) {}
-  findAll() {
-    return this.cexplorerService.manager.query(getGovernanceActions);
+  findAll(search: string) {
+    const searchTerm = search ? search.trim() : "";
+    return this.cexplorerService.manager.query(getGovernanceActions, [
+      searchTerm,
+    ]);
   }
 
   private convertIpfsToHttpUrl(url: string): string {
@@ -28,7 +31,7 @@ export class GovernanceActionsService {
     }
     return url;
   }
-  
+
   async findMetadata(url: string) {
     try {
       const httpUrl = this.convertIpfsToHttpUrl(url);
