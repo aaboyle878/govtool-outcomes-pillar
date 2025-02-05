@@ -8,7 +8,11 @@ export const GOVERNANCE_ACTION_SORT_OPTIONS = [
         label: "Newest first",
       },
       {
-        value: "highestAmountsOfYesVotes",
+        value: "oldestFirst",
+        label: "Oldest first",
+      },
+      {
+        value: "highestYesVotes",
         label: "Highest amount of yes votes",
       }
 ];

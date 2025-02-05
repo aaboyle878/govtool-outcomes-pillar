@@ -55,6 +55,9 @@ export function getProposalStatus(status: Status): string {
   if (status.expired_epoch !== null) {
     return "Expired";
   }
+  if (status.dropped_epoch !== null) {
+    return "Dropped";
+  }
   if (status.ratified_epoch !== null) {
     return "Ratified";
   }
@@ -87,6 +90,10 @@ export function getStatusDetails(status: Status, statusTimes: StatusTimes) {
     case "Ratified":
       statusEpoch = status.ratified_epoch;
       statusDate = statusTimes.ratified_time;
+      break;
+    case "Dropped":
+      statusEpoch = status.dropped_epoch;
+      statusDate = statusTimes.dropped_time;
       break;
     case "Live":
       statusEpoch = null;

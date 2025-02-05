@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Grid, Typography } from "@mui/material";
+import { Box, CircularProgress, Grid } from "@mui/material";
 import GovernanceActionCard from "./GovernanceActionCard";
 import { useGetGovernanceActions } from "../../hooks/useGetGovernanceActionsQuery";
 import { useSearchParams } from "react-router-dom";
@@ -6,9 +6,20 @@ import { ActionsEmptyState } from "./ActionsEmptyState";
 
 export default function GovernanceActionsList({}) {
   const [searchParams] = useSearchParams();
+
   const search = searchParams.get("q") || "";
 
-  const { govActions, isGovActionsLoading } = useGetGovernanceActions(search);
+  const typeFilters = searchParams.get("type")?.split(",") || [];
+  const statusFilters = searchParams.get("status")?.split(",") || [];
+  const filters = [...typeFilters, ...statusFilters].filter(Boolean);
+
+  const sort = searchParams.get("sort") || "";
+
+  const { govActions, isGovActionsLoading } = useGetGovernanceActions(
+    search,
+    filters,
+    sort
+  );
   return (
     <Box
       sx={{

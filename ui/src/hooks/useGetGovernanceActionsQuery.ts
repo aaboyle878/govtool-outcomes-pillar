@@ -3,7 +3,11 @@ import { queryKeys } from "../consts/queryKeys";
 import { getGovernanceActions } from "../services/requests/getGovernanceActions";
 import { decodeCIP129Identifier, getFullGovActionId } from "../lib/utils";
 
-export const useGetGovernanceActions = (search: string) => {
+export const useGetGovernanceActions = (
+  search: string,
+  filters: string[],
+  sort: string
+) => {
   const searchPhrase = (() => {
     if (search.startsWith("gov_action")) {
       try {
@@ -18,8 +22,8 @@ export const useGetGovernanceActions = (search: string) => {
   })();
 
   const { data, isLoading, error } = useQuery<GovernanceAction[]>({
-    queryKey: [queryKeys.getGovernanceActions, searchPhrase],
-    queryFn: async () => await getGovernanceActions(searchPhrase),
+    queryKey: [queryKeys.getGovernanceActions, searchPhrase, filters, sort],
+    queryFn: async () => await getGovernanceActions(searchPhrase, filters, sort),
     enabled: true,
     refetchOnWindowFocus: false,
   });

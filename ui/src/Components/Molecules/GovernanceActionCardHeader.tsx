@@ -34,6 +34,10 @@ export default function GovernanceActionCardHeader({
       return <GovernanceActionStatusChip status="Ratified" />;
     }
 
+    if (!ratified_epoch && enacted_epoch) {
+      return <GovernanceActionStatusChip status="Enacted" />;
+    }
+
     if (expired_epoch && dropped_epoch) {
       return (
         <Box className="flex gap-2">
@@ -41,6 +45,10 @@ export default function GovernanceActionCardHeader({
           <GovernanceActionStatusChip status="Dropped" />
         </Box>
       );
+    }
+
+    if (dropped_epoch) {
+      return <GovernanceActionStatusChip status="Dropped" />;
     }
 
     if (expired_epoch) {
