@@ -1,12 +1,12 @@
 import {
+  Badge,
   Box,
   Button,
   Checkbox,
   Divider,
   Fade,
-  FormLabel,
+  FormControlLabel,
   Menu,
-  MenuItem,
   Typography,
 } from "@mui/material";
 import { useState } from "react";
@@ -15,6 +15,7 @@ import { theme } from "../../theme";
 import { GOVERNANCE_ACTION_FILTERS } from "../../consts/filters";
 import { GOVERNANCE_ACTION_STATUS_FILTERS } from "../../consts/status-filters";
 import { useSearchParams } from "react-router-dom";
+import { fadedPurple } from "../../consts/colors";
 
 export default function FiltersComponent() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -86,6 +87,12 @@ export default function FiltersComponent() {
     setFilterParams(newParams);
   };
 
+  const getActiveFilterCount = () => {
+    const typeFilters = filterParams.get("type")?.split(",") || [];
+    const statusFilters = filterParams.get("status")?.split(",") || [];
+    return typeFilters.length + statusFilters.length;
+  };
+
   const handleShowOptions = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -121,19 +128,38 @@ export default function FiltersComponent() {
         onClick={handleShowOptions}
       >
         <Box
+          position="relative"
           display="flex"
           alignItems="center"
           justifyContent="center"
           width="100%"
           height="100%"
         >
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <IconFilter
-              width={18}
-              height={18}
-              fill={isHovered || open ? neutralWhite : primaryBlue}
+          {!open && (
+            <Badge
+              badgeContent={getActiveFilterCount()}
+              color="secondary"
+              sx={{
+                position: "absolute",
+                top: 2,
+                right: 0,
+                transform: "translate(50%, -50%)",
+                zIndex: 1,
+              }}
+              componentsProps={{
+                badge: {
+                  style: {
+                    color: "white",
+                  },
+                },
+              }}
             />
-          </Box>
+          )}
+          <IconFilter
+            width={18}
+            height={18}
+            fill={isHovered || open ? neutralWhite : primaryBlue}
+          />
           <Typography
             sx={{
               color: isHovered || open ? "neutralWhite" : "primaryBlue",
@@ -146,100 +172,95 @@ export default function FiltersComponent() {
         </Box>
       </Button>
       <Menu
-        id="fade-menu"
-        MenuListProps={{
-          "aria-labelledby": "fade-button",
-        }}
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
         TransitionComponent={Fade}
         sx={{ marginTop: 1 }}
       >
-        <MenuItem>
-          <Box display="flex" justifyContent="space-between" width={250}>
-            <Typography
-              sx={{ color: "neutralGray", fontWeight: 500, fontSize: "14px" }}
-            >
-              Governance Action Type
-            </Typography>
-            <Typography
-              sx={{
-                color: "primaryBlue",
-                fontWeight: 500,
-                fontSize: "14px",
-                cursor: "pointer",
-              }}
-              onClick={clearFilters}
-            >
-              Clear
+        <Box display="flex" paddingX="20px" justifyContent="space-between">
+          <Typography
+            sx={{
+              color: fadedPurple.c500,
+              fontWeight: 500,
+              fontSize: 14,
+            }}
+          >
+            Governance Action Type
+          </Typography>
+          <Box
+            sx={{
+              color: "primaryBlue",
+              fontWeight: 500,
+              fontSize: 14,
+              paddingX: 1,
+              cursor: "pointer",
+              borderRadius: "10%",
+              "&:hover": { bgcolor: "#E6EBF7" },
+            }}
+            onClick={clearFilters}
+          >
+            <Typography fontSize={14} fontWeight={500} color="primary">
+              clear
             </Typography>
           </Box>
-        </MenuItem>
-        <Divider sx={{ marginBottom: 2, backgroundColor: "neutralGray" }} />
+        </Box>
+
+        <Divider sx={{ marginTop: 1, backgroundColor: "neutralGray" }} />
         {GOVERNANCE_ACTION_FILTERS.map((option, index) => (
-          <MenuItem key={index}>
-            <Box
-              sx={{
-                width: "100%",
-                marginBottom: 1,
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                gap: 1,
-              }}
-            >
-              <FormLabel sx={{ fontSize: "14px" }}>{option.label}</FormLabel>
-              <Checkbox
-                sx={{
-                  padding: 0,
-                  "& .MuiSvgIcon-root": {
-                    fontSize: 20,
-                  },
-                }}
-                name={option.value}
-                checked={isTypeChecked(option.value)}
-                onChange={() => handleTypeChange(option.value)}
-              />
-            </Box>
-          </MenuItem>
-        ))}
-        <MenuItem>
-          <Box display="flex" justifyContent="space-between" width={250}>
-            <Typography
-              sx={{ color: "neutralGray", fontWeight: 500, fontSize: "14px" }}
-            >
-              Status
-            </Typography>
+          <Box
+            key={index}
+            paddingX="20px"
+            sx={[{ "&:hover": { bgcolor: "#E6EBF7" } }]}
+            bgcolor={isTypeChecked(option.value) ? "#FFF0E7" : "transparent"}
+          >
+            <FormControlLabel
+              control={
+                <Checkbox
+                  onChange={() => handleTypeChange(option.value)}
+                  name={option.value}
+                  checked={isTypeChecked(option.value)}
+                />
+              }
+              label={option.label}
+            />
           </Box>
-        </MenuItem>
-        <Divider sx={{ marginBottom: 2, backgroundColor: "neutralGray" }} />
+        ))}
+        <Box
+          display="flex"
+          paddingX="20px"
+          justifyContent="space-between"
+          width={250}
+        >
+          <Typography
+            sx={{
+              color: fadedPurple.c500,
+              fontWeight: 500,
+              fontSize: 14,
+            }}
+          >
+            Status
+          </Typography>
+        </Box>
+        <Divider sx={{ marginTop: 1, backgroundColor: "neutralGray" }} />
         {GOVERNANCE_ACTION_STATUS_FILTERS.map((option, index) => (
-          <MenuItem key={index}>
-            <Box
-              sx={{
-                width: "100%",
-                marginBottom: 1,
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                gap: 1,
-              }}
-            >
-              <FormLabel sx={{ fontSize: "14px" }}>{option.label}</FormLabel>
-              <Checkbox
-                sx={{
-                  padding: 0,
-                  "& .MuiSvgIcon-root": {
-                    fontSize: 20,
-                  },
-                }}
-                name={option.value}
-                checked={isStatusChecked(option.value)}
-                onChange={() => handleStatusChange(option.value)}
-              />
-            </Box>
-          </MenuItem>
+          <Box
+            key={index}
+            paddingX="20px"
+            sx={[{ "&:hover": { bgcolor: "#E6EBF7" } }]}
+            bgcolor={isStatusChecked(option.value) ? "#FFF0E7" : "transparent"}
+          >
+            <FormControlLabel
+              control={
+                <Checkbox
+                  onChange={() => handleStatusChange(option.value)}
+                  name={option.value}
+                  checked={isStatusChecked(option.value)}
+                />
+              }
+              label={option.label}
+            />
+          </Box>
         ))}
       </Menu>
     </Box>

@@ -4,11 +4,11 @@ import {
   Typography,
   Button,
   Menu,
-  MenuItem,
   Fade,
   Radio,
   RadioGroup,
   FormControlLabel,
+  FormControl,
 } from "@mui/material";
 import { theme } from "../../theme";
 import { useEffect, useState } from "react";
@@ -99,76 +99,79 @@ export default function SortComponent() {
           width="100%"
           height="100%"
         >
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <UpDownArrowsIcon
-              color={isHovered || open ? neutralWhite : primaryBlue}
-            />
-          </Box>
+          <UpDownArrowsIcon
+            width={18}
+            height={18}
+            color={isHovered || open ? neutralWhite : primaryBlue}
+          />
           <Typography
             sx={{
               color: isHovered || open ? "neutralWhite" : "primaryBlue",
               fontWeight: 500,
               paddingLeft: 0.5,
+              whiteSpace: "nowrap",
             }}
           >
-            Sort
+            Sort{sortValue() ? `: ${sortValue()}` : ""}
           </Typography>
         </Box>
       </Button>
       <Menu
-        id="fade-menu"
-        MenuListProps={{
-          "aria-labelledby": "fade-button",
-        }}
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
         TransitionComponent={Fade}
         sx={{ marginTop: 1 }}
       >
-        <MenuItem>
-          <Box display="flex" justifyContent="space-between" width="100%">
+        <FormControl>
+          <Box display="flex" justifyContent="space-between" px="20px">
             <Typography
-              sx={{ color: "neutralGray", fontWeight: 500, fontSize: "14px" }}
+              sx={{ fontSize: 14, fontWeight: 500, color: "#9792B5" }}
             >
               Sort by
             </Typography>
-            <Typography
+            <Box
               sx={{
                 color: "primaryBlue",
                 fontWeight: 500,
-                fontSize: "14px",
+                fontSize: 14,
+                paddingX: 1,
                 cursor: "pointer",
+                borderRadius: "10%",
+                "&:hover": { bgcolor: "#E6EBF7" },
               }}
               onClick={clearSort}
             >
-              Clear
-            </Typography>
+              <Typography fontSize={14} fontWeight={500} color="primaryBlue">
+                clear
+              </Typography>
+            </Box>
           </Box>
-        </MenuItem>
-        <Divider sx={{ marginBottom: 2, backgroundColor: "neutralGray" }} />
-        <RadioGroup
-          value={sortValue()}
-          onChange={setSorts}
-          sx={{
-            paddingX: 2,
-            "& .MuiFormControlLabel-label": {
-              fontSize: "14px",
-            },
-            "& .MuiSvgIcon-root": {
-              fontSize: "20px",
-            },
-          }}
-        >
-          {GOVERNANCE_ACTION_SORT_OPTIONS.map((option, idx) => (
-            <FormControlLabel
-              key={idx}
-              value={option.value}
-              control={<Radio />}
-              label={option.label}
-            />
-          ))}
-        </RadioGroup>
+          <Divider sx={{ marginTop: 1, backgroundColor: "neutralGray" }} />
+          <RadioGroup
+            aria-labelledby="demo-controlled-radio-buttons-group"
+            name="controlled-radio-buttons-group"
+            value={sortValue()}
+            onChange={setSorts}
+          >
+            {GOVERNANCE_ACTION_SORT_OPTIONS.map((option, index) => (
+              <Box
+                key={index}
+                paddingX="20px"
+                sx={[{ "&:hover": { bgcolor: "#E6EBF7" } }]}
+                bgcolor={
+                  sortValue() === option.value ? "#FFF0E7" : "transparent"
+                }
+              >
+                <FormControlLabel
+                  value={option.value}
+                  control={<Radio />}
+                  label={option.label}
+                />
+              </Box>
+            ))}
+          </RadioGroup>
+        </FormControl>
       </Menu>
     </Box>
   );
