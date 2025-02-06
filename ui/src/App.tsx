@@ -1,9 +1,20 @@
+import { ThemeProvider } from "@mui/material";
+import { SnackbarProvider } from "./contexts/Snackbar";
 import "./index.scss";
+import { theme } from "./theme";
+import OutcomesPage from "./Pages/Outcomes";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { setAxiosBaseURL } from "./services/axiosInstance";
 
 export type AppProps = {
-  description: string;
+  apiUrl?: string;
 };
-function App({ description }: AppProps) {
+
+const queryClient = new QueryClient();
+
+function App({ apiUrl }: AppProps) {
+  setAxiosBaseURL(apiUrl);
+
   return (
     <div
       className="App"
@@ -12,8 +23,13 @@ function App({ description }: AppProps) {
         height: "100%",
       }}
     >
-      <h1>govtool-outcomes-pillar-ui hel</h1>
-      <p>{description}</p>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme}>
+          <SnackbarProvider>
+            <OutcomesPage />
+          </SnackbarProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
     </div>
   );
 }
