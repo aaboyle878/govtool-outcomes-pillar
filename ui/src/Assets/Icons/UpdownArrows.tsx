@@ -1,15 +1,19 @@
 type UpDownArrowsIconProps = {
   width?: number;
   height?: number;
-  color?: "string"
+  color?: "string";
 };
 
-export default function UpDownArrowsIcon({ width, height, color }: UpDownArrowsIconProps) {
+export default function UpDownArrowsIcon({
+  width,
+  height,
+  color,
+}: UpDownArrowsIconProps) {
   return (
     <>
       <svg
-        width="19"
-        height="20"
+        width={width}
+        height={height}
         viewBox="0 0 19 20"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
