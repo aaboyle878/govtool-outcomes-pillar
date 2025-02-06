@@ -1,5 +1,5 @@
 import { Box, InputBase } from "@mui/material";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { IconSearch } from "@intersect.mbo/intersectmbo.org-icons-set";
 import { theme } from "../../theme";
 import FiltersComponent from "./FiltersComponent";
@@ -7,38 +7,7 @@ import SortComponent from "./SortComponent";
 import { useScreenDimension } from "../../hooks/useDimensions";
 import { useSearchParams } from "react-router-dom";
 
-interface SearchFiltersSortBarProps {
-  selectedFilters: string[];
-  setSelectedFilters: Dispatch<SetStateAction<string[]>>;
-  filterOptions: {
-    value: string;
-    label: string;
-  }[];
-  statusOptions: {
-    value: string;
-    label: string;
-  }[];
-  sortOptions: {
-    value: string;
-    label: string;
-  }[];
-  selectedSorting: string;
-  setSelectedSorting: Dispatch<SetStateAction<string>>;
-}
-
-export default function SearchFiltersSortBar({
-  ...props
-}: SearchFiltersSortBarProps) {
-  const {
-    selectedFilters,
-    setSelectedFilters,
-    filterOptions,
-    statusOptions,
-    sortOptions,
-    selectedSorting,
-    setSelectedSorting,
-  } = props;
-
+export default function SearchFiltersSortBar() {
   const {
     palette: { neutralGray },
   } = theme;
@@ -50,12 +19,13 @@ export default function SearchFiltersSortBar({
 
   useEffect(() => {
     const timer = setTimeout(() => {
+      const newParams = new URLSearchParams(searchParams);
       if (searchTerm) {
-        setSearchParams({ q: searchTerm });
+        newParams.set("q", searchTerm);
       } else {
-        searchParams.delete("q");
-        setSearchParams(searchParams);
+        newParams.delete("q");
       }
+      setSearchParams(newParams);
     }, 300);
 
     return () => clearTimeout(timer);
@@ -90,17 +60,8 @@ export default function SearchFiltersSortBar({
           },
         }}
       />
-      <FiltersComponent
-        options={filterOptions}
-        statusOptions={statusOptions}
-        selectedFilters={selectedFilters}
-        setSelectedFilters={setSelectedFilters}
-      />
-      <SortComponent
-        selectedSorting={selectedSorting}
-        setSelectedSorting={setSelectedSorting}
-        sortOptions={sortOptions}
-      />
+      <FiltersComponent />
+      <SortComponent />
     </Box>
   );
 }

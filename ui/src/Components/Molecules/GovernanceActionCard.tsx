@@ -25,28 +25,30 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
   const [metadataValid, setMetadataValid] = useState<any>(true);
 
   useEffect(() => {
+    setMetadata(null);
+    setMetadataValid(true);
+
     const fetchMetadata = async () => {
-      if (action.title === null && action.url && !metadata) {
+      if (action.title === null && action.url) {
         try {
           const fetchedMetadata = await getGovActionMetadata(action?.url);
-
-          if (
-            fetchedMetadata?.body?.title === "" ||
-            fetchedMetadata?.body?.abstract === ""
-          ) {
-            setMetadataValid(false);
-          }
-
+          const isValid =
+            (fetchedMetadata?.body?.title !== "" &&
+              fetchedMetadata?.body?.title != null) ||
+            (fetchedMetadata?.body?.abstract !== "" &&
+              fetchedMetadata?.body?.abstract != null);
+          setMetadataValid(isValid);
           setMetadata(fetchedMetadata);
         } catch (error) {
           console.error("Error fetching metadata:", error);
           setMetadataValid(false);
+          setMetadata(null);
         }
       }
     };
 
     fetchMetadata();
-  }, [action, metadata]);
+  }, [action]);
 
   const idCIP105 = () => {
     return `${action?.tx_hash}#${action?.index}`;
@@ -109,7 +111,7 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
         {!metadataValid && (
           <Box sx={{ marginTop: 3 }}>
             <Typography sx={{ fontWeight: 600, color: "errorRed" }}>
-              Data not processable
+              Data not processable!
             </Typography>
           </Box>
         )}
@@ -136,25 +138,27 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
         </Box>
       </CardContent>
       <CardActions>
-        <Button
-          variant="contained"
+        <Link
+          href={`${urls.govtools}/governance_actions/${idCIP105()}`}
+          color="inherit"
+          target="_blank"
+          rel="noreferrer"
           sx={{
-            borderRadius: "50px",
-            color: "neutralWhite",
-            backgroundColor: "primaryBlue",
             width: "100%",
           }}
         >
-          <Link
-            href={`${urls.govtools}/governance_actions/${idCIP105()}`}
-            color="inherit"
-            underline="hover"
-            target="_blank"
-            rel="noreferrer"
+          <Button
+            variant="contained"
+            sx={{
+              borderRadius: "50px",
+              color: "neutralWhite",
+              backgroundColor: "primaryBlue",
+              width: "100%",
+            }}
           >
             View Details
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       </CardActions>
     </Card>
   );

@@ -1,41 +1,63 @@
 import {
   Box,
-  Checkbox,
   Divider,
-  FormLabel,
   Typography,
   Button,
   Menu,
   MenuItem,
   Fade,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
 } from "@mui/material";
 import { theme } from "../../theme";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useEffect, useState } from "react";
 import UpDownArrowsIcon from "../../Assets/Icons/UpdownArrows";
 import React from "react";
+import { useSearchParams } from "react-router-dom";
+import { GOVERNANCE_ACTION_SORT_OPTIONS } from "../../consts/sort-options";
 
-interface SortComponentProps {
-  selectedSorting: string;
-  setSelectedSorting: Dispatch<SetStateAction<string>>;
-  sortOptions: {
-    value: string;
-    label: string;
-  }[];
-}
-
-export default function SortComponent({
-  selectedSorting,
-  setSelectedSorting,
-  sortOptions,
-}: SortComponentProps) {
+export default function SortComponent() {
   const {
     palette: { primaryBlue, neutralWhite },
   } = theme;
 
   const [isHovered, setIsHovered] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [sortParams, setSortParams] = useSearchParams();
+
+  useEffect(() => {
+    const currentSort = sortParams.get("sort");
+    if (!currentSort) {
+      const newParams = new URLSearchParams(sortParams);
+      newParams.set("sort", "newestFirst");
+      setSortParams(newParams);
+    }
+  }, []);
+
   const handleShowOptions = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
+  };
+
+  const setSorts = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    const newParams = new URLSearchParams(sortParams);
+    if (value) {
+      newParams.set("sort", value);
+    } else {
+      newParams.delete("sort");
+    }
+    setSortParams(newParams);
+  };
+
+  const sortValue = () => {
+    return sortParams.get("sort")?.toString() || "";
+  };
+
+  const clearSort = () => {
+    const newParams = new URLSearchParams(sortParams);
+    newParams.delete("sort");
+    setSortParams(newParams);
   };
 
   const handleClose = () => {
@@ -105,12 +127,7 @@ export default function SortComponent({
         sx={{ marginTop: 1 }}
       >
         <MenuItem>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            marginBottom={1}
-            width="100%"
-          >
+          <Box display="flex" justifyContent="space-between" width="100%">
             <Typography
               sx={{ color: "neutralGray", fontWeight: 500, fontSize: "14px" }}
             >
@@ -123,40 +140,35 @@ export default function SortComponent({
                 fontSize: "14px",
                 cursor: "pointer",
               }}
-              onClick={() => setSelectedSorting("")}
+              onClick={clearSort}
             >
               Clear
             </Typography>
           </Box>
-          <Divider sx={{ marginBottom: 2, backgroundColor: "neutralGray" }} />
         </MenuItem>
-        {sortOptions.map((option, index) => (
-          <MenuItem key={index}>
-            <Box
-              sx={{
-                width: "100%",
-                marginBottom: 1,
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                gap: 1,
-              }}
-            >
-              <FormLabel sx={{ fontSize: "14px" }}>{option.label}</FormLabel>
-              <Checkbox
-                sx={{
-                  padding: 0,
-                  "& .MuiSvgIcon-root": {
-                    fontSize: 18,
-                  },
-                }}
-                name={option.value}
-                checked={selectedSorting === option.value}
-                onChange={() => setSelectedSorting(option.value)}
-              />
-            </Box>
-          </MenuItem>
-        ))}
+        <Divider sx={{ marginBottom: 2, backgroundColor: "neutralGray" }} />
+        <RadioGroup
+          value={sortValue()}
+          onChange={setSorts}
+          sx={{
+            paddingX: 2,
+            "& .MuiFormControlLabel-label": {
+              fontSize: "14px",
+            },
+            "& .MuiSvgIcon-root": {
+              fontSize: "20px",
+            },
+          }}
+        >
+          {GOVERNANCE_ACTION_SORT_OPTIONS.map((option, idx) => (
+            <FormControlLabel
+              key={idx}
+              value={option.value}
+              control={<Radio />}
+              label={option.label}
+            />
+          ))}
+        </RadioGroup>
       </Menu>
     </Box>
   );

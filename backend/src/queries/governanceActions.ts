@@ -92,12 +92,25 @@ EnrichedCurrentMembers AS (
         CommitteeData cm ON cm.hash = encode(decode(member->>'hash', 'hex'), 'hex')
     GROUP BY
         pcm.id
+),
+VoteCounts AS (
+    SELECT 
+        gov_action_proposal_id,
+        COUNT(CASE WHEN vote = 'Yes' THEN 1 END) as yes_votes,
+        COUNT(CASE WHEN vote = 'No' THEN 1 END) as no_votes,
+        COUNT(CASE WHEN vote = 'Abstain' THEN 1 END) as abstain_votes
+    FROM voting_procedure
+    WHERE invalid IS NULL
+    GROUP BY gov_action_proposal_id
 )
 SELECT
     gov_action_proposal.id,
     encode(creator_tx.hash, 'hex') AS tx_hash,
     gov_action_proposal.index,
     gov_action_proposal.type::text,
+    COALESCE(vc.yes_votes, 0) as yes_votes,
+    COALESCE(vc.no_votes, 0) as no_votes,
+    COALESCE(vc.abstain_votes, 0) as abstain_votes,
     COALESCE(
         CASE
             WHEN gov_action_proposal.type = 'TreasuryWithdrawals' THEN
@@ -197,10 +210,101 @@ FROM
     LEFT JOIN EpochBlocks enacted_block ON enacted_block.epoch_no = gov_action_proposal.enacted_epoch
     LEFT JOIN EpochBlocks dropped_block ON dropped_block.epoch_no = gov_action_proposal.dropped_epoch
     LEFT JOIN EpochBlocks expired_block ON expired_block.epoch_no = gov_action_proposal.expired_epoch
+    LEFT JOIN VoteCounts vc ON vc.gov_action_proposal_id = gov_action_proposal.id
 WHERE
     (COALESCE($1, '') = '' OR
     off_chain_vote_gov_action_data.title ILIKE '%' || $1 || '%' OR
     off_chain_vote_gov_action_data.abstract ILIKE '%' || $1 || '%' OR
     concat(encode(creator_tx.hash, 'hex'), '#', gov_action_proposal.index) ILIKE '%' || $1 || '%')
-ORDER BY creator_block.epoch_no DESC
+AND (
+    CASE 
+        WHEN ARRAY_LENGTH($2::text[], 1) > 0 THEN
+            (
+                EXISTS (
+                    SELECT 1
+                    FROM unnest($2::text[]) AS filter_type
+                    WHERE filter_type NOT IN ('expired', 'ratified', 'enacted')
+                )
+                AND
+                gov_action_proposal.type::text = ANY($2::text[])
+                AND
+                (
+                    NOT EXISTS (
+                        SELECT 1
+                        FROM unnest($2::text[]) AS filter_status
+                        WHERE filter_status IN ('expired', 'ratified', 'enacted')
+                    )
+                    OR
+                    (
+                        EXISTS (
+                            SELECT 1
+                            FROM unnest($2::text[]) AS filter_status
+                            WHERE filter_status IN ('expired', 'ratified', 'enacted')
+                        )
+                        AND
+                        (
+                            ('expired' = ANY($2::text[]) AND gov_action_proposal.expired_epoch IS NOT NULL) OR
+                            ('ratified' = ANY($2::text[]) AND gov_action_proposal.ratified_epoch IS NOT NULL) OR
+                            ('enacted' = ANY($2::text[]) AND gov_action_proposal.enacted_epoch IS NOT NULL)
+                        )
+                    )
+                )
+            )
+            OR
+            (
+                NOT EXISTS (
+                    SELECT 1
+                    FROM unnest($2::text[]) AS filter_type
+                    WHERE filter_type NOT IN ('expired', 'ratified', 'enacted')
+                )
+                AND
+                EXISTS (
+                    SELECT 1
+                    FROM unnest($2::text[]) AS filter_status
+                    WHERE filter_status IN ('expired', 'ratified', 'enacted')
+                )
+                AND
+                (
+                    ('expired' = ANY($2::text[]) AND gov_action_proposal.expired_epoch IS NOT NULL) OR
+                    ('ratified' = ANY($2::text[]) AND gov_action_proposal.ratified_epoch IS NOT NULL) OR
+                    ('enacted' = ANY($2::text[]) AND gov_action_proposal.enacted_epoch IS NOT NULL)
+                )
+            )
+        ELSE TRUE
+    END
+)
+ORDER BY
+    CASE WHEN $3 = 'soonToExpire' THEN
+        CASE 
+            WHEN gov_action_proposal.ratified_epoch IS NULL 
+            AND gov_action_proposal.enacted_epoch IS NULL 
+            AND gov_action_proposal.dropped_epoch IS NULL 
+            AND gov_action_proposal.expired_epoch IS NULL 
+            THEN 0 
+            ELSE 1 
+        END
+    ELSE 0 END ASC,
+
+    CASE WHEN $3 = 'soonToExpire' THEN
+        CASE 
+            WHEN gov_action_proposal.ratified_epoch IS NULL 
+            AND gov_action_proposal.enacted_epoch IS NULL 
+            AND gov_action_proposal.dropped_epoch IS NULL 
+            AND gov_action_proposal.expired_epoch IS NULL 
+            THEN gov_action_proposal.expiration - latest_epoch.no
+            ELSE NULL 
+        END
+    END ASC,
+    
+    CASE WHEN $3 = 'oldestFirst' THEN
+        creator_block.epoch_no
+    END ASC,
+    
+    CASE WHEN $3 = 'highestYesVotes' THEN
+        COALESCE(vc.yes_votes, 0)
+    END DESC,
+
+    CASE WHEN $3 = 'newestFirst' OR $3 IS NULL THEN
+        creator_block.epoch_no
+    END DESC
 LIMIT 20`;
