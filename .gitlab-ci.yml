@@ -144,6 +144,17 @@ build_govtool:
           --set image.backend.tag=$CI_APPLICATION_TAG \
           --set cardano_node[0].tcp_host=$NODE_TCP_HOST \
           --set cardano_node[0].tcp_port=$NODE_TCP_PORT
+  rules:
+    - if: '$DEPLOY_WEBSITE == "true"'
+
+.outcomes_govtool_deployment: &outcomes_govtool_deployment
+  image: "${CI_TEMPLATE_REGISTRY_HOST}/gitlab-org/cluster-integration/auto-deploy-image:${AUTO_DEPLOY_IMAGE_VERSION}"
+  script:
+    - *setup
+    - auto-deploy check_kube_domain
+    - auto-deploy download_chart
+    - auto-deploy create_secret
+    - |
 
       DEPLOYMENT_NAME="govtool-frontend-$CI_ENVIRONMENT_SLUG"
       helm upgrade $DEPLOYMENT_NAME ./charts/govtool \
@@ -168,11 +179,19 @@ outcomes_preview_backend:
     url: https://$CI_PROJECT_PATH_SLUG.$AUTO_DEVOPS_DOMAIN
   when: manual
 
+outcomes_preview_govtool:
+  <<: *outcomes_govtool_deployment
+  stage: preview
+  environment:
+    name: preview
+    url: https://$CI_PROJECT_PATH_SLUG.$AUTO_DEVOPS_DOMAIN
+  when: manual
+
 outcomes_mainnet_backend:
   <<: *outcomes_backend_deployment
   stage: mainnet
   rules:
-    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "beta"
   environment:
     name: mainnet
     url: https://$CI_PROJECT_PATH_SLUG.$AUTO_DEVOPS_DOMAIN
