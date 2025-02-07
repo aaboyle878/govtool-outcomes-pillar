@@ -19,9 +19,11 @@ COPY ./ui/dist /app/govtool/frontend/node_modules/@intersect.mbo/govtool-outcome
 # Copy environment variables and build the project
 RUN cp .env.example .env
 
-RUN echo "CARDANO_NETWORK=${CARDANO_NETWORK}" >> .env
-
-RUN echo "source .env" >> .envrc
+RUN if [ "$CARDANO_NETWORK" = "mainnet" ]; then \
+    sed -i 's/^VITE_NETWORK_FLAG=.*/VITE_NETWORK_FLAG=1/' .env; \
+    else \
+    sed -i 's/^VITE_NETWORK_FLAG=.*/VITE_NETWORK_FLAG=0/' .env; \
+    fi
 
 RUN yarn build
 
