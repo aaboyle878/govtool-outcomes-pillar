@@ -107,6 +107,7 @@ build_govtool:
       echo "Building Dockerfile with tags $CI_APPLICATION_REPOSITORY/govtool:$CI_APPLICATION_TAG and $CI_APPLICATION_REPOSITORY/govtool:latest ..."
 
       docker build --network host -f Dockerfile.govtool \
+        --build-arg CARDANO_NETWORK="$CARDANO_NETWORK" \
         -t "$CI_APPLICATION_REPOSITORY/govtool:$CI_APPLICATION_TAG" \
         -t "$CI_APPLICATION_REPOSITORY/govtool:latest" .
       docker push "$CI_APPLICATION_REPOSITORY/govtool:$CI_APPLICATION_TAG"
@@ -207,4 +208,4 @@ outcomes_mainnet_govtool:
     url: https://$CI_PROJECT_PATH_SLUG.$AUTO_DEVOPS_DOMAIN
   when: manual
 
-  
+
