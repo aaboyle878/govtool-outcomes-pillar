@@ -19,7 +19,9 @@ COPY ./ui/dist /app/govtool/frontend/node_modules/@intersect.mbo/govtool-outcome
 # Copy environment variables and build the project
 RUN cp .env.example .env
 
-RUN echo "CARDANO_NETWORK=${CARDANO_NETWORK}" > .env
+RUN echo "CARDANO_NETWORK=${CARDANO_NETWORK}" >> .env
+
+RUN echo "source .env" >> .envrc
 
 RUN yarn build
 
