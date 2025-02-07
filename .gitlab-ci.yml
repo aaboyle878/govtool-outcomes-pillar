@@ -104,12 +104,13 @@ build_govtool:
       set -xev
             
       docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
-      echo "Building Dockerfile with tags $CI_APPLICATION_REPOSITORY/govtool:$CI_APPLICATION_TAG and $CI_APPLICATION_REPOSITORY/govtool:latest ..."
+      echo "Building Dockerfile with CARDANO_NETWORK=${CARDANO_NETWORK}"
 
       docker build --network host -f Dockerfile.govtool \
-        --build-arg CARDANO_NETWORK="$CARDANO_NETWORK" \
+        --build-arg CARDANO_NETWORK="${CARDANO_NETWORK}" \
         -t "$CI_APPLICATION_REPOSITORY/govtool:$CI_APPLICATION_TAG" \
         -t "$CI_APPLICATION_REPOSITORY/govtool:latest" .
+        
       docker push "$CI_APPLICATION_REPOSITORY/govtool:$CI_APPLICATION_TAG"
       docker push "$CI_APPLICATION_REPOSITORY/govtool:latest"
   rules:
