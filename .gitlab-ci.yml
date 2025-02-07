@@ -196,3 +196,15 @@ outcomes_mainnet_backend:
     name: mainnet
     url: https://$CI_PROJECT_PATH_SLUG.$AUTO_DEVOPS_DOMAIN
   when: manual
+
+outcomes_mainnet_govtool:
+  <<: *outcomes_govtool_deployment
+  stage: mainnet
+  rules:
+    - if: $CI_COMMIT_BRANCH == "beta" || $CI_COMMIT_BRANCH == "main"
+  environment:
+    name: mainnet
+    url: https://$CI_PROJECT_PATH_SLUG.$AUTO_DEVOPS_DOMAIN
+  when: manual
+
+  
