@@ -198,7 +198,7 @@ outcomes_preview_govtool:
 
 outcomes_mainnet_backend:
   <<: *outcomes_backend_deployment
-  stage: mainnet
+  stage: mainnet 
   rules:
     - if: $CI_COMMIT_BRANCH == "beta" || $CI_COMMIT_BRANCH == "main"
   environment:
