@@ -110,7 +110,7 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
           <GovernanceActionStatus action={action} />
         </Box>
       </CardContent>
-      <CardActions sx={{ flexGrow: 1 }}>
+      <CardActions>
         <Link
           href={`outcomes/governance_actions/${getFullGovActionId(
             action?.tx_hash,
