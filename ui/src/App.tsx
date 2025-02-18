@@ -2,9 +2,10 @@ import { ThemeProvider } from "@mui/material";
 import { SnackbarProvider } from "./contexts/Snackbar";
 import "./index.scss";
 import { theme } from "./theme";
-import OutcomesPage from "./Pages/Outcomes";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { setAxiosBaseURL } from "./services/axiosInstance";
+import GlobalWrapper from "./Components/GlobalWrapper";
+import { AppContextProvider } from "./contexts/AppContext";
 
 export type AppProps = {
   apiUrl?: string;
@@ -25,9 +26,11 @@ function App({ apiUrl }: AppProps) {
     >
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
-          <SnackbarProvider>
-            <OutcomesPage />
-          </SnackbarProvider>
+          <AppContextProvider>
+            <SnackbarProvider>
+              <GlobalWrapper />
+            </SnackbarProvider>
+          </AppContextProvider>
         </ThemeProvider>
       </QueryClientProvider>
     </div>

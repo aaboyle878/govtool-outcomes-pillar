@@ -16,15 +16,25 @@ export class GovernanceActionsService {
     private readonly httpService: HttpService,
     private readonly configService: ConfigService
   ) {}
-  findAll(search: string, filters: string[], sort: string) {
+  findAll(
+    search: string,
+    filters: string[],
+    sort: string,
+    page: number = 1,
+    limit: number = 10
+  ) {
     const searchTerm = search ? search.trim() : "";
     const filterArray = filters?.length > 0 ? filters : null;
     const sortOption = sort || "newestFirst";
+    const offset = (page - 1) * limit;
+
 
     return this.cexplorerService.manager.query(getGovernanceActions, [
       searchTerm,
       filterArray,
       sortOption,
+      offset,
+      limit,
     ]);
   }
 

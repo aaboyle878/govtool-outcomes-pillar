@@ -89,7 +89,7 @@ EnrichedCurrentMembers AS (
     LEFT JOIN LATERAL
         json_array_elements(pcm.current_members) AS member ON true
     LEFT JOIN
-        CommitteeData cm ON cm.hash = encode(decode(member->>'hash', 'hex'), 'hex')
+        CommitteeData cm ON cm.hash = member->>'hash'
     GROUP BY
         pcm.id
 ),
@@ -146,7 +146,7 @@ SELECT
                             'tag', pd.tag,
                             'members', em.enriched_members,
                             'membersToBeRemoved', mtr.members_to_be_removed,
-                            'threshold', pd.threshold::float
+                            'threshold', (pd.threshold->'contents'->3)::float
                         )
                     FROM
                         ParsedDescription pd
@@ -223,7 +223,7 @@ AND (
                 EXISTS (
                     SELECT 1
                     FROM unnest($2::text[]) AS filter_type
-                    WHERE filter_type NOT IN ('expired', 'ratified', 'enacted')
+                    WHERE filter_type NOT IN ('expired', 'ratified', 'enacted', 'live')
                 )
                 AND
                 gov_action_proposal.type::text = ANY($2::text[])
@@ -232,20 +232,25 @@ AND (
                     NOT EXISTS (
                         SELECT 1
                         FROM unnest($2::text[]) AS filter_status
-                        WHERE filter_status IN ('expired', 'ratified', 'enacted')
+                        WHERE filter_status IN ('expired', 'ratified', 'enacted', 'live')
                     )
                     OR
                     (
                         EXISTS (
                             SELECT 1
                             FROM unnest($2::text[]) AS filter_status
-                            WHERE filter_status IN ('expired', 'ratified', 'enacted')
+                            WHERE filter_status IN ('expired', 'ratified', 'enacted', 'live')
                         )
                         AND
                         (
                             ('expired' = ANY($2::text[]) AND gov_action_proposal.expired_epoch IS NOT NULL) OR
                             ('ratified' = ANY($2::text[]) AND gov_action_proposal.ratified_epoch IS NOT NULL) OR
-                            ('enacted' = ANY($2::text[]) AND gov_action_proposal.enacted_epoch IS NOT NULL)
+                            ('enacted' = ANY($2::text[]) AND gov_action_proposal.enacted_epoch IS NOT NULL) OR
+                            ('live' = ANY($2::text[]) AND 
+                             gov_action_proposal.ratified_epoch IS NULL AND
+                             gov_action_proposal.enacted_epoch IS NULL AND
+                             gov_action_proposal.dropped_epoch IS NULL AND
+                             gov_action_proposal.expired_epoch IS NULL)
                         )
                     )
                 )
@@ -255,22 +260,34 @@ AND (
                 NOT EXISTS (
                     SELECT 1
                     FROM unnest($2::text[]) AS filter_type
-                    WHERE filter_type NOT IN ('expired', 'ratified', 'enacted')
+                    WHERE filter_type NOT IN ('expired', 'ratified', 'enacted', 'live')
                 )
                 AND
                 EXISTS (
                     SELECT 1
                     FROM unnest($2::text[]) AS filter_status
-                    WHERE filter_status IN ('expired', 'ratified', 'enacted')
+                    WHERE filter_status IN ('expired', 'ratified', 'enacted', 'live')
                 )
                 AND
                 (
                     ('expired' = ANY($2::text[]) AND gov_action_proposal.expired_epoch IS NOT NULL) OR
                     ('ratified' = ANY($2::text[]) AND gov_action_proposal.ratified_epoch IS NOT NULL) OR
-                    ('enacted' = ANY($2::text[]) AND gov_action_proposal.enacted_epoch IS NOT NULL)
+                    ('enacted' = ANY($2::text[]) AND gov_action_proposal.enacted_epoch IS NOT NULL) OR
+                    ('live' = ANY($2::text[]) AND 
+                     gov_action_proposal.ratified_epoch IS NULL AND
+                     gov_action_proposal.enacted_epoch IS NULL AND
+                     gov_action_proposal.dropped_epoch IS NULL AND
+                     gov_action_proposal.expired_epoch IS NULL)
                 )
             )
-        ELSE TRUE
+        ELSE
+            -- By default (no filters), exclude live proposals
+            NOT (
+                gov_action_proposal.ratified_epoch IS NULL AND
+                gov_action_proposal.enacted_epoch IS NULL AND
+                gov_action_proposal.dropped_epoch IS NULL AND
+                gov_action_proposal.expired_epoch IS NULL
+            )
     END
 )
 ORDER BY
@@ -306,5 +323,7 @@ ORDER BY
 
     CASE WHEN $3 = 'newestFirst' OR $3 IS NULL THEN
         creator_block.epoch_no
-    END DESC
-LIMIT 20`;
+    END DESC,
+    creator_block.time DESC,
+    gov_action_proposal.id DESC
+OFFSET $4 LIMIT $5`;
