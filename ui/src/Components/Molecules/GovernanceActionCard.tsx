@@ -40,9 +40,10 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
         height: "100%",
         borderRadius: "20px",
         display: "flex",
-        padding: 2,
+        padding: { xs: 1, sm: 2 },
         flexDirection: "column",
         justifyContent: "space-between",
+        flexGrow: 1,
         boxShadow: "0px 4px 15px 0px #DDE3F5",
         backgroundColor: !metadataValid
           ? "rgba(251, 235, 235, 0.50)"
@@ -57,7 +58,7 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
         }),
       }}
     >
-      <CardContent>
+      <CardContent sx={{ flexGrow: 1 }}>
         <GovernanceActionCardHeader
           dateSubmitted={action.time}
           epochSubmitted={action.epoch_no}
@@ -108,7 +109,7 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
           <GovernanceActionStatus action={action} />
         </Box>
       </CardContent>
-      <CardActions>
+      <CardActions sx={{ flexGrow: 1 }}>
         <Link
           href={`outcomes/governance_actions/${getFullGovActionId(
             action?.tx_hash,
