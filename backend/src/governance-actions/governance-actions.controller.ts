@@ -11,9 +11,17 @@ export class GovernanceActionsController {
   findAll(
     @Query("search") search: string,
     @Query("filters") filters: string[],
-    @Query("sort") sort: string
+    @Query("sort") sort: string,
+    @Query("page") page: number,
+    @Query("limit") limit: number
   ) {
-    return this.governanceActionsService.findAll(search, filters, sort);
+    return this.governanceActionsService.findAll(
+      search,
+      filters,
+      sort,
+      page,
+      limit
+    );
   }
 
   @Get("/metadata")

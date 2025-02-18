@@ -14,6 +14,8 @@ WORKDIR /app/govtool/frontend
 
 RUN yarn install
 
+RUN rm -rf /app/govtool/frontend/node_modules/@intersect.mbo/govtool-outcomes-pillar-ui/dist
+
 COPY ./ui/dist /app/govtool/frontend/ui/dist
 
 # Conditionally install the package or copy UI files

@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import GovernanceActionStatusChip from "../Atoms/GovernanceActionStatusChip";
 import { formatTimeStamp } from "../../lib/utils";
+import { Status } from "../../types/api";
 
 interface GovernanceActionCardHeaderProps {
   dateSubmitted: string;
@@ -23,7 +24,7 @@ export default function GovernanceActionCardHeader({
 
     if (ratified_epoch && enacted_epoch) {
       return (
-        <Box className="flex gap-2">
+        <Box>
           <GovernanceActionStatusChip status="Ratified" />
           <GovernanceActionStatusChip status="Enacted" />
         </Box>
@@ -40,7 +41,7 @@ export default function GovernanceActionCardHeader({
 
     if (expired_epoch && dropped_epoch) {
       return (
-        <Box className="flex gap-2">
+        <Box>
           <GovernanceActionStatusChip status="Expired" />
           <GovernanceActionStatusChip status="Dropped" />
         </Box>
