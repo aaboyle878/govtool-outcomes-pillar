@@ -28,6 +28,7 @@ export class GovernanceActionsService {
     const sortOption = sort || "newestFirst";
     const offset = (page - 1) * limit;
 
+
     return this.cexplorerService.manager.query(getGovernanceActions, [
       searchTerm,
       filterArray,
