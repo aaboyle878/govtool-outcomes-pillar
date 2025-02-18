@@ -12,7 +12,7 @@ type GovernanceActionWrapperProps = {
 const GovActionLegacyWrapper = ({ id }: GovernanceActionWrapperProps) => {
   const { governanceAction, isGovernanceActionLoading } =
     useGetGovernanceActionQuery(id);
-  const { metadata, metadataValid, isMetadataLoading } = useMetadata(
+  const { metadata, isMetadataLoading } = useMetadata(
     governanceAction,
     {
       skipConditionCheck: true,
