@@ -26,8 +26,6 @@ RUN if [ "$CARDANO_NETWORK" = "mainnet" ]; then \
     else \
     echo "Copying UI files for non-mainnet environment..."; \
     cp -r /app/govtool/frontend/ui/dist /app/govtool/frontend/node_modules/@intersect.mbo/govtool-outcomes-pillar-ui/dist; \
-    ls /app/govtool/frontend/ui/dist; \
-    ls /app/govtool/frontend/node_modules/@intersect.mbo/govtool-outcomes-pillar-ui/dist; \
     fi
 
 # Copy environment variables and build the project
