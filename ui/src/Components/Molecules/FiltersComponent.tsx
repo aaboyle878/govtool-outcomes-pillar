@@ -211,18 +211,27 @@ export default function FiltersComponent() {
           <Box
             key={index}
             paddingX="20px"
-            sx={[{ "&:hover": { bgcolor: "#E6EBF7" } }]}
+            sx={{
+              cursor: "pointer",
+              "&:hover": { bgcolor: "#E6EBF7" },
+            }}
             bgcolor={isTypeChecked(option.value) ? "#FFF0E7" : "transparent"}
+            onClick={() => handleTypeChange(option.value)}
           >
             <FormControlLabel
               control={
                 <Checkbox
-                  onChange={() => handleTypeChange(option.value)}
-                  name={option.value}
                   checked={isTypeChecked(option.value)}
+                  onChange={(e) => {
+                    e.stopPropagation();
+                    handleTypeChange(option.value);
+                  }}
+                  onClick={(e) => e.stopPropagation()}
+                  name={option.value}
                 />
               }
               label={option.label}
+              onClick={(e) => e.stopPropagation()}
             />
           </Box>
         ))}
@@ -247,18 +256,27 @@ export default function FiltersComponent() {
           <Box
             key={index}
             paddingX="20px"
-            sx={[{ "&:hover": { bgcolor: "#E6EBF7" } }]}
+            sx={{
+              cursor: "pointer",
+              "&:hover": { bgcolor: "#E6EBF7" },
+            }}
             bgcolor={isStatusChecked(option.value) ? "#FFF0E7" : "transparent"}
+            onClick={() => handleStatusChange(option.value)}
           >
             <FormControlLabel
               control={
                 <Checkbox
-                  onChange={() => handleStatusChange(option.value)}
-                  name={option.value}
                   checked={isStatusChecked(option.value)}
+                  onChange={(e) => {
+                    e.stopPropagation();
+                    handleStatusChange(option.value);
+                  }}
+                  onClick={(e) => e.stopPropagation()}
+                  name={option.value}
                 />
               }
               label={option.label}
+              onClick={(e) => e.stopPropagation()}
             />
           </Box>
         ))}
