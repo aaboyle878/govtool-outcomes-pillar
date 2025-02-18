@@ -36,7 +36,7 @@ jobs:
       id: set_tag
       run: |
         BUILD_NUMBER=${{ github.run_number }}
-        if [ "${{ github.ref_name }}" = "main" ] || [ "${{ github.ref_name }}" = "beta" ]; then
+        if [ "${{ github.ref_name }}" = "main" ]; then
           echo "TAG=${{ github.sha }}-${BUILD_NUMBER}" >> $GITHUB_ENV
         else
           echo "TAG=${{ github.ref_name }}-${{ github.sha }}-${BUILD_NUMBER}" >> $GITHUB_ENV
