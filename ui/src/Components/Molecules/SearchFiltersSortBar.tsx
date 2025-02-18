@@ -34,8 +34,9 @@ export default function SearchFiltersSortBar() {
   return (
     <Box
       display="flex"
+      flexDirection={isMobile ? "column" : "row"}
+      alignItems={isMobile ? "stretch" : "center"}
       justifyContent="space-between"
-      marginBottom={4}
       gap={isMobile ? 1 : 1.5}
     >
       <InputBase
@@ -60,8 +61,15 @@ export default function SearchFiltersSortBar() {
           },
         }}
       />
-      <FiltersComponent />
-      <SortComponent />
+      <Box
+        display="flex"
+        flexDirection="row"
+        justifyContent="flex-start"
+        gap={isMobile ? 1 : 1.5}
+      >
+        <FiltersComponent />
+        <SortComponent />
+      </Box>
     </Box>
   );
 }
