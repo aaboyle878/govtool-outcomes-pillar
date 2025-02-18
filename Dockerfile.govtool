@@ -16,6 +16,8 @@ RUN yarn install
 
 COPY ./ui/dist /app/govtool/frontend/ui/dist
 
+RUN ls /app/govtool/frontend/ui/dist
+
 # Conditionally install the package or copy UI files
 RUN if [ "$CARDANO_NETWORK" = "mainnet" ]; then \
     echo "Installing latest @intersect.mbo/govtool-outcomes-pillar-ui via yarn..."; \
@@ -24,6 +26,7 @@ RUN if [ "$CARDANO_NETWORK" = "mainnet" ]; then \
     else \
     echo "Copying UI files for non-mainnet environment..."; \
     cp -r /app/govtool/frontend/ui/dist /app/govtool/frontend/node_modules/@intersect.mbo/govtool-outcomes-pillar-ui/dist; \
+    rm -rf /app/govtool/frontend/node_modules/@intersect.mbo/govtool-outcomes-pillar-ui/dist/dist \
     ls /app/govtool/frontend/node_modules/@intersect.mbo/govtool-outcomes-pillar-ui/dist; \
     fi
 
