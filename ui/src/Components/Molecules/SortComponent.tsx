@@ -39,11 +39,10 @@ export default function SortComponent() {
     setAnchorEl(event.currentTarget);
   };
 
-  const setSorts = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
+  const setSorts = (option: string) => {
     const newParams = new URLSearchParams(sortParams);
-    if (value) {
-      newParams.set("sort", value);
+    if (option) {
+      newParams.set("sort", option);
     } else {
       newParams.delete("sort");
     }
@@ -152,21 +151,33 @@ export default function SortComponent() {
             aria-labelledby="demo-controlled-radio-buttons-group"
             name="controlled-radio-buttons-group"
             value={sortValue()}
-            onChange={setSorts}
           >
             {GOVERNANCE_ACTION_SORT_OPTIONS.map((option, index) => (
               <Box
                 key={index}
                 paddingX="20px"
-                sx={[{ "&:hover": { bgcolor: "#E6EBF7" } }]}
+                sx={{
+                  cursor: "pointer",
+                  "&:hover": { bgcolor: "#E6EBF7" },
+                }}
                 bgcolor={
                   sortValue() === option.value ? "#FFF0E7" : "transparent"
                 }
+                onClick={() => setSorts(option.value)}
               >
                 <FormControlLabel
                   value={option.value}
-                  control={<Radio />}
+                  control={
+                    <Radio
+                      onChange={(e) => {
+                        e.stopPropagation();
+                        setSorts(option.value);
+                      }}
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  }
                   label={option.label}
+                  onClick={(e) => e.stopPropagation()}
                 />
               </Box>
             ))}

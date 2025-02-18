@@ -1,5 +1,4 @@
 import { Card, Typography } from "@mui/material";
-import { primaryBlue } from "../../consts/colors";
 
 export const ActionsEmptyState = () => {
   return (
@@ -10,9 +9,9 @@ export const ActionsEmptyState = () => {
         alignItems: "center",
         display: "flex",
         flexDirection: "column",
-        borderColor: primaryBlue.c100,
         gap: 1,
         py: 5,
+        px: 1,
         width: "-webkit-fill-available",
       }}
     >

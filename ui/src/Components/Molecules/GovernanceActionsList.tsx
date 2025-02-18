@@ -1,32 +1,41 @@
 import { Box, CircularProgress, Grid } from "@mui/material";
-import GovernanceActionCard from "./GovernanceActionCard";
-import { useGetGovernanceActions } from "../../hooks/useGetGovernanceActionsQuery";
 import { useSearchParams } from "react-router-dom";
+import { Button } from "../Atoms/Button";
+import GovernanceActionCard from "./GovernanceActionCard";
 import { ActionsEmptyState } from "./ActionsEmptyState";
+import { useGetGovernanceActions } from "../../hooks/useGetGovernanceActionsQuery";
 
-export default function GovernanceActionsList({}) {
+const ITEMS_PER_PAGE = 10;
+
+const GovernanceActionsList = () => {
   const [searchParams] = useSearchParams();
 
   const search = searchParams.get("q") || "";
-
   const typeFilters = searchParams.get("type")?.split(",") || [];
   const statusFilters = searchParams.get("status")?.split(",") || [];
   const filters = [...typeFilters, ...statusFilters].filter(Boolean);
-
   const sort = searchParams.get("sort") || "";
 
-  const { govActions, isGovActionsLoading } = useGetGovernanceActions(
-    search,
-    filters,
-    sort
-  );
+  const {
+    govActions,
+    isGovActionsLoading,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useGetGovernanceActions(search, filters, sort, ITEMS_PER_PAGE);
+
+  const displayedActions = govActions?.pages?.flat() || [];
+
   return (
     <Box
-      sx={{
-        width: "100%",
-      }}
+      component="section"
+      display="flex"
+      flexDirection="column"
+      flexGrow={1}
+      gap={2}
+      sx={{ width: "100%" }}
     >
-      {isGovActionsLoading && (
+      {isGovActionsLoading && !displayedActions.length ? (
         <Box
           sx={{
             alignItems: "center",
@@ -38,26 +47,56 @@ export default function GovernanceActionsList({}) {
         >
           <CircularProgress />
         </Box>
-      )}
-      {!isGovActionsLoading && govActions?.length === 0 && (
-        <Box
-          sx={{
-            paddingY: 3,
-          }}
-        >
+      ) : null}
+
+      {!isGovActionsLoading && !displayedActions.length ? (
+        <Box sx={{ paddingY: 3 }}>
           <ActionsEmptyState />
         </Box>
-      )}
-      {!isGovActionsLoading && govActions && govActions?.length > 0 && (
-        <Grid container spacing={{ xs: 4, sm: 6 }} sx={{ marginX: "auto" }}>
-          {govActions &&
-            govActions?.map((action, index) => (
-              <Grid item xs={12} md={6} xl={4} key={index}>
+      ) : null}
+
+      {displayedActions.length > 0 && (
+        <Grid
+          container
+          rowSpacing={4}
+          columnSpacing={4}
+          sx={{ marginBottom: 4 }}
+        >
+          {displayedActions.map((action) => (
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              md={6}
+              lg={4}
+              key={`${action.id}-${action.tx_hash}`}
+              sx={{ marginBottom: { xs: 0, sm: 2, md: 4 } }}
+            >
+              <Box sx={{ display: "flex", height: "100%" }}>
                 <GovernanceActionCard action={action} />
-              </Grid>
-            ))}
+              </Box>
+            </Grid>
+          ))}
         </Grid>
+      )}
+
+      {hasNextPage && (
+        <Box sx={{ justifyContent: "center", display: "flex" }}>
+          <Button
+            data-testid="show-more-button"
+            variant="outlined"
+            onClick={() => fetchNextPage()}
+            disabled={isFetchingNextPage}
+          >
+            {isFetchingNextPage ? (
+              <CircularProgress size={20} sx={{ mr: 1 }} />
+            ) : null}
+            {isFetchingNextPage ? "Loading..." : "Show More"}
+          </Button>
+        </Box>
       )}
     </Box>
   );
-}
+};
+
+export default GovernanceActionsList;

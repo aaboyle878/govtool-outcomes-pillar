@@ -4,9 +4,16 @@ import GovernanceActionsList from "../Components/Molecules/GovernanceActionsList
 
 export default function Outcomes() {
   return (
-    <Box>
+    <Box
+      component="section"
+      display={"flex"}
+      flexDirection={"column"}
+      flexGrow={1}
+    >
       <SearchFiltersSortBar />
-      <GovernanceActionsList />
+      <Box marginTop={4}>
+        <GovernanceActionsList />
+      </Box>
     </Box>
   );
 }
