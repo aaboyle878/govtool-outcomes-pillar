@@ -1,31 +1,48 @@
 module.exports = {
-    branches: [
-      "main",
+  branches: [
+    "main",
+    {
+      name: "beta",
+      prerelease: true,
+    },
+  ],
+  plugins: [
+    [
+      "@semantic-release/commit-analyzer",
       {
-        name: "beta",
-        prerelease: true
-      }
+        preset: "conventionalcommits",
+        releaseRules: [
+          { breaking: true, release: "major" },
+          { revert: true, release: "patch" },
+          { type: "feat", release: "minor" },
+          { type: "fix", release: "patch" },
+          { type: "perf", release: "patch" },
+        ],
+      },
     ],
-    plugins: [
-      [
-        "@semantic-release/commit-analyzer",
-        {
-          preset: "angular",
-          releaseRules: [
-            { type: "fix", release: "patch" },
-            { type: "perf", release: "major" },
-            { type: "feat", release: "minor" }
-          ]
-        }
-      ],
+    [
       "@semantic-release/release-notes-generator",
-      [
-        "@semantic-release/npm",
-        {
-          npmPublish: true,
-          tarballDir: "dist"
-        }
-      ],
-      "@semantic-release/github"
-    ]
-  };
+      {
+        preset: "conventionalcommits",
+      },
+    ],
+    [
+      "@semantic-release/npm",
+      {
+        npmPublish: true,
+        tarballDir: "dist",
+        pkgRoot: "ui",
+      },
+    ],
+    [
+      "@semantic-release/github",
+      {
+        assets: [{ path: "dist/*.tgz", label: "NPM package" }],
+        successComment: false,
+        failComment: false,
+        failTitle: false,
+      },
+    ],
+  ],
+  tagFormat: "v${version}",
+};
