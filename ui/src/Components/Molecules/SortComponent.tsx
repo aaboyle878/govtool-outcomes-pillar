@@ -91,29 +91,16 @@ export default function SortComponent() {
         onMouseLeave={() => setIsHovered(false)}
         onClick={handleShowOptions}
       >
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          width="100%"
-          height="100%"
+        <Typography
+          sx={{
+            color: isHovered || open ? "neutralWhite" : "primaryBlue",
+            fontWeight: 500,
+            paddingX: 0.5,
+            whiteSpace: "nowrap",
+          }}
         >
-          <UpDownArrowsIcon
-            width={18}
-            height={18}
-            color={isHovered || open ? neutralWhite : primaryBlue}
-          />
-          <Typography
-            sx={{
-              color: isHovered || open ? "neutralWhite" : "primaryBlue",
-              fontWeight: 500,
-              paddingLeft: 0.5,
-              whiteSpace: "nowrap",
-            }}
-          >
-            Sort{sortValue() ? `: ${sortValue()}` : ""}
-          </Typography>
-        </Box>
+          Sort{sortValue() ? `: ${sortValue()}` : ""}
+        </Typography>
       </Button>
       <Menu
         anchorEl={anchorEl}

@@ -56,7 +56,7 @@ const GovActionLegacyWrapper = ({ id }: GovernanceActionWrapperProps) => {
       }}
     >
       <BreadcrumbsLegacy
-        elementOne="Governance Actions"
+        elementOne="Outcomes"
         elementOnePath="/outcomes"
         elementTwo={governanceAction?.title || metadata?.body?.title}
         isMetadataLoading={isMetadataLoading}

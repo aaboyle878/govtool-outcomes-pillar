@@ -12,6 +12,7 @@ import {
       md: number;
       lg: number;
       xl: number;
+      xxl: number;
     };
     interface PaletteOptions extends MuiPalette {
       accentOrange: string;

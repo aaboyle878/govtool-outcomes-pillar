@@ -68,7 +68,8 @@ const GovernanceActionsList = () => {
               xs={12}
               sm={12}
               md={6}
-              lg={4}
+              lg={6}
+              xl={4}
               key={`${action.id}-${action.tx_hash}`}
               sx={{ marginBottom: { xs: 0, sm: 2, md: 4 } }}
             >

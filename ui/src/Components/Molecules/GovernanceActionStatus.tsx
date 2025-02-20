@@ -1,20 +1,14 @@
 import { Box, Typography } from "@mui/material";
-import { formatTimeStamp } from "../../lib/utils";
-import StatusChip from "./StatusChip";
 import { Status } from "../../types/api";
+import StatusChip from "../SingleAction/StatusChip";
 
-interface HeaderProps {
-  dateSubmitted: string;
-  epochSubmitted: number;
+interface GovernanceActionStatusProps {
   status: Status;
 }
 
-
-export default function Header({
-  dateSubmitted,
-  epochSubmitted,
+export default function GovernanceActionStatus({
   status,
-}: HeaderProps) {
+}: GovernanceActionStatusProps) {
   const getStatusChips = () => {
     const { ratified_epoch, enacted_epoch, dropped_epoch, expired_epoch } =
       status;
@@ -67,15 +61,14 @@ export default function Header({
         width="100%"
         alignItems="center"
       >
-        <Typography sx={{ fontSize: "12px" }}>
-          Submitted:{" "}
-          <Typography
-            sx={{ fontSize: "12px", fontWeight: "bold" }}
-            component="span"
-          >
-            {formatTimeStamp(dateSubmitted)}
-          </Typography>{" "}
-          {`(Epoch ${epochSubmitted})`}
+        <Typography
+          sx={{
+            fontSize: "0.875rem",
+            color: "neutralGray",
+            fontWeight: 500,
+          }}
+        >
+          Status
         </Typography>
         {getStatusChips()}
       </Box>

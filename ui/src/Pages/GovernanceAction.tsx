@@ -61,7 +61,7 @@ function GovernanceAction({ id }: GovernanceActionProps) {
       {!isGovernanceActionLoading && (
         <>
           <Breadcrumbs
-            elementOne="Governance Actions"
+            elementOne="Outcomes"
             elementOnePath="/outcomes"
             elementTwo={governanceAction?.title || metadata?.body?.title}
             isMetadataLoading={isMetadataLoading}
