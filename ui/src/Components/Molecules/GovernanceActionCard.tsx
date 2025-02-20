@@ -7,7 +7,6 @@ import {
   Typography,
   Link,
 } from "@mui/material";
-import GovernanceActionCardHeader from "./GovernanceActionCardHeader";
 import GovernanceActionCardElement from "./GovernanceActionCardElement";
 import GovernanceActionCardIdElement from "./GovernanceActionCardIdElement";
 import {
@@ -15,9 +14,10 @@ import {
   getFullGovActionId,
   getProposalStatus,
 } from "../../lib/utils";
-import GovernanceActionStatus from "../Atoms/GovernanceActionStatus";
 import { useMetadata } from "../../hooks/useMetadata";
 import { GovernanceAction } from "../../types/api";
+import GovActionDatesInfo from "../Atoms/GovActionDatesInfo";
+import GovernanceActionStatus from "./GovernanceActionStatus";
 
 interface GovernanceActionCardProps {
   action: GovernanceAction;
@@ -60,26 +60,23 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
       }}
     >
       <CardContent sx={{ flexGrow: 1 }}>
-        <GovernanceActionCardHeader
-          dateSubmitted={action.time}
-          epochSubmitted={action.epoch_no}
-          status={action.status}
-        />
-
         {metadataValid && (
-          <>
-            <Box sx={{ marginTop: 3 }}>
-              <Typography sx={{ fontWeight: 600 }}>
-                {action.title || metadata?.body?.title}
-              </Typography>
-            </Box>
-            <Box sx={{ marginTop: 2 }}>
-              <GovernanceActionCardElement
-                title="Abstract"
-                description={action.abstract || metadata?.body?.abstract}
-              />
-            </Box>
-          </>
+          <Box>
+            <Typography sx={{ fontWeight: 600 }}>
+              {action.title || metadata?.body?.title}
+            </Typography>
+          </Box>
+        )}
+        <Box sx={{ marginTop: 2 }}>
+          <GovActionDatesInfo action={action} />
+        </Box>
+        {metadataValid && (
+          <Box sx={{ marginTop: 2 }}>
+            <GovernanceActionCardElement
+              title="Abstract"
+              description={action.abstract || metadata?.body?.abstract}
+            />
+          </Box>
         )}
         {!metadataValid && (
           <Box sx={{ marginTop: 3 }}>
@@ -88,26 +85,28 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
             </Typography>
           </Box>
         )}
-        <Box sx={{ marginTop: 2 }}>
+        <Box
+          display="flex"
+          flexDirection="column"
+          gap={2}
+          sx={{ marginTop: 2 }}
+        >
           <GovernanceActionCardElement
             title="Governance Action Type"
             description={action?.type}
           />
-        </Box>
-        <Box sx={{ marginTop: 2 }}>
+
+          <GovernanceActionStatus status={action?.status} />
+
           <GovernanceActionCardIdElement
             title="Governance Action ID"
             id={getFullGovActionId(action?.tx_hash, action?.index)}
           />
-        </Box>
-        <Box sx={{ marginTop: 2 }}>
+
           <GovernanceActionCardIdElement
             title="(CIP-129) Governance Action ID"
             id={idCIP129}
           />
-        </Box>
-        <Box display="flex" justifyContent="center" marginTop={2}>
-          <GovernanceActionStatus action={action} />
         </Box>
       </CardContent>
       <CardActions>

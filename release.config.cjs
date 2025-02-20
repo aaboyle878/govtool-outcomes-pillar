@@ -35,14 +35,14 @@ module.exports = {
       },
     ],
     [
-      "@semantic-release/github",
+      "@semantic-release/git",
       {
-        assets: [{ path: "dist/*.tgz", label: "NPM package" }],
-        successComment: false,
-        failComment: false,
-        failTitle: false,
+        assets: ["CHANGELOG.md", "package.json"],
+        message:
+          "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}",
       },
     ],
+    "@semantic-release/github",
   ],
   tagFormat: "v${version}",
 };
