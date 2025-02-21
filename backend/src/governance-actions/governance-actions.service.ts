@@ -21,7 +21,7 @@ export class GovernanceActionsService {
     filters: string[],
     sort: string,
     page: number = 1,
-    limit: number = 10
+    limit: number = 12
   ) {
     const searchTerm = search ? search.trim() : "";
     const filterArray = filters?.length > 0 ? filters : null;

@@ -5,7 +5,7 @@ import GovernanceActionCard from "./GovernanceActionCard";
 import { ActionsEmptyState } from "./ActionsEmptyState";
 import { useGetGovernanceActions } from "../../hooks/useGetGovernanceActionsQuery";
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 12;
 
 const GovernanceActionsList = () => {
   const [searchParams] = useSearchParams();
