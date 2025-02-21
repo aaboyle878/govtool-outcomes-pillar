@@ -12,12 +12,9 @@ type GovernanceActionWrapperProps = {
 const GovActionLegacyWrapper = ({ id }: GovernanceActionWrapperProps) => {
   const { governanceAction, isGovernanceActionLoading } =
     useGetGovernanceActionQuery(id);
-  const { metadata, metadataValid, isMetadataLoading } = useMetadata(
-    governanceAction,
-    {
-      skipConditionCheck: true,
-    }
-  );
+  const { metadata, isMetadataLoading } = useMetadata(governanceAction, {
+    skipConditionCheck: true,
+  });
 
   const renderGovernanceAction = () => {
     if (isGovernanceActionLoading || isMetadataLoading) {
@@ -59,7 +56,7 @@ const GovActionLegacyWrapper = ({ id }: GovernanceActionWrapperProps) => {
       }}
     >
       <BreadcrumbsLegacy
-        elementOne="Governance Actions"
+        elementOne="Outcomes"
         elementOnePath="/outcomes"
         elementTwo={governanceAction?.title || metadata?.body?.title}
         isMetadataLoading={isMetadataLoading}

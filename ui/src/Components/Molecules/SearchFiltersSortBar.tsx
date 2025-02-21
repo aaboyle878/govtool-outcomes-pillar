@@ -40,6 +40,7 @@ export default function SearchFiltersSortBar() {
       gap={isMobile ? 1 : 1.5}
     >
       <InputBase
+        id="search-input"
         inputProps={{ "data-testid": "search-input" }}
         onChange={(e) => setSearchTerm(e.target.value)}
         placeholder="Search Action..."

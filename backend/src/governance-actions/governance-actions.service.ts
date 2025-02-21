@@ -21,13 +21,12 @@ export class GovernanceActionsService {
     filters: string[],
     sort: string,
     page: number = 1,
-    limit: number = 10
+    limit: number = 12
   ) {
     const searchTerm = search ? search.trim() : "";
     const filterArray = filters?.length > 0 ? filters : null;
     const sortOption = sort || "newestFirst";
     const offset = (page - 1) * limit;
-
 
     return this.cexplorerService.manager.query(getGovernanceActions, [
       searchTerm,
@@ -72,36 +71,12 @@ export class GovernanceActionsService {
           };
         }),
         catchError((error) => {
-          if (error.response) {
-            if (url.startsWith("ipfs://") && error.response.status === 504) {
-              throw new HttpException(
-                "IPFS gateway timeout: Content might be unavailable",
-                504
-              );
-            }
-            throw new HttpException(
-              `Server error: ${error.response.status}`,
-              error.response.status
-            );
-          } else if (error.request) {
-            throw new HttpException(
-              "Network error: Unable to reach the server",
-              503
-            );
-          } else {
-            throw new Error(`Error: ${error.message}`);
-          }
+          throw new Error(`Error: ${error.message}`);
         })
       );
 
       return await lastValueFrom(response$);
     } catch (error) {
-      if (url.startsWith("ipfs://") && error instanceof HttpException) {
-        throw new HttpException(
-          `IPFS Error: ${error.message}`,
-          error.getStatus()
-        );
-      }
       throw error;
     }
   }

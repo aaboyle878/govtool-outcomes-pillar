@@ -291,28 +291,6 @@ AND (
     END
 )
 ORDER BY
-    CASE WHEN $3 = 'soonToExpire' THEN
-        CASE 
-            WHEN gov_action_proposal.ratified_epoch IS NULL 
-            AND gov_action_proposal.enacted_epoch IS NULL 
-            AND gov_action_proposal.dropped_epoch IS NULL 
-            AND gov_action_proposal.expired_epoch IS NULL 
-            THEN 0 
-            ELSE 1 
-        END
-    ELSE 0 END ASC,
-
-    CASE WHEN $3 = 'soonToExpire' THEN
-        CASE 
-            WHEN gov_action_proposal.ratified_epoch IS NULL 
-            AND gov_action_proposal.enacted_epoch IS NULL 
-            AND gov_action_proposal.dropped_epoch IS NULL 
-            AND gov_action_proposal.expired_epoch IS NULL 
-            THEN gov_action_proposal.expiration - latest_epoch.no
-            ELSE NULL 
-        END
-    END ASC,
-    
     CASE WHEN $3 = 'oldestFirst' THEN
         creator_block.epoch_no
     END ASC,
