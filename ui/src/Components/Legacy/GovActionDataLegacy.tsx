@@ -4,8 +4,9 @@ import GovActionTitleLegacy from "./GovActionTitleLegacy";
 import GovActionTypeChip from "./GovActionTypeChip";
 import GovActionDatesInfo from "./GovActionDatesInfo";
 import GovActionElement from "./GovActionElement";
-import { encodeCIP129Identifier } from "../../lib/utils";
+import { encodeCIP129Identifier, getFullGovActionId } from "../../lib/utils";
 import { useEffect, useState } from "react";
+import GovernanceActionCardId from "../SingleAction/GovernanceActionCardId";
 
 const GovActionDataLegacy = ({
   title,
@@ -58,27 +59,17 @@ const GovActionDataLegacy = ({
           date: expiry_date,
         }}
       />
-      <GovActionElement
+      <GovernanceActionCardId
         title="Governance Action ID:"
-        description={{
-          type: "text",
-          content: encodeCIP129Identifier({
-            txID: tx_hash,
-            index: index.toString(16).padStart(2, "0"),
-            bech32Prefix: "gov_action",
-          }),
-          isCopyable: true,
-          truncate: true,
-        }}
+        id={encodeCIP129Identifier({
+          txID: tx_hash,
+          index: index.toString(16).padStart(2, "0"),
+          bech32Prefix: "gov_action",
+        })}
       />
-      <GovActionElement
+      <GovernanceActionCardId
         title="Legacy Governance Action ID (CIP-105):"
-        description={{
-          type: "text",
-          content: tx_hash,
-          isCopyable: true,
-          truncate: true,
-        }}
+        id={getFullGovActionId(tx_hash, index)}
       />
       <GovActionElement
         title="Abstract:"

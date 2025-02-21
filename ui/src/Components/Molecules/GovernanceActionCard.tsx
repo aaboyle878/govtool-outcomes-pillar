@@ -7,7 +7,6 @@ import {
   Typography,
   Link,
 } from "@mui/material";
-import GovernanceActionCardHeader from "./GovernanceActionCardHeader";
 import GovernanceActionCardElement from "./GovernanceActionCardElement";
 import GovernanceActionCardIdElement from "./GovernanceActionCardIdElement";
 import {
@@ -15,9 +14,10 @@ import {
   getFullGovActionId,
   getProposalStatus,
 } from "../../lib/utils";
-import GovernanceActionStatus from "../Atoms/GovernanceActionStatus";
 import { useMetadata } from "../../hooks/useMetadata";
 import { GovernanceAction } from "../../types/api";
+import GovActionDatesInfo from "../Atoms/GovActionDatesInfo";
+import GovernanceActionStatus from "./GovernanceActionStatus";
 
 interface GovernanceActionCardProps {
   action: GovernanceAction;
@@ -31,11 +31,14 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
     index: action?.index.toString(16).padStart(2, "0"),
     bech32Prefix: "gov_action",
   });
+  const fullGovActionId = getFullGovActionId(action?.tx_hash, action?.index);
 
   const status = getProposalStatus(action?.status);
 
   return (
     <Card
+      id={`${idCIP129}-outcome-card`}
+      data-testid={`${idCIP129}-outcome-card`}
       sx={{
         width: "100%",
         height: "100%",
@@ -59,27 +62,33 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
         }),
       }}
     >
-      <CardContent sx={{ flexGrow: 1 }}>
-        <GovernanceActionCardHeader
-          dateSubmitted={action.time}
-          epochSubmitted={action.epoch_no}
-          status={action.status}
-        />
-
+      <CardContent
+        id={`${idCIP129}-outcome-card-content`}
+        data-testid={`${idCIP129}-outcome-card-content`}
+        sx={{ flexGrow: 1 }}
+      >
         {metadataValid && (
-          <>
-            <Box sx={{ marginTop: 3 }}>
-              <Typography sx={{ fontWeight: 600 }}>
-                {action.title || metadata?.body?.title}
-              </Typography>
-            </Box>
-            <Box sx={{ marginTop: 2 }}>
-              <GovernanceActionCardElement
-                title="Abstract"
-                description={action.abstract || metadata?.body?.abstract}
-              />
-            </Box>
-          </>
+          <Box>
+            <Typography
+              id={`${idCIP129}-card-title`}
+              data-testid={`${idCIP129}-card-title`}
+              sx={{ fontWeight: 600 }}
+            >
+              {action.title || metadata?.body?.title}
+            </Typography>
+          </Box>
+        )}
+        <Box sx={{ marginTop: 2 }}>
+          <GovActionDatesInfo action={action} />
+        </Box>
+        {metadataValid && (
+          <Box sx={{ marginTop: 2 }}>
+            <GovernanceActionCardElement
+              title="Abstract"
+              description={action.abstract || metadata?.body?.abstract}
+              dataTestId={`${idCIP129}-abstract`}
+            />
+          </Box>
         )}
         {!metadataValid && (
           <Box sx={{ marginTop: 3 }}>
@@ -88,34 +97,40 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
             </Typography>
           </Box>
         )}
-        <Box sx={{ marginTop: 2 }}>
+        <Box
+          display="flex"
+          flexDirection="column"
+          gap={2}
+          sx={{ marginTop: 2 }}
+        >
           <GovernanceActionCardElement
             title="Governance Action Type"
             description={action?.type}
+            dataTestId={`${idCIP129}-type`}
           />
-        </Box>
-        <Box sx={{ marginTop: 2 }}>
+
+          <GovernanceActionStatus status={action?.status} actionId={idCIP129} />
+
           <GovernanceActionCardIdElement
             title="Governance Action ID"
-            id={getFullGovActionId(action?.tx_hash, action?.index)}
+            id={fullGovActionId}
+            dataTestId={`${fullGovActionId}-CIP-105-id`}
           />
-        </Box>
-        <Box sx={{ marginTop: 2 }}>
+
           <GovernanceActionCardIdElement
             title="(CIP-129) Governance Action ID"
             id={idCIP129}
+            dataTestId={`${idCIP129}-CIP-129-id`}
           />
         </Box>
-        <Box display="flex" justifyContent="center" marginTop={2}>
-          <GovernanceActionStatus action={action} />
-        </Box>
       </CardContent>
-      <CardActions>
+      <CardActions
+        id={`${idCIP129}-outcome-card-actions`}
+        data-testid={`${idCIP129}-outcome-card-actions`}
+      >
         <Link
-          href={`outcomes/governance_actions/${getFullGovActionId(
-            action?.tx_hash,
-            action?.index
-          )}`}
+          data-testid={`${idCIP129}-view-details`}
+          href={`outcomes/governance_actions/${fullGovActionId}`}
           color="inherit"
           sx={{
             width: "100%",
@@ -129,6 +144,7 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
               backgroundColor: "primaryBlue",
               width: "100%",
             }}
+            aria-label={`${idCIP129}-view-details`}
           >
             View Details
           </Button>

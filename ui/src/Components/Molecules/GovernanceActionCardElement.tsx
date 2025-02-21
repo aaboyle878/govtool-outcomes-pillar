@@ -3,14 +3,16 @@ import { Box, Typography } from "@mui/material";
 interface GovernanceActionCardElementProps {
   title: string;
   description: string;
+  dataTestId: string;
 }
 
 export default function GovernanceActionCardElement({
   title,
   description,
+  dataTestId,
 }: GovernanceActionCardElementProps) {
   return (
-    <Box>
+    <Box data-testid={dataTestId}>
       <Typography
         sx={{
           fontSize: "0.875rem",

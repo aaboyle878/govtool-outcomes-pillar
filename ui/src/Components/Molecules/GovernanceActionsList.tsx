@@ -5,7 +5,7 @@ import GovernanceActionCard from "./GovernanceActionCard";
 import { ActionsEmptyState } from "./ActionsEmptyState";
 import { useGetGovernanceActions } from "../../hooks/useGetGovernanceActionsQuery";
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 12;
 
 const GovernanceActionsList = () => {
   const [searchParams] = useSearchParams();
@@ -28,6 +28,8 @@ const GovernanceActionsList = () => {
 
   return (
     <Box
+      id="governance-actions-list-wrapper"
+      data-testid="governance-actions-list-wrapper"
       component="section"
       display="flex"
       flexDirection="column"
@@ -68,7 +70,8 @@ const GovernanceActionsList = () => {
               xs={12}
               sm={12}
               md={6}
-              lg={4}
+              lg={6}
+              xl={4}
               key={`${action.id}-${action.tx_hash}`}
               sx={{ marginBottom: { xs: 0, sm: 2, md: 4 } }}
             >

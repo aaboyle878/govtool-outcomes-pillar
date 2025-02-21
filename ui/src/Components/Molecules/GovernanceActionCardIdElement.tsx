@@ -4,11 +4,13 @@ import { useSnackbar } from "../../contexts/Snackbar";
 interface GovernanceActionCardIdElementProps {
   title: string;
   id: string;
+  dataTestId: string;
 }
 
 export default function GovernanceActionCardIdElement({
   title,
   id,
+  dataTestId,
 }: GovernanceActionCardIdElementProps) {
   const { addSuccessAlert } = useSnackbar();
 
@@ -18,7 +20,7 @@ export default function GovernanceActionCardIdElement({
     addSuccessAlert("Copied to clipboard!");
   };
   return (
-    <Box>
+    <Box data-testid={dataTestId}>
       <Typography
         sx={{
           fontSize: "0.875rem",
@@ -64,6 +66,7 @@ export default function GovernanceActionCardIdElement({
             }}
             onClick={handleCopyClick}
             aria-label="Copy to clipboard"
+            data-testid="copy-button"
           >
             <CopyIcon width={24} height={24} />
           </Box>
