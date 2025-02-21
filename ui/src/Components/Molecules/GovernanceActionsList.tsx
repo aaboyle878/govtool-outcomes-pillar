@@ -28,6 +28,8 @@ const GovernanceActionsList = () => {
 
   return (
     <Box
+      id="governance-actions-list-wrapper"
+      data-testid="governance-actions-list-wrapper"
       component="section"
       display="flex"
       flexDirection="column"

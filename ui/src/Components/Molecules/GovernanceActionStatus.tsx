@@ -4,10 +4,12 @@ import StatusChip from "../SingleAction/StatusChip";
 
 interface GovernanceActionStatusProps {
   status: Status;
+  actionId: string;
 }
 
 export default function GovernanceActionStatus({
   status,
+  actionId,
 }: GovernanceActionStatusProps) {
   const getStatusChips = () => {
     const { ratified_epoch, enacted_epoch, dropped_epoch, expired_epoch } =
@@ -54,7 +56,7 @@ export default function GovernanceActionStatus({
     return null;
   };
   return (
-    <Box>
+    <Box data-testid={`${actionId}-status`}>
       <Box
         display="flex"
         justifyContent="space-between"

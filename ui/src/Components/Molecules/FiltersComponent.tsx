@@ -104,8 +104,9 @@ export default function FiltersComponent() {
   return (
     <Box>
       <Button
-        id="fade-button"
-        aria-controls={open ? "fade-menu" : undefined}
+        id="filters-button"
+        data-testid="filters-button"
+        aria-controls={open ? "filters-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         sx={{
@@ -172,13 +173,20 @@ export default function FiltersComponent() {
         </Box>
       </Button>
       <Menu
+        id="filters-menu"
+        data-testid="filters-menu"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
         TransitionComponent={Fade}
         sx={{ marginTop: 1 }}
       >
-        <Box display="flex" paddingX="20px" justifyContent="space-between">
+        <Box
+          display="flex"
+          paddingX="20px"
+          justifyContent="space-between"
+          alignItems="center"
+        >
           <Typography
             sx={{
               color: fadedPurple.c500,
@@ -188,7 +196,9 @@ export default function FiltersComponent() {
           >
             Governance Action Type
           </Typography>
-          <Box
+          <Button
+            id="clear-filters-button"
+            data-testid="clear-filters-button"
             sx={{
               color: "primaryBlue",
               fontWeight: 500,
@@ -203,12 +213,14 @@ export default function FiltersComponent() {
             <Typography fontSize={14} fontWeight={500} color="primary">
               clear
             </Typography>
-          </Box>
+          </Button>
         </Box>
 
         <Divider sx={{ marginTop: 1, backgroundColor: "neutralGray" }} />
         {GOVERNANCE_ACTION_FILTERS.map((option, index) => (
           <Box
+            id={`${option.dataTestId}-checkbox-wrapper`}
+            data-testid={`${option.dataTestId}-checkbox-wrapper`}
             key={index}
             paddingX="20px"
             sx={{
@@ -221,6 +233,8 @@ export default function FiltersComponent() {
             <FormControlLabel
               control={
                 <Checkbox
+                  id={`${option.dataTestId}-checkbox`}
+                  data-testid={`${option.dataTestId}-checkbox`}
                   checked={isTypeChecked(option.value)}
                   onChange={(e) => {
                     e.stopPropagation();
@@ -254,6 +268,8 @@ export default function FiltersComponent() {
         <Divider sx={{ marginTop: 1, backgroundColor: "neutralGray" }} />
         {GOVERNANCE_ACTION_STATUS_FILTERS.map((option, index) => (
           <Box
+            id={`${option.value}-checkbox-wrapper`}
+            data-testid={`${option.value}-checkbox-wrapper`}
             key={index}
             paddingX="20px"
             sx={{
@@ -266,6 +282,8 @@ export default function FiltersComponent() {
             <FormControlLabel
               control={
                 <Checkbox
+                  id={`${option.value}-checkbox`}
+                  data-testid={`${option.value}-checkbox`}
                   checked={isStatusChecked(option.value)}
                   onChange={(e) => {
                     e.stopPropagation();

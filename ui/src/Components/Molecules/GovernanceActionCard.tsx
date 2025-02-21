@@ -31,11 +31,14 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
     index: action?.index.toString(16).padStart(2, "0"),
     bech32Prefix: "gov_action",
   });
+  const fullGovActionId = getFullGovActionId(action?.tx_hash, action?.index);
 
   const status = getProposalStatus(action?.status);
 
   return (
     <Card
+      id={`${idCIP129}-outcome-card`}
+      data-testid={`${idCIP129}-outcome-card`}
       sx={{
         width: "100%",
         height: "100%",
@@ -59,10 +62,18 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
         }),
       }}
     >
-      <CardContent sx={{ flexGrow: 1 }}>
+      <CardContent
+        id={`${idCIP129}-outcome-card-content`}
+        data-testid={`${idCIP129}-outcome-card-content`}
+        sx={{ flexGrow: 1 }}
+      >
         {metadataValid && (
           <Box>
-            <Typography sx={{ fontWeight: 600 }}>
+            <Typography
+              id={`${idCIP129}-card-title`}
+              data-testid={`${idCIP129}-card-title`}
+              sx={{ fontWeight: 600 }}
+            >
               {action.title || metadata?.body?.title}
             </Typography>
           </Box>
@@ -75,6 +86,7 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
             <GovernanceActionCardElement
               title="Abstract"
               description={action.abstract || metadata?.body?.abstract}
+              dataTestId={`${idCIP129}-abstract`}
             />
           </Box>
         )}
@@ -94,27 +106,31 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
           <GovernanceActionCardElement
             title="Governance Action Type"
             description={action?.type}
+            dataTestId={`${idCIP129}-type`}
           />
 
-          <GovernanceActionStatus status={action?.status} />
+          <GovernanceActionStatus status={action?.status} actionId={idCIP129} />
 
           <GovernanceActionCardIdElement
             title="Governance Action ID"
-            id={getFullGovActionId(action?.tx_hash, action?.index)}
+            id={fullGovActionId}
+            dataTestId={`${fullGovActionId}-CIP-105-id`}
           />
 
           <GovernanceActionCardIdElement
             title="(CIP-129) Governance Action ID"
             id={idCIP129}
+            dataTestId={`${idCIP129}-CIP-129-id`}
           />
         </Box>
       </CardContent>
-      <CardActions>
+      <CardActions
+        id={`${idCIP129}-outcome-card-actions`}
+        data-testid={`${idCIP129}-outcome-card-actions`}
+      >
         <Link
-          href={`outcomes/governance_actions/${getFullGovActionId(
-            action?.tx_hash,
-            action?.index
-          )}`}
+          data-testid={`${idCIP129}-view-details`}
+          href={`outcomes/governance_actions/${fullGovActionId}`}
           color="inherit"
           sx={{
             width: "100%",
@@ -128,6 +144,7 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
               backgroundColor: "primaryBlue",
               width: "100%",
             }}
+            aria-label={`${idCIP129}-view-details`}
           >
             View Details
           </Button>

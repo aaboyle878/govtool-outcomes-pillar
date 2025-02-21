@@ -18,10 +18,6 @@ import { useSearchParams } from "react-router-dom";
 import { GOVERNANCE_ACTION_SORT_OPTIONS } from "../../consts/sort-options";
 
 export default function SortComponent() {
-  const {
-    palette: { primaryBlue, neutralWhite },
-  } = theme;
-
   const [isHovered, setIsHovered] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [sortParams, setSortParams] = useSearchParams();
@@ -59,6 +55,13 @@ export default function SortComponent() {
     setSortParams(newParams);
   };
 
+  const getDisplayLabel = (value: string) => {
+    const option = GOVERNANCE_ACTION_SORT_OPTIONS.find(
+      (opt) => opt.value === value
+    );
+    return option?.displayLabel || value;
+  };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -68,8 +71,9 @@ export default function SortComponent() {
   return (
     <Box>
       <Button
-        id="fade-button"
-        aria-controls={open ? "fade-menu" : undefined}
+        id="sort-button"
+        data-testid="sort-button"
+        aria-controls={open ? "sort-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         sx={{
@@ -99,10 +103,12 @@ export default function SortComponent() {
             whiteSpace: "nowrap",
           }}
         >
-          Sort{sortValue() ? `: ${sortValue()}` : ""}
+          Sort{sortValue() ? `: ${getDisplayLabel(sortValue())}` : ""}
         </Typography>
       </Button>
       <Menu
+        id="sort-menu"
+        data-testid="sort-menu"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
@@ -110,13 +116,20 @@ export default function SortComponent() {
         sx={{ marginTop: 1 }}
       >
         <FormControl>
-          <Box display="flex" justifyContent="space-between" px="20px">
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            px="20px"
+            alignItems="center"
+          >
             <Typography
               sx={{ fontSize: 14, fontWeight: 500, color: "#9792B5" }}
             >
               Sort by
             </Typography>
-            <Box
+            <Button
+              id="clear-sort-button"
+              data-testid="clear-sort-button"
               sx={{
                 color: "primaryBlue",
                 fontWeight: 500,
@@ -131,16 +144,20 @@ export default function SortComponent() {
               <Typography fontSize={14} fontWeight={500} color="primaryBlue">
                 clear
               </Typography>
-            </Box>
+            </Button>
           </Box>
           <Divider sx={{ marginTop: 1, backgroundColor: "neutralGray" }} />
           <RadioGroup
-            aria-labelledby="demo-controlled-radio-buttons-group"
-            name="controlled-radio-buttons-group"
+            id="sort-radio-buttons-group"
+            data-testid="sort-radio-buttons-group"
+            aria-labelledby="sort-radio-buttons-group"
+            name="sort-radio-buttons-group"
             value={sortValue()}
           >
             {GOVERNANCE_ACTION_SORT_OPTIONS.map((option, index) => (
               <Box
+                id={`${option.dataTestId}-radio-wrapper`}
+                data-testid={`${option.dataTestId}-radio-wrapper`}
                 key={index}
                 paddingX="20px"
                 sx={{
@@ -156,6 +173,8 @@ export default function SortComponent() {
                   value={option.value}
                   control={
                     <Radio
+                      id={`${option.dataTestId}-radio`}
+                      data-testid={`${option.value.toLocaleLowerCase()}-radio`}
                       onChange={(e) => {
                         e.stopPropagation();
                         setSorts(option.value);
