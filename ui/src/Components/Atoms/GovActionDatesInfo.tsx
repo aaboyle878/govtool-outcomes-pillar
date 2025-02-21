@@ -1,7 +1,11 @@
 import { IconInformationCircle } from "@intersect.mbo/intersectmbo.org-icons-set";
 import { Box, Icon, Tooltip, Typography } from "@mui/material";
-import { GovernanceAction, Status } from "../../types/api";
-import { formatTimeStamp, getProposalStatus } from "../../lib/utils";
+import { GovernanceAction } from "../../types/api";
+import {
+  encodeCIP129Identifier,
+  formatTimeStamp,
+  getProposalStatus,
+} from "../../lib/utils";
 
 interface GovActionDatesInfoProps {
   action: GovernanceAction;
@@ -10,7 +14,15 @@ interface GovActionDatesInfoProps {
 const GovActionDatesInfo = ({ action }: GovActionDatesInfoProps) => {
   const proposalStatus = getProposalStatus(action.status);
 
-  const isExpired = ["Expired", "Not Ratified", "Enacted"].includes(proposalStatus);
+  const isExpired = ["Expired", "Not Ratified", "Enacted"].includes(
+    proposalStatus
+  );
+
+  const idCIP129 = encodeCIP129Identifier({
+    txID: action?.tx_hash,
+    index: action?.index.toString(16).padStart(2, "0"),
+    bech32Prefix: "gov_action",
+  });
 
   const renderSubmissionInfoTooltip = () => {
     return (
@@ -80,6 +92,7 @@ const GovActionDatesInfo = ({ action }: GovActionDatesInfoProps) => {
 
   return (
     <Box
+      data-testid={`${idCIP129}-dates`}
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -90,6 +103,7 @@ const GovActionDatesInfo = ({ action }: GovActionDatesInfoProps) => {
       }}
     >
       <Box
+        data-testid={`${idCIP129}-submitted-date`}
         sx={{
           backgroundColor: "#D6E2FF",
           display: "flex",
@@ -119,6 +133,7 @@ const GovActionDatesInfo = ({ action }: GovActionDatesInfoProps) => {
         {renderSubmissionInfoTooltip()}
       </Box>
       <Box
+        data-testid={`${idCIP129}-${isExpired ? "Expired" : "Expires"}-date`}
         sx={{
           display: "flex",
           alignItems: "center",
