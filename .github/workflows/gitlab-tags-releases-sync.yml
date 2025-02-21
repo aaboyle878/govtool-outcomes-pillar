@@ -21,7 +21,6 @@ jobs:
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
 
-      # Add GitLab remote
       - name: Add GitLab remote
         run: |
           git remote add gitlab "https://oauth2:${GITLAB_TOKEN}@gitlab.lidonation.com/voltaire/govtool-outcomes-pillar.git"
