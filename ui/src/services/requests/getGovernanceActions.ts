@@ -8,12 +8,12 @@ export const getGovernanceActions = async (
   limit: number
 ) => {
   const response = await axiosInstance.get("/governance-actions", {
-    params: { 
-      search, 
-      filters, 
+    params: {
+      search,
+      filters: filters.join(","),
       sort,
       page,
-      limit
+      limit,
     },
   });
   return response.data;

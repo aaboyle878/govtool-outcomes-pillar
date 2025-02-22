@@ -10,14 +10,15 @@ export class GovernanceActionsController {
   @Get()
   findAll(
     @Query("search") search: string,
-    @Query("filters") filters: string[],
+    @Query("filters") filters: string,
     @Query("sort") sort: string,
     @Query("page") page: number,
     @Query("limit") limit: number
   ) {
+    const filtersArray = filters ? filters.split(",") : [];
     return this.governanceActionsService.findAll(
       search,
-      filters,
+      filtersArray,
       sort,
       page,
       limit

@@ -102,15 +102,36 @@ VoteCounts AS (
     FROM voting_procedure
     WHERE invalid IS NULL
     GROUP BY gov_action_proposal_id
+),
+RankedProposals AS (
+    SELECT
+        gov_action_proposal.id,
+        encode(creator_tx.hash, 'hex') AS tx_hash,
+        gov_action_proposal.index,
+        gov_action_proposal.type::text,
+        COALESCE(vc.yes_votes, 0) as yes_votes,
+        COALESCE(vc.no_votes, 0) as no_votes,
+        COALESCE(vc.abstain_votes, 0) as abstain_votes,
+        creator_block.time,
+        creator_block.epoch_no,
+        ROW_NUMBER() OVER (
+            PARTITION BY gov_action_proposal.id
+            ORDER BY creator_block.epoch_no DESC, creator_block.time DESC
+        ) as rn
+    FROM
+        gov_action_proposal
+        LEFT JOIN tx AS creator_tx ON creator_tx.id = gov_action_proposal.tx_id
+        LEFT JOIN block AS creator_block ON creator_block.id = creator_tx.block_id
+        LEFT JOIN VoteCounts vc ON vc.gov_action_proposal_id = gov_action_proposal.id
 )
-SELECT
-    gov_action_proposal.id,
-    encode(creator_tx.hash, 'hex') AS tx_hash,
-    gov_action_proposal.index,
-    gov_action_proposal.type::text,
-    COALESCE(vc.yes_votes, 0) as yes_votes,
-    COALESCE(vc.no_votes, 0) as no_votes,
-    COALESCE(vc.abstain_votes, 0) as abstain_votes,
+SELECT 
+    rp.id,
+    rp.tx_hash,
+    rp.index,
+    rp.type,
+    rp.yes_votes,
+    rp.no_votes,
+    rp.abstain_votes,
     COALESCE(
         CASE
             WHEN gov_action_proposal.type = 'TreasuryWithdrawals' THEN
@@ -167,8 +188,8 @@ SELECT
             latest_epoch.start_time + (gov_action_proposal.expiration - latest_epoch.no)::bigint * INTERVAL '1 day'
     END AS expiry_date,
     gov_action_proposal.expiration,
-    creator_block.time,
-    creator_block.epoch_no,
+    rp.time,
+    rp.epoch_no,
     voting_anchor.url,
     encode(voting_anchor.data_hash, 'hex') AS data_hash,
     jsonb_set(
@@ -196,11 +217,10 @@ SELECT
         'expired_time', expired_block.block_time
     ) AS status_times
 FROM
-    gov_action_proposal
+    RankedProposals rp
+    JOIN gov_action_proposal ON gov_action_proposal.id = rp.id
     CROSS JOIN LatestEpoch AS latest_epoch
     CROSS JOIN meta
-    LEFT JOIN tx AS creator_tx ON creator_tx.id = gov_action_proposal.tx_id
-    LEFT JOIN block AS creator_block ON creator_block.id = creator_tx.block_id
     LEFT JOIN voting_anchor ON voting_anchor.id = gov_action_proposal.voting_anchor_id
     LEFT JOIN off_chain_vote_data ON off_chain_vote_data.voting_anchor_id = voting_anchor.id
     LEFT JOIN off_chain_vote_gov_action_data ON off_chain_vote_gov_action_data.off_chain_vote_data_id = off_chain_vote_data.id
@@ -210,12 +230,12 @@ FROM
     LEFT JOIN EpochBlocks enacted_block ON enacted_block.epoch_no = gov_action_proposal.enacted_epoch
     LEFT JOIN EpochBlocks dropped_block ON dropped_block.epoch_no = gov_action_proposal.dropped_epoch
     LEFT JOIN EpochBlocks expired_block ON expired_block.epoch_no = gov_action_proposal.expired_epoch
-    LEFT JOIN VoteCounts vc ON vc.gov_action_proposal_id = gov_action_proposal.id
 WHERE
-    (COALESCE($1, '') = '' OR
+    rp.rn = 1
+    AND (COALESCE($1, '') = '' OR
     off_chain_vote_gov_action_data.title ILIKE '%' || $1 || '%' OR
     off_chain_vote_gov_action_data.abstract ILIKE '%' || $1 || '%' OR
-    concat(encode(creator_tx.hash, 'hex'), '#', gov_action_proposal.index) ILIKE '%' || $1 || '%')
+    concat(rp.tx_hash, '#', rp.index) ILIKE '%' || $1 || '%')
 AND (
     CASE 
         WHEN ARRAY_LENGTH($2::text[], 1) > 0 THEN
@@ -292,16 +312,16 @@ AND (
 )
 ORDER BY
     CASE WHEN $3 = 'oldestFirst' THEN
-        creator_block.epoch_no
+        rp.epoch_no
     END ASC,
     
     CASE WHEN $3 = 'highestYesVotes' THEN
-        COALESCE(vc.yes_votes, 0)
+        rp.yes_votes
     END DESC,
 
     CASE WHEN $3 = 'newestFirst' OR $3 IS NULL THEN
-        creator_block.epoch_no
+        rp.epoch_no
     END DESC,
-    creator_block.time DESC,
-    gov_action_proposal.id DESC
+    rp.time DESC,
+    rp.id DESC
 OFFSET $4 LIMIT $5`;
