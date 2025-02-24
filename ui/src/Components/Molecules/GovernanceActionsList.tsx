@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { Button } from "../Atoms/Button";
 import GovernanceActionCard from "./GovernanceActionCard";
 import { ActionsEmptyState } from "./ActionsEmptyState";
-import { useGetGovernanceActions } from "../../hooks/useGetGovernanceActionsQuery";
+import { useGetGovernanceActionsQuery } from "../../hooks/useGetGovernanceActionsQuery";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -22,7 +22,7 @@ const GovernanceActionsList = () => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useGetGovernanceActions(search, filters, sort, ITEMS_PER_PAGE);
+  } = useGetGovernanceActionsQuery(search, filters, sort, ITEMS_PER_PAGE);
 
   const displayedActions = govActions?.pages?.flat() || [];
 
