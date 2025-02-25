@@ -11,17 +11,6 @@ import {
 export type Theme = typeof theme;
 
 export const theme = createTheme({
-  breakpoints: {
-    values: {
-      xxs: 0,
-      xs: 375,
-      sm: 425,
-      md: 768,
-      lg: 1024,
-      xl: 1200,
-      xxl: 1440,
-    },
-  },
   components: {
     MuiCssBaseline: {
       styleOverrides: {

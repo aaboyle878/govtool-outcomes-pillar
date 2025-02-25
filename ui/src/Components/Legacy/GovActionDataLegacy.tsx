@@ -28,6 +28,13 @@ const GovActionDataLegacy = ({
   useEffect(() => {
     setShareableLink(window.location.href);
   }, []);
+
+  const idCIP129 = encodeCIP129Identifier({
+    txID: tx_hash,
+    index: index.toString(16).padStart(2, "0"),
+    bech32Prefix: "gov_action",
+  });
+
   return (
     <Box
       sx={{
@@ -59,14 +66,7 @@ const GovActionDataLegacy = ({
           date: expiry_date,
         }}
       />
-      <GovernanceActionCardId
-        title="Governance Action ID:"
-        id={encodeCIP129Identifier({
-          txID: tx_hash,
-          index: index.toString(16).padStart(2, "0"),
-          bech32Prefix: "gov_action",
-        })}
-      />
+      <GovernanceActionCardId title="Governance Action ID:" id={idCIP129} />
       <GovernanceActionCardId
         title="Legacy Governance Action ID (CIP-105):"
         id={getFullGovActionId(tx_hash, index)}

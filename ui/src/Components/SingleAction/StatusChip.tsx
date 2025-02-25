@@ -3,6 +3,7 @@ import { errorRed, primaryBlue, successGreen } from "../../consts/colors";
 
 type StatusChip = {
   status: "Live" | "Ratified" | "Enacted" | "Expired" | "Not Ratified";
+  isUppercase?: boolean;
 };
 
 const borderColorMap: Record<StatusChip["status"], string> = {
@@ -21,18 +22,27 @@ const bgColorMap: Record<StatusChip["status"], string> = {
   "Not Ratified": primaryBlue.c50,
 };
 
-function StatusChip({ status }: StatusChip) {
+function StatusChip({ status, isUppercase }: StatusChip) {
   return (
     <Box
-      sx={{
-        backgroundColor: bgColorMap[status],
-        padding: "0.375rem 1.125rem",
-        borderRadius: 20,
-        display: "inline-block",
-        border: `1px solid ${borderColorMap[status]}`,
-      }}
+      py={0.75}
+      px={2.25}
+      borderRadius={100}
+      border={1}
+      borderColor={borderColorMap[status]}
+      bgcolor={bgColorMap[status]}
+      textAlign="center"
     >
-      <Typography fontSize="0.75rem">{status}</Typography>
+      <Typography
+        fontSize={12}
+        fontWeight={400}
+        lineHeight="16px"
+        whiteSpace="nowrap"
+        textOverflow="ellipsis"
+        overflow="hidden"
+      >
+        {isUppercase ? status.toLocaleUpperCase() : status}
+      </Typography>
     </Box>
   );
 }
