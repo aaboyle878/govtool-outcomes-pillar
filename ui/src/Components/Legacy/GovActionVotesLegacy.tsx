@@ -2,8 +2,12 @@ import { Box, Typography } from "@mui/material";
 import { GovActionWithMetadata, GovernanceActionType } from "../../types/api";
 import GovActionVoteElement from "./GovActionVoteElement";
 import { useAppContext } from "../../contexts/AppContext";
-import { getGovActionVotingThresholdKey } from "../../lib/utils";
+import {
+  encodeCIP129Identifier,
+  getGovActionVotingThresholdKey,
+} from "../../lib/utils";
 import GovActionListImage from "../../Assets/img/GovActionList.png";
+import GovernanceActionStatusLegacy from "./GovernanceActionStatusLegacy";
 
 const GovActionVotesLegacy = ({
   abstain_votes: dRepAbstainVotes,
@@ -17,6 +21,9 @@ const GovActionVotesLegacy = ({
   pool_yes_votes: poolYesVotes,
   proposal_params: protocolParams,
   type,
+  status,
+  tx_hash,
+  index,
 }: GovActionWithMetadata) => {
   const govActionType = type as GovernanceActionType;
   const { epochParams, networkMetrics } = useAppContext();
@@ -90,6 +97,12 @@ const GovActionVotesLegacy = ({
   const ccNotVotedVotesPercentage =
     100 - (ccYesVotesPercentage ?? 0) - (ccNoVotesPercentage ?? 0);
 
+  const idCIP129 = encodeCIP129Identifier({
+    txID: tx_hash,
+    index: index.toString(16).padStart(2, "0"),
+    bech32Prefix: "gov_action",
+  });
+
   return (
     <Box
       sx={{
@@ -131,6 +144,7 @@ const GovActionVotesLegacy = ({
           gap: 4.5,
         }}
       >
+        <GovernanceActionStatusLegacy status={status} actionId={idCIP129} />
         <GovActionVoteElement
           type="dReps"
           yesVotes={dRepYesVotes}

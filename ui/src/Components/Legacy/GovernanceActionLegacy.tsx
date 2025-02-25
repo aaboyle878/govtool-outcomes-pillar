@@ -13,17 +13,22 @@ const GovernanceActionLegacy = ({
       sx={{
         borderRadius: "20px",
         display: "grid",
-        gridTemplateColumns: isMobile ? undefined : "0.55fr 0.45fr",
+        gridTemplateColumns: isMobile ? "1fr" : "0.55fr 0.45fr",
         mt: "12px",
         width: "100%",
         position: "relative",
         boxShadow: "2px 2px 20px 0px rgba(47, 98, 220, 0.20)",
+        overflow: "hidden",
+        minHeight: 0,
+        minWidth: 0,
       }}
       data-testid="governance-action-details-card"
     >
       <Box
         sx={{
           padding: "40px 24px 0",
+          overflow: "auto",
+          minHeight: 0,
         }}
       >
         <GovActionDataLegacy {...govActionData} />
@@ -34,6 +39,8 @@ const GovernanceActionLegacy = ({
           borderRadius: isMobile ? "0 0 20px 20px" : "0 20px 20px 0",
           bgcolor: "rgba(255, 255, 255, 0.60)",
           p: `40px ${isMobile ? "24px" : "80px"}`,
+          overflow: "auto",
+          minHeight: 0,
         }}
       >
         <GovActionVotesLegacy {...govActionData} />
