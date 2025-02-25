@@ -49,12 +49,6 @@ export default function SortComponent() {
     return sortParams.get("sort")?.toString() || "";
   };
 
-  const clearSort = () => {
-    const newParams = new URLSearchParams(sortParams);
-    newParams.delete("sort");
-    setSortParams(newParams);
-  };
-
   const getDisplayLabel = (value: string) => {
     const option = GOVERNANCE_ACTION_SORT_OPTIONS.find(
       (opt) => opt.value === value
@@ -125,26 +119,8 @@ export default function SortComponent() {
             <Typography
               sx={{ fontSize: 14, fontWeight: 500, color: "#9792B5" }}
             >
-              Sort by
+              Sort Governance Actions
             </Typography>
-            <Button
-              id="clear-sort-button"
-              data-testid="clear-sort-button"
-              sx={{
-                color: "primaryBlue",
-                fontWeight: 500,
-                fontSize: 14,
-                paddingX: 1,
-                cursor: "pointer",
-                borderRadius: "10%",
-                "&:hover": { bgcolor: "#E6EBF7" },
-              }}
-              onClick={clearSort}
-            >
-              <Typography fontSize={14} fontWeight={500} color="primaryBlue">
-                clear
-              </Typography>
-            </Button>
           </Box>
           <Divider sx={{ marginTop: 1, backgroundColor: "neutralGray" }} />
           <RadioGroup

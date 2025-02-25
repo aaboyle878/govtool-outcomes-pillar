@@ -23,9 +23,9 @@ export default function GovernanceActionCardIdElement({
     <Box data-testid={dataTestId}>
       <Typography
         sx={{
-          fontSize: "0.875rem",
+          fontSize: 12,
           color: "neutralGray",
-          marginBottom: 1,
+          marginBottom: "4px",
           fontWeight: 500,
         }}
       >
@@ -45,8 +45,9 @@ export default function GovernanceActionCardIdElement({
             overflow: "hidden",
             textOverflow: "ellipsis",
             whiteSpace: "nowrap",
-            fontSize: "1rem",
+            fontSize: 14,
             color: "primaryBlue",
+            lineHeight: "20px",
           }}
         >
           {id}

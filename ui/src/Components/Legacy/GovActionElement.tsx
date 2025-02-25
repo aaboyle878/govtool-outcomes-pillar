@@ -107,7 +107,7 @@ const GovActionElement = ({ title, description }: GovActionElementProps) => {
         fontWeight: 400,
         lineHeight: "24px",
         maxWidth: "auto",
-        color: 'textBlack'
+        color: "textBlack",
       }}
     >
       {children}
@@ -141,7 +141,10 @@ const GovActionElement = ({ title, description }: GovActionElementProps) => {
             {typeof description.content === "string" ? (
               <>
                 {description.isMarkdown ? (
-                  <Box fontFamily="Poppins, Arial" sx={{ width: "100%", color:'inherit'  }}>
+                  <Box
+                    fontFamily="Poppins, Arial"
+                    sx={{ width: "100%", color: "inherit" }}
+                  >
                     {renderMarkdown(
                       description.truncate
                         ? contentPreview(description.content)
@@ -203,7 +206,7 @@ const GovActionElement = ({ title, description }: GovActionElementProps) => {
         if (!Array.isArray(description.content)) return null;
 
         return (
-          <Box component="ul" sx={{ listStyle: "none", padding: 0, gap: 1 }}>
+          <Box component="ul" sx={{ listStyle: "none", padding: 0 }}>
             {(description.content as LinkItem[]).map((link, index) => (
               <li key={`${link.uri}-${index}`}>
                 <Typography variant="body1" sx={{ mr: 1 }}>
@@ -234,8 +237,8 @@ const GovActionElement = ({ title, description }: GovActionElementProps) => {
   if (!title) return null;
 
   return (
-    <Box sx={{ mb: 2, display: "flex", flexDirection: "column", gap: 0.5 }}>
-      <Typography variant="subtitle1" color={"neutralGray"} fontWeight={600}>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
+      <Typography color={"neutralGray"} fontWeight={600} sx={{ fontSize: 14 }}>
         {title}
       </Typography>
       {renderDescription()}
