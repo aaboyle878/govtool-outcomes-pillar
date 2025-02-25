@@ -18,6 +18,7 @@ import { useMetadata } from "../../hooks/useMetadata";
 import { GovernanceAction } from "../../types/api";
 import GovActionDatesInfo from "../Atoms/GovActionDatesInfo";
 import GovernanceActionStatus from "./GovernanceActionStatus";
+import { GOVERNANCE_ACTION_FILTERS } from "../../consts/filters";
 
 interface GovernanceActionCardProps {
   action: GovernanceAction;
@@ -34,6 +35,10 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
   const fullGovActionId = getFullGovActionId(action?.tx_hash, action?.index);
 
   const status = getProposalStatus(action?.status);
+
+  const typeInWords =
+    GOVERNANCE_ACTION_FILTERS.find((filter) => filter.value === action?.type)
+      ?.label || action?.type;
 
   return (
     <Card
@@ -67,22 +72,31 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
         data-testid={`${idCIP129}-outcome-card-content`}
         sx={{ flexGrow: 1 }}
       >
+        {!metadataValid && (
+          <Box>
+            <Typography
+              sx={{ fontWeight: 600, color: "errorRed", fontSize: 18 }}
+            >
+              Data not processable!
+            </Typography>
+          </Box>
+        )}
         {metadataValid && (
           <Box>
             <Typography
               id={`${idCIP129}-card-title`}
               data-testid={`${idCIP129}-card-title`}
-              sx={{ fontWeight: 600 }}
+              sx={{ fontSize: 18, fontWeight: 600 }}
             >
               {action.title || metadata?.body?.title}
             </Typography>
           </Box>
         )}
-        <Box sx={{ marginTop: 2 }}>
+        <Box sx={{ marginTop: 2.5 }}>
           <GovActionDatesInfo action={action} />
         </Box>
         {metadataValid && (
-          <Box sx={{ marginTop: 2 }}>
+          <Box sx={{ marginTop: 2.5 }}>
             <GovernanceActionCardElement
               title="Abstract"
               description={action.abstract || metadata?.body?.abstract}
@@ -90,22 +104,15 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
             />
           </Box>
         )}
-        {!metadataValid && (
-          <Box sx={{ marginTop: 3 }}>
-            <Typography sx={{ fontWeight: 600, color: "errorRed" }}>
-              Data not processable!
-            </Typography>
-          </Box>
-        )}
         <Box
           display="flex"
           flexDirection="column"
-          gap={2}
-          sx={{ marginTop: 2 }}
+          gap={2.5}
+          sx={{ marginTop: 2.5 }}
         >
           <GovernanceActionCardElement
             title="Governance Action Type"
-            description={action?.type}
+            description={typeInWords}
             dataTestId={`${idCIP129}-type`}
           />
 

@@ -237,78 +237,69 @@ WHERE
     off_chain_vote_gov_action_data.abstract ILIKE '%' || $1 || '%' OR
     concat(rp.tx_hash, '#', rp.index) ILIKE '%' || $1 || '%')
 AND (
-    CASE 
-        WHEN ARRAY_LENGTH($2::text[], 1) > 0 THEN
+    WITH 
+    status_conditions AS (
+        SELECT
             (
-                EXISTS (
-                    SELECT 1
-                    FROM unnest($2::text[]) AS filter_type
-                    WHERE filter_type NOT IN ('expired', 'ratified', 'enacted', 'live')
-                )
-                AND
-                gov_action_proposal.type::text = ANY($2::text[])
-                AND
-                (
-                    NOT EXISTS (
-                        SELECT 1
-                        FROM unnest($2::text[]) AS filter_status
-                        WHERE filter_status IN ('expired', 'ratified', 'enacted', 'live')
-                    )
-                    OR
-                    (
-                        EXISTS (
-                            SELECT 1
-                            FROM unnest($2::text[]) AS filter_status
-                            WHERE filter_status IN ('expired', 'ratified', 'enacted', 'live')
-                        )
-                        AND
-                        (
-                            ('expired' = ANY($2::text[]) AND gov_action_proposal.expired_epoch IS NOT NULL) OR
-                            ('ratified' = ANY($2::text[]) AND gov_action_proposal.ratified_epoch IS NOT NULL) OR
-                            ('enacted' = ANY($2::text[]) AND gov_action_proposal.enacted_epoch IS NOT NULL) OR
-                            ('live' = ANY($2::text[]) AND 
-                             gov_action_proposal.ratified_epoch IS NULL AND
-                             gov_action_proposal.enacted_epoch IS NULL AND
-                             gov_action_proposal.dropped_epoch IS NULL AND
-                             gov_action_proposal.expired_epoch IS NULL)
-                        )
-                    )
-                )
-            )
-            OR
-            (
-                NOT EXISTS (
-                    SELECT 1
-                    FROM unnest($2::text[]) AS filter_type
-                    WHERE filter_type NOT IN ('expired', 'ratified', 'enacted', 'live')
-                )
-                AND
-                EXISTS (
-                    SELECT 1
-                    FROM unnest($2::text[]) AS filter_status
-                    WHERE filter_status IN ('expired', 'ratified', 'enacted', 'live')
-                )
-                AND
-                (
-                    ('expired' = ANY($2::text[]) AND gov_action_proposal.expired_epoch IS NOT NULL) OR
-                    ('ratified' = ANY($2::text[]) AND gov_action_proposal.ratified_epoch IS NOT NULL) OR
-                    ('enacted' = ANY($2::text[]) AND gov_action_proposal.enacted_epoch IS NOT NULL) OR
-                    ('live' = ANY($2::text[]) AND 
-                     gov_action_proposal.ratified_epoch IS NULL AND
-                     gov_action_proposal.enacted_epoch IS NULL AND
-                     gov_action_proposal.dropped_epoch IS NULL AND
-                     gov_action_proposal.expired_epoch IS NULL)
-                )
-            )
-        ELSE
-            -- By default (no filters), exclude live proposals
-            NOT (
                 gov_action_proposal.ratified_epoch IS NULL AND
                 gov_action_proposal.enacted_epoch IS NULL AND
                 gov_action_proposal.dropped_epoch IS NULL AND
                 gov_action_proposal.expired_epoch IS NULL
-            )
-    END
+            ) AS is_live,
+            gov_action_proposal.expired_epoch IS NOT NULL AS is_expired,
+            gov_action_proposal.ratified_epoch IS NOT NULL AS is_ratified,
+            gov_action_proposal.enacted_epoch IS NOT NULL AS is_enacted,
+            EXISTS (
+                SELECT 1
+                FROM unnest($2::text[]) AS filter
+                WHERE filter NOT IN ('expired', 'ratified', 'enacted', 'live')
+            ) AS has_type_filters,
+            
+            'expired' = ANY($2::text[]) AS filter_expired,
+            'ratified' = ANY($2::text[]) AS filter_ratified,
+            'enacted' = ANY($2::text[]) AS filter_enacted,
+            'live' = ANY($2::text[]) AS filter_live,
+            EXISTS (
+                SELECT 1
+                FROM unnest($2::text[]) AS filter
+                WHERE filter IN ('expired', 'ratified', 'enacted', 'live')
+            ) AS has_status_filters,
+            CASE 
+                WHEN EXISTS (
+                    SELECT 1
+                    FROM unnest($2::text[]) AS filter
+                    WHERE filter NOT IN ('expired', 'ratified', 'enacted', 'live')
+                ) THEN
+                    gov_action_proposal.type::text = ANY($2::text[])
+                ELSE
+                    TRUE
+            END AS type_filter_matches
+    )
+    SELECT
+        CASE
+            WHEN ARRAY_LENGTH($2::text[], 1) IS NULL OR ARRAY_LENGTH($2::text[], 1) = 0 THEN
+                NOT is_live
+            ELSE
+                (
+                    type_filter_matches
+                    AND
+                    (
+                        (NOT has_status_filters AND (filter_live OR NOT is_live))  
+                        OR
+                        (
+                            has_status_filters
+                            AND
+                            (
+                                (filter_expired AND is_expired) OR
+                                (filter_ratified AND is_ratified) OR
+                                (filter_enacted AND is_enacted) OR
+                                (filter_live AND is_live)
+                            )
+                        )
+                    )
+                )
+        END
+    FROM status_conditions
 )
 ORDER BY
     CASE WHEN $3 = 'oldestFirst' THEN

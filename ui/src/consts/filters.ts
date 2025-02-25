@@ -1,7 +1,7 @@
 export const GOVERNANCE_ACTION_FILTERS = [
   {
     value: "InfoAction",
-    label: "Info",
+    label: "Info Action",
     dataTestId: "info",
   },
   {

@@ -18,7 +18,12 @@ const getDefaultBaseURL = (): string => {
 };
 
 export const setAxiosBaseURL = (baseURL?: string) => {
-  axiosInstance.defaults.baseURL = baseURL || getDefaultBaseURL();
+  if (baseURL) {
+    const trimmedURL = baseURL.endsWith("/") ? baseURL.slice(0, -1) : baseURL;
+    axiosInstance.defaults.baseURL = trimmedURL;
+  } else {
+    axiosInstance.defaults.baseURL = getDefaultBaseURL();
+  }
 };
 
 export default axiosInstance;

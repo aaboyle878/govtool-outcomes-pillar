@@ -105,7 +105,7 @@ const GovActionDatesInfo = ({
       >
         <Typography variant="caption">
           Submitted:{" "}
-          <Typography component="span" fontWeight={500} variant="caption">
+          <Typography component="span" fontWeight={600} variant="caption">
             {new Date(submitted.date).toDateString()}
           </Typography>
         </Typography>
@@ -133,7 +133,7 @@ const GovActionDatesInfo = ({
       >
         <Typography variant="caption">
           Expires:{" "}
-          <Typography component="span" fontWeight={500} variant="caption">
+          <Typography component="span" fontWeight={600} variant="caption">
             {new Date(expires.date).toDateString()}
           </Typography>
         </Typography>

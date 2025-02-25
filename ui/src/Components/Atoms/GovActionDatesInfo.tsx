@@ -49,7 +49,7 @@ const GovActionDatesInfo = ({ action }: GovActionDatesInfoProps) => {
         }}
       >
         <Icon>
-          <IconInformationCircle />
+          <IconInformationCircle width={19} height={19} />
         </Icon>
       </Tooltip>
     );
@@ -84,7 +84,7 @@ const GovActionDatesInfo = ({ action }: GovActionDatesInfoProps) => {
         }}
       >
         <Icon>
-          <IconInformationCircle />
+          <IconInformationCircle width={19} height={19} />
         </Icon>
       </Tooltip>
     );
@@ -98,8 +98,9 @@ const GovActionDatesInfo = ({ action }: GovActionDatesInfoProps) => {
         flexDirection: "column",
         width: "100%",
         borderRadius: "12px",
-        border: "1px solid #D6E2FF",
         textAlign: "center",
+        border: 1,
+        borderColor: "lightblue",
       }}
     >
       <Box
@@ -115,9 +116,9 @@ const GovActionDatesInfo = ({ action }: GovActionDatesInfoProps) => {
           borderTopRightRadius: "inherit",
         }}
       >
-        <Typography variant="caption">
+        <Typography variant="caption" sx={{ fontSize: 12 }}>
           Submitted:{" "}
-          <Typography component="span" fontWeight={500} variant="caption">
+          <Typography component="span" fontWeight={600} variant="caption">
             {formatTimeStamp(action.time)}
           </Typography>
         </Typography>
@@ -146,7 +147,7 @@ const GovActionDatesInfo = ({ action }: GovActionDatesInfoProps) => {
       >
         <Typography variant="caption">
           {isExpired ? "Expired: " : "Expires: "}
-          <Typography component="span" fontWeight={500} variant="caption">
+          <Typography component="span" fontWeight={600} variant="caption">
             {action.status.expired_epoch !== null
               ? formatTimeStamp(action.status_times.expired_time as string)
               : formatTimeStamp(action.expiry_date)}

@@ -25,10 +25,9 @@ export default function GovernanceActionCardId({
       <Typography
         sx={{
           color: "neutralGray",
-          marginBottom: 1,
           fontWeight: 600,
+          fontSize: 14,
         }}
-        variant="subtitle1"
       >
         {title}
       </Typography>

@@ -25,7 +25,7 @@ const GovActionTitleLegacy = ({ title, extra }: GovActionTitleLegacyProps) => {
     >
       <Typography
         sx={{
-          fontSize: 18,
+          fontSize: 22,
           fontWeight: 600,
           lineHeight: "24px",
           display: "-webkit-box",

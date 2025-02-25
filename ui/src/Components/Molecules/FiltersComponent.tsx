@@ -262,7 +262,7 @@ export default function FiltersComponent() {
               fontSize: 14,
             }}
           >
-            Status
+            Governance Action Status
           </Typography>
         </Box>
         <Divider sx={{ marginTop: 1, backgroundColor: "neutralGray" }} />
