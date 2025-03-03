@@ -2,6 +2,8 @@ import { Box, IconButton, Typography } from "@mui/material";
 import ShareGovActionTooltip from "./ShareGovActionTooltip";
 import { useState } from "react";
 import { theme } from "../../theme";
+import { getMetadataDataMissingStatusTranslation } from "../../lib/getMetadataDataMissingStatusTranslation";
+import { MetadataValidationStatus } from "../../types/api";
 
 interface ExtraProps {
   externalMetadataLink: string;
@@ -9,10 +11,15 @@ interface ExtraProps {
 
 interface GovActionTitleLegacyProps {
   title: string | null;
+  isDataMissing: MetadataValidationStatus | null;
   extra?: ExtraProps;
 }
 
-const GovActionTitleLegacy = ({ title, extra }: GovActionTitleLegacyProps) => {
+const GovActionTitleLegacy = ({
+  title,
+  isDataMissing,
+  extra,
+}: GovActionTitleLegacyProps) => {
   const [tooltipOpen, setTooltipOpen] = useState(false);
   return (
     <Box
@@ -24,6 +31,7 @@ const GovActionTitleLegacy = ({ title, extra }: GovActionTitleLegacyProps) => {
       }}
     >
       <Typography
+        component="h1"
         sx={{
           fontSize: 22,
           fontWeight: 600,
@@ -32,9 +40,14 @@ const GovActionTitleLegacy = ({ title, extra }: GovActionTitleLegacyProps) => {
           WebkitBoxOrient: "vertical",
           WebkitLineClamp: 2,
           wordBreak: "break-word",
+          ...(isDataMissing && { color: "errorRed" }),
         }}
       >
-        {title}
+        {(isDataMissing &&
+          getMetadataDataMissingStatusTranslation(
+            isDataMissing as MetadataValidationStatus
+          )) ||
+          title}
       </Typography>
       {extra && extra.externalMetadataLink && (
         <ShareGovActionTooltip

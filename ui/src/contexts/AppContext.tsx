@@ -10,14 +10,22 @@ import { useGetEpochParams } from "../hooks/useGetEpochParams";
 import { useGetNetworkMetrics } from "../hooks/useGetNetworkMetrics";
 import { setItemToLocalStorage } from "../lib/utils";
 
+// Default IPFS gateway
+const DEFAULT_IPFS_GATEWAY = "https://dweb.link/ipfs";
+
 type AppContextType = {
   epochParams?: EpochParams;
   networkMetrics?: NetworkMetrics;
+  ipfsGateway: string;
 };
+
+type AppContextProviderProps = PropsWithChildren<{
+  ipfsGateway?: string;
+}>;
 
 const AppContext = createContext<AppContextType | null>(null);
 
-const AppContextProvider = ({ children }: PropsWithChildren) => {
+const AppContextProvider = ({ children, ipfsGateway = DEFAULT_IPFS_GATEWAY }: AppContextProviderProps) => {
   const { fetchEpochParams, epochParams } = useGetEpochParams();
   const { fetchNetworkMetrics, networkMetrics } = useGetNetworkMetrics();
 
@@ -45,8 +53,9 @@ const AppContextProvider = ({ children }: PropsWithChildren) => {
     () => ({
       epochParams,
       networkMetrics,
+      ipfsGateway,
     }),
-    [epochParams, networkMetrics]
+    [epochParams, networkMetrics, ipfsGateway]
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

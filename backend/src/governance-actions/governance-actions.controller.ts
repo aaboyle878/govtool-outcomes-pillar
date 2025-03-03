@@ -1,5 +1,6 @@
 import { Controller, Get, Param, Query } from "@nestjs/common";
 import { GovernanceActionsService } from "./governance-actions.service";
+import { ValidateMetadataResult } from "src/types/validateMetadata";
 
 @Controller("governance-actions")
 export class GovernanceActionsController {
@@ -26,8 +27,11 @@ export class GovernanceActionsController {
   }
 
   @Get("/metadata")
-  findMetadata(@Query("url") url: string) {
-    return this.governanceActionsService.findMetadata(url);
+  findMetadata(
+    @Query("url") url: string,
+    @Query("hash") hash: string
+  ): Promise<ValidateMetadataResult> {
+    return this.governanceActionsService.getMetadata(url, hash);
   }
 
   @Get(":id")

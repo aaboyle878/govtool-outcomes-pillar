@@ -23,16 +23,13 @@ export function useMetadata(action: any, options: UseMetadataOptions = {}) {
         setIsMetadataLoading(true);
 
         try {
-          const fetchedMetadata = await getGovActionMetadata(action.url);
+          const fetchedMetadata = await getGovActionMetadata(
+            action.url,
+            action.data_hash
+          );
           if (!isMounted) return;
 
-          const isValid =
-            (fetchedMetadata?.body?.title !== "" &&
-              fetchedMetadata?.body?.title != null) ||
-            (fetchedMetadata?.body?.abstract !== "" &&
-              fetchedMetadata?.body?.abstract != null);
-
-          setMetadataValid(isValid);
+          setMetadataValid(fetchedMetadata?.metadataValid);
           setMetadata(fetchedMetadata);
         } catch (error) {
           if (!isMounted) return;
@@ -56,5 +53,9 @@ export function useMetadata(action: any, options: UseMetadataOptions = {}) {
     };
   }, [action, options.skipConditionCheck]);
 
-  return { metadata: metadata as GovActionMetadata, metadataValid, isMetadataLoading };
+  return {
+    metadata: metadata as GovActionMetadata,
+    metadataValid,
+    isMetadataLoading,
+  };
 }

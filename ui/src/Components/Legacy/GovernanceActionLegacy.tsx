@@ -4,12 +4,13 @@ import GovActionDataLegacy from "./GovActionDataLegacy";
 import GovActionVotesLegacy from "./GovActionVotesLegacy";
 import { useScreenDimension } from "../../hooks/useDimensions";
 
-const GovernanceActionLegacy = ({
-  ...govActionData
-}: GovActionWithMetadata) => {
+const GovernanceActionLegacy = (props: GovActionWithMetadata) => {
   const { isMobile } = useScreenDimension();
+  const { metadataValid } = props;
+
   return (
     <Box
+      data-testid="governance-action-details-card"
       sx={{
         borderRadius: "20px",
         display: "grid",
@@ -21,17 +22,19 @@ const GovernanceActionLegacy = ({
         overflow: "hidden",
         minHeight: 0,
         minWidth: 0,
+        ...(!metadataValid && {
+          border: "1px solid #F6D5D5",
+        }),
       }}
-      data-testid="governance-action-details-card"
     >
       <Box
         sx={{
-          padding: "40px 24px 0",
+          padding: "40px 24px",
           overflow: "auto",
           minHeight: 0,
         }}
       >
-        <GovActionDataLegacy {...govActionData} />
+        <GovActionDataLegacy {...props} />
       </Box>
 
       <Box
@@ -43,7 +46,7 @@ const GovernanceActionLegacy = ({
           minHeight: 0,
         }}
       >
-        <GovActionVotesLegacy {...govActionData} />
+        <GovActionVotesLegacy {...props} />
       </Box>
     </Box>
   );

@@ -1,12 +1,20 @@
-import { HttpException, Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { InjectDataSource } from "@nestjs/typeorm";
 import { getGovernanceAction } from "src/queries/governanceAction";
 import { getGovernanceActions } from "src/queries/governanceActions";
 import { DataSource } from "typeorm";
 import { HttpService } from "@nestjs/axios";
-import { lastValueFrom } from "rxjs";
-import { map, catchError } from "rxjs/operators";
+import { firstValueFrom } from "rxjs";
+import { catchError, finalize } from "rxjs/operators";
 import { ConfigService } from "@nestjs/config";
+import { MetadataValidationStatus } from "src/enums/ValidationErrors";
+import { getStandard } from "src/utils/getStandard";
+import * as blake from "blakejs";
+import * as jsonld from "jsonld";
+import { validateMetadataStandard } from "src/utils/validateMetadataStandard";
+import { parseMetadata } from "src/utils/parseMetadata";
+import { LoggerMessage } from "src/enums/LoggerMessage";
+import { ValidateMetadataResult } from "src/types/validateMetadata";
 
 @Injectable()
 export class GovernanceActionsService {
@@ -37,7 +45,7 @@ export class GovernanceActionsService {
     ]);
   }
 
-  private convertIpfsToHttpUrl(url: string): string {
+  private processUrl(url: string): string {
     if (url.startsWith("ipfs://")) {
       const ipfsHash = url.replace("ipfs://", "");
       const gateway = this.configService.get<string>("IPFS_GATEWAY");
@@ -46,39 +54,102 @@ export class GovernanceActionsService {
     return url;
   }
 
-  async findMetadata(url: string) {
-    try {
-      const httpUrl = this.convertIpfsToHttpUrl(url);
+  async getMetadata(
+    url: string,
+    hash: string
+  ): Promise<ValidateMetadataResult> {
+    let metadataStatus: MetadataValidationStatus;
+    let metadata: Record<string, unknown>;
+    let standard;
 
-      const response$ = this.httpService.get(httpUrl).pipe(
-        map((response) => {
-          if (!response.data) {
-            throw new Error("No data found in the response");
-          }
-          const metadata = response.data;
-          return {
-            authors: metadata.authors || [],
-            hashAlgorithm: metadata.hashAlgorithm || "",
-            body: {
-              abstract: metadata.body?.abstract || "",
-              motivation: metadata.body?.motivation || "",
-              rationale: metadata.body?.rationale || "",
-              references: metadata.body?.references || [],
-              title: metadata.body?.title || "",
-              comment: metadata.body?.comment || "",
-              externalUpdates: metadata.body?.externalUpdates || [],
+    const httpUrl = this.processUrl(url);
+
+    try {
+      const response = await firstValueFrom(
+        this.httpService
+          .get(httpUrl, {
+            headers: {
+              "User-Agent": "GovTool/Metadata-Validation-Tool",
+              "Content-Type": "application/json",
             },
-          };
-        }),
-        catchError((error) => {
-          throw new Error(`Error: ${error.message}`);
-        })
+          })
+          .pipe(
+            finalize(() => Logger.log(`Fetching ${httpUrl} completed`)),
+            catchError((error) => {
+              Logger.error(error, JSON.stringify(error));
+              throw MetadataValidationStatus.URL_NOT_FOUND;
+            })
+          )
       );
 
-      return await lastValueFrom(response$);
+      const rawData = (response as any).data;
+
+      let parsedData;
+
+      if (typeof rawData !== "object") {
+        try {
+          parsedData = JSON.parse(rawData);
+        } catch (error) {
+          throw MetadataValidationStatus.INCORRECT_FORMAT;
+        }
+      } else {
+        parsedData = rawData;
+      }
+
+      if (!parsedData?.body) {
+        throw MetadataValidationStatus.INCORRECT_FORMAT;
+      }
+
+      if (!standard) {
+        standard = getStandard(parsedData);
+      }
+
+      if (standard) {
+        await validateMetadataStandard(parsedData.body, standard);
+        metadata = parseMetadata(parsedData.body);
+      }
+      const rawDataForHashing =
+        typeof rawData === "object" ? JSON.stringify(rawData) : rawData;
+      const hashedMetadata = blake.blake2bHex(rawDataForHashing, undefined, 32);
+
+      if (hashedMetadata !== hash) {
+        // Optionally validate on a parsed metadata
+        const hashedParsedMetadata = blake.blake2bHex(
+          JSON.stringify(parsedData, null, 2),
+          undefined,
+          32
+        );
+        if (hashedParsedMetadata !== hash) {
+          // Optional support for the canonized data hash
+          // Validate canonized data hash
+          const dataForCanonicalization =
+            typeof rawData === "object" ? rawData : JSON.parse(rawData);
+          const canonizedMetadata = await jsonld.canonize(
+            dataForCanonicalization,
+            {
+              safe: false,
+            }
+          );
+
+          const hashedCanonizedMetadata = blake.blake2bHex(
+            canonizedMetadata,
+            undefined,
+            32
+          );
+
+          if (hashedCanonizedMetadata !== hash) {
+            throw MetadataValidationStatus.INVALID_HASH;
+          }
+        }
+      }
     } catch (error) {
-      throw error;
+      Logger.error(LoggerMessage.METADATA_VALIDATION_ERROR, error);
+      if (Object.values(MetadataValidationStatus).includes(error)) {
+        metadataStatus = error;
+      }
     }
+
+    return { metadataStatus, metadataValid: !Boolean(metadataStatus), data: metadata };
   }
 
   findOne(id: string) {

@@ -1,10 +1,11 @@
 import { IconExternalLink } from "@intersect.mbo/intersectmbo.org-icons-set";
 import Markdown from "react-markdown";
-import { Box, Typography, IconButton, Tooltip } from "@mui/material";
+import { Box, Typography, IconButton, Tooltip, Link } from "@mui/material";
 import React, { useState, PropsWithChildren } from "react";
 import CopyIcon from "../../Assets/Icons/CopyIcon";
 import { contentPreview } from "../../lib/utils";
-import { Link } from "react-router-dom";
+import { openInNewTab } from "../../lib/openInNewTab";
+import { useAppContext } from "../../contexts/AppContext";
 
 type BaseProperties = {
   isCopyable?: boolean;
@@ -50,6 +51,8 @@ interface GovActionElementProps {
 }
 
 const GovActionElement = ({ title, description }: GovActionElementProps) => {
+  const { ipfsGateway } = useAppContext();
+
   if (!description) return null;
   const isContentEmpty = () => {
     switch (description.type) {
@@ -126,11 +129,9 @@ const GovActionElement = ({ title, description }: GovActionElementProps) => {
   );
 
   const LinkButton = ({ url }: { url: string }) => (
-    <Link to={url || "#"} target="_blank">
-      <IconButton>
-        <IconExternalLink fill="#0033AD" />
-      </IconButton>
-    </Link>
+    <IconButton onClick={() => openInNewTab(url, ipfsGateway)}>
+      <IconExternalLink fill="#0033AD" />
+    </IconButton>
   );
 
   const renderDescription = () => {
@@ -206,14 +207,28 @@ const GovActionElement = ({ title, description }: GovActionElementProps) => {
         if (!Array.isArray(description.content)) return null;
 
         return (
-          <Box component="ul" sx={{ listStyle: "none", padding: 0 }}>
+          <Box
+            component="ul"
+            sx={{
+              listStyle: "none",
+              padding: 0,
+              margin: 0,
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+            }}
+          >
             {(description.content as LinkItem[]).map((link, index) => (
               <li key={`${link.uri}-${index}`}>
-                <Typography variant="body1" sx={{ mr: 1 }}>
-                  {link.label}
-                </Typography>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <a href={link.uri} style={{ textDecoration: "none" }}>
+                <Typography variant="body1">{link.label}</Typography>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                  <Link
+                    sx={{
+                      cursor: "pointer",
+                      textDecoration: "none",
+                    }}
+                    onClick={() => openInNewTab(link.uri, ipfsGateway)}
+                  >
                     <Typography
                       variant="body1"
                       sx={{
@@ -224,7 +239,7 @@ const GovActionElement = ({ title, description }: GovActionElementProps) => {
                         ? contentPreview(link.uri)
                         : link.uri}
                     </Typography>
-                  </a>
+                  </Link>
                   <LinkButton url={link.uri} />
                 </Box>
               </li>
