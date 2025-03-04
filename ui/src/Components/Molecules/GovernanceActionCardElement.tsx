@@ -16,7 +16,7 @@ export default function GovernanceActionCardElement({
       <Typography
         sx={{
           fontSize: 12,
-          color: "neutralGray",
+          color: "textGray",
           lineHeight: "16px",
           marginBottom: "4px",
           fontWeight: 500,

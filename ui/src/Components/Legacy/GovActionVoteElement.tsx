@@ -17,7 +17,6 @@ type VotesGroupProps = {
   threshold?: number | null;
 };
 
-
 const GovActionVoteElement = ({
   type,
   yesVotes,
@@ -29,7 +28,6 @@ const GovActionVoteElement = ({
   abstainVotes,
   threshold,
 }: VotesGroupProps) => {
-
   const getGovActionVoteGroupLabel = (type: VoterType) => {
     switch (type) {
       case "ccCommittee":
@@ -39,9 +37,9 @@ const GovActionVoteElement = ({
       case "sPos":
         return "SPOs";
       default:
-        return type
+        return type;
     }
-  }
+  };
   return (
     <Box
       sx={{
@@ -77,7 +75,7 @@ const GovActionVoteElement = ({
             sx={{
               fontSize: 12,
               lineHeight: "16px",
-              color: "neutralGray",
+              color: "textGray",
             }}
           >
             {threshold * 100}%
@@ -152,7 +150,7 @@ const Vote = ({ type, vote, value, percentage }: VoteProps) => (
             fontSize: 16,
             lineHeight: "24px",
             fontWeight: "500",
-            color: "neutralGray",
+            color: "textGray",
           }}
         >
           {typeof percentage === "number" ? `${percentage.toFixed(2)}%` : ""}

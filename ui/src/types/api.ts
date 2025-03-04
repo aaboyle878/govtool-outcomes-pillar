@@ -1,3 +1,9 @@
+export enum MetadataValidationStatus {
+  URL_NOT_FOUND = "URL_NOT_FOUND",
+  INVALID_JSONLD = "INVALID_JSONLD",
+  INVALID_HASH = "INVALID_HASH",
+  INCORRECT_FORMAT = "INCORRECT_FORMAT",
+}
 export interface GovernanceAction {
   id: string;
   tx_hash: string;
@@ -48,27 +54,32 @@ export type GovActionDescription = {
   major: number;
   minor: number;
 };
+
+export type Reference = {
+  "@type": string;
+  label: string;
+  uri: string;
+};
+
 export type VoteType = "yes" | "no" | "abstain" | "notVoted";
 
 export type GovActionMetadata = {
-  authors: any;
-  body: {
-    abstract: string;
-    comment: string;
-    externalUpdates: any[];
-    motivation: string;
-    rationale: string;
-    references: Array<{
-      "@type": string;
-      label: string;
-      uri: string;
-    }>;
+  metadataStatus?: MetadataValidationStatus;
+  metadataValid: boolean;
+  data: {
+    abstract?: string;
+    comment?: string;
+    externalUpdates?: any[];
+    motivation?: string;
+    rationale?: string;
+    references?: Reference[];
     title: string;
   };
-  hashAlgorithm: string;
 };
 
-export interface GovActionWithMetadata extends GovernanceAction, GovActionMetadata {}
+export interface GovActionWithMetadata
+  extends GovernanceAction,
+    GovActionMetadata {}
 
 export type EpochParams = {
   block_id: number | null;
