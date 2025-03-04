@@ -84,7 +84,7 @@ export default function GovernanceActionElement({
     >
       <Typography
         sx={{
-          color: "neutralGray",
+          color: "textGray",
           fontWeight: 600,
           fontSize: 14,
         }}

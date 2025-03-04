@@ -253,7 +253,7 @@ const GovActionElement = ({ title, description }: GovActionElementProps) => {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}>
-      <Typography color={"neutralGray"} fontWeight={600} sx={{ fontSize: 14 }}>
+      <Typography color={"textGray"} fontWeight={600} sx={{ fontSize: 14 }}>
         {title}
       </Typography>
       {renderDescription()}
