@@ -6,7 +6,8 @@ import GovActionDatesInfo from "./GovActionDatesInfo";
 import GovActionElement from "./GovActionElement";
 import { encodeCIP129Identifier, getFullGovActionId } from "../../lib/utils";
 import { useEffect, useState } from "react";
-import GovernanceActionCardId from "../SingleAction/GovernanceActionCardId";
+import GovernanceActionElement from "../SingleAction/GovernanceActionElement";
+import { DataMissingInfoBox } from "../Molecules/DataMissingInfoBox";
 
 const GovActionDataLegacy = ({
   title,
@@ -20,9 +21,11 @@ const GovActionDataLegacy = ({
   abstract,
   motivation,
   rationale,
-  body,
+  data,
   url,
   data_hash,
+  metadataStatus,
+  metadataValid,
 }: GovActionWithMetadata) => {
   const [shareableLink, setShareableLink] = useState<string | null>(null);
   useEffect(() => {
@@ -45,8 +48,10 @@ const GovActionDataLegacy = ({
     >
       <GovActionTitleLegacy
         title={title}
+        isDataMissing={metadataStatus || null}
         extra={{ externalMetadataLink: shareableLink as string }}
       />
+      <DataMissingInfoBox isDataMissing={metadataStatus || null} />
       <GovActionElement
         title="Governance Action Type:"
         description={{
@@ -66,64 +71,70 @@ const GovActionDataLegacy = ({
           date: expiry_date,
         }}
       />
-      <GovernanceActionCardId title="Governance Action ID:" id={idCIP129} />
-      <GovernanceActionCardId
+      <GovernanceActionElement
+        title="Governance Action ID:"
+        type="text"
+        content={idCIP129}
+        isCopyable
+      />
+      <GovernanceActionElement
         title="Legacy Governance Action ID (CIP-105):"
-        id={getFullGovActionId(tx_hash, index)}
+        type="text"
+        content={getFullGovActionId(tx_hash, index)}
+        isCopyable
       />
-      <GovActionElement
-        title="Abstract:"
-        description={{
-          type: "text",
-          content: abstract as string,
-          isCopyable: false,
-          truncate: false,
-          isMarkdown: true,
-        }}
-      />
-      <GovActionElement
-        title="Motivation:"
-        description={{
-          type: "text",
-          content: motivation as string,
-          isCopyable: false,
-          truncate: false,
-          isMarkdown: true,
-        }}
-      />
-      <GovActionElement
-        title="Rationale:"
-        description={{
-          type: "text",
-          content: rationale as string as string,
-          isCopyable: false,
-          truncate: false,
-          isMarkdown: true,
-        }}
-      />
-      <GovActionElement
+      {metadataValid && (
+        <>
+          <GovActionElement
+            title="Abstract:"
+            description={{
+              type: "text",
+              content: abstract as string,
+              isCopyable: false,
+              truncate: false,
+              isMarkdown: true,
+            }}
+          />
+          <GovActionElement
+            title="Motivation:"
+            description={{
+              type: "text",
+              content: motivation as string,
+              isCopyable: false,
+              truncate: false,
+              isMarkdown: true,
+            }}
+          />
+          <GovActionElement
+            title="Rationale:"
+            description={{
+              type: "text",
+              content: rationale as string as string,
+              isCopyable: false,
+              truncate: false,
+              isMarkdown: true,
+            }}
+          />
+        </>
+      )}
+      <GovernanceActionElement
         title="Metadata anchor link"
-        description={{
-          type: "link",
-          content: url,
-          truncate: true,
-        }}
+        type="link"
+        content={url}
+        isCopyable
       />
-      <GovActionElement
+      <GovernanceActionElement
         title="Metadata anchor hash"
-        description={{
-          type: "text",
-          content: data_hash,
-          isCopyable: true,
-          truncate: true,
-        }}
+        type="text"
+        content={data_hash}
+        isCopyable
       />
-      {body?.references && (
+      {metadataValid && data?.references && (
         <GovActionElement
           title="Supporting links"
           description={{
             type: "linkArray",
-            content: body.references,
+            content: data.references,
             truncate: true,
           }}
         />

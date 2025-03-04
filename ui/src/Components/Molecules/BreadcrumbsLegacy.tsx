@@ -1,12 +1,15 @@
 import { NavLink, To } from "react-router-dom";
 import { Box, Divider, Skeleton, Typography } from "@mui/material";
 import { useScreenDimension } from "../../hooks/useDimensions";
+import { MetadataValidationStatus } from "../../types/api";
+import { getMetadataDataMissingStatusTranslation } from "../../lib/getMetadataDataMissingStatusTranslation";
 
 type BreadcrumbsLegacyProps = {
   elementOne: string;
   elementOnePath: To;
   elementTwo: string;
   isMetadataLoading?: boolean | null;
+  isDataMissing: MetadataValidationStatus | null;
 };
 
 export const BreadcrumbsLegacy = ({
@@ -14,8 +17,16 @@ export const BreadcrumbsLegacy = ({
   elementOnePath,
   elementTwo,
   isMetadataLoading,
+  isDataMissing,
 }: BreadcrumbsLegacyProps) => {
   const { isMobile } = useScreenDimension();
+  const showLoader =
+    isMetadataLoading ||
+    (!(
+      isDataMissing && getMetadataDataMissingStatusTranslation(isDataMissing)
+    ) &&
+      !elementTwo);
+
   return (
     <Box
       sx={{
@@ -31,6 +42,7 @@ export const BreadcrumbsLegacy = ({
           sx={{
             whiteSpace: "nowrap",
             fontSize: 12,
+            fontWeight: 500,
           }}
         >
           {elementOne}
@@ -40,10 +52,10 @@ export const BreadcrumbsLegacy = ({
         orientation="vertical"
         flexItem
         color="textBlack"
-        sx={{ margin: "0 12px" }}
+        sx={{ margin: "0 6px" }}
       />
-      {isMetadataLoading ? (
-        <Skeleton variant="rounded" width={200} height={15} />
+      {showLoader ? (
+        <Skeleton variant="rounded" width={200} height={14} />
       ) : (
         <Typography
           variant="caption"
@@ -55,7 +67,11 @@ export const BreadcrumbsLegacy = ({
             fontSize: 12,
           }}
         >
-          {(!elementTwo && "Data not processable!") || elementTwo}
+          {(isDataMissing &&
+            getMetadataDataMissingStatusTranslation(
+              isDataMissing as MetadataValidationStatus
+            )) ||
+            elementTwo}
         </Typography>
       )}
     </Box>

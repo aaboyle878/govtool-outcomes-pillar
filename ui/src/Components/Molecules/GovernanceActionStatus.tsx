@@ -66,7 +66,7 @@ export default function GovernanceActionStatus({
         <Typography
           sx={{
             fontSize: 12,
-            color: "neutralGray",
+            color: "textGray",
             fontWeight: 500,
             lineHeight: "16px",
           }}

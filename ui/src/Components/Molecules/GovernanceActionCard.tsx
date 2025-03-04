@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardActions,
-  Typography,
-  Link,
-} from "@mui/material";
+import { Box, Button, Card, CardContent, CardActions } from "@mui/material";
 import GovernanceActionCardElement from "./GovernanceActionCardElement";
 import GovernanceActionCardIdElement from "./GovernanceActionCardIdElement";
 import {
@@ -19,6 +11,8 @@ import { GovernanceAction } from "../../types/api";
 import GovActionDatesInfo from "../Atoms/GovActionDatesInfo";
 import GovernanceActionStatus from "./GovernanceActionStatus";
 import { GOVERNANCE_ACTION_FILTERS } from "../../consts/filters";
+import { GovernanceActionCardHeader } from "./GovernanceActionCardHeader";
+import { NavLink } from "react-router-dom";
 
 interface GovernanceActionCardProps {
   action: GovernanceAction;
@@ -72,26 +66,11 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
         data-testid={`${idCIP129}-outcome-card-content`}
         sx={{ flexGrow: 1 }}
       >
-        {!metadataValid && (
-          <Box>
-            <Typography
-              sx={{ fontWeight: 600, color: "errorRed", fontSize: 18 }}
-            >
-              Data not processable!
-            </Typography>
-          </Box>
-        )}
-        {metadataValid && (
-          <Box>
-            <Typography
-              id={`${idCIP129}-card-title`}
-              data-testid={`${idCIP129}-card-title`}
-              sx={{ fontSize: 18, fontWeight: 600 }}
-            >
-              {action.title || metadata?.body?.title}
-            </Typography>
-          </Box>
-        )}
+        <GovernanceActionCardHeader
+          title={action.title || metadata?.data?.title}
+          isDataMissing={metadata?.metadataStatus || null}
+          dataTestId={`${idCIP129}-card-title`}
+        />
         <Box sx={{ marginTop: 2.5 }}>
           <GovActionDatesInfo action={action} />
         </Box>
@@ -99,7 +78,9 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
           <Box sx={{ marginTop: 2.5 }}>
             <GovernanceActionCardElement
               title="Abstract"
-              description={action.abstract || metadata?.body?.abstract}
+              description={
+                action.abstract || (metadata?.data?.abstract as string)
+              }
               dataTestId={`${idCIP129}-abstract`}
             />
           </Box>
@@ -135,12 +116,14 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
         id={`${idCIP129}-outcome-card-actions`}
         data-testid={`${idCIP129}-outcome-card-actions`}
       >
-        <Link
+        <NavLink
           data-testid={`${idCIP129}-view-details`}
-          href={`outcomes/governance_actions/${fullGovActionId}`}
+          to={`/outcomes/governance_actions/${fullGovActionId}`}
           color="inherit"
-          sx={{
+          style={{
+            display: "block",
             width: "100%",
+            textDecoration: "none",
           }}
         >
           <Button
@@ -155,7 +138,7 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
           >
             View Details
           </Button>
-        </Link>
+        </NavLink>
       </CardActions>
     </Card>
   );

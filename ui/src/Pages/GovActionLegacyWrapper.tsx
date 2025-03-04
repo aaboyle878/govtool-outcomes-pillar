@@ -37,10 +37,16 @@ const GovActionLegacyWrapper = ({ id }: GovernanceActionWrapperProps) => {
       <GovernanceActionLegacy
         {...governanceAction}
         {...metadata}
-        title={governanceAction?.title || metadata?.body?.title}
-        abstract={governanceAction?.abstract || metadata?.body?.abstract}
-        rationale={governanceAction?.rationale || metadata?.body?.rationale}
-        motivation={governanceAction?.motivation || metadata?.body?.motivation}
+        title={governanceAction?.title || metadata?.data?.title}
+        abstract={
+          governanceAction?.abstract || (metadata?.data?.abstract as string)
+        }
+        rationale={
+          governanceAction?.rationale || (metadata?.data?.rationale as string)
+        }
+        motivation={
+          governanceAction?.motivation || (metadata?.data?.motivation as string)
+        }
       />
     );
   };
@@ -55,41 +61,47 @@ const GovActionLegacyWrapper = ({ id }: GovernanceActionWrapperProps) => {
         height: "100%",
       }}
     >
-      <BreadcrumbsLegacy
-        elementOne="Outcomes"
-        elementOnePath="/outcomes"
-        elementTwo={governanceAction?.title || metadata?.body?.title}
-        isMetadataLoading={isMetadataLoading}
-      />
-      <NavLink
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "3px",
-          margin: "0px",
-          padding: "0px",
-          color: "#0033AD",
-          textDecoration: "none",
-          fontWeight: 400,
-        }}
-        to={"/outcomes"}
-      >
-        <IconCheveronLeft
-          style={{
-            fontSize: "20px",
-          }}
-          fill="#0033AD"
+      <Box>
+        <BreadcrumbsLegacy
+          elementOne="Outcomes"
+          elementOnePath="/outcomes"
+          elementTwo={governanceAction?.title || metadata?.data?.title}
+          isMetadataLoading={isMetadataLoading}
+          isDataMissing={metadata?.metadataStatus || null}
         />
-        <Typography
-          sx={{
-            fontSize: "14px",
-            lineHeight: "20px",
-            color: "inherit",
+        <NavLink
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "start",
+            gap: "3px",
+            margin: "0px",
+            padding: "0px",
+            color: "#0033AD",
+            textDecoration: "none",
+            fontWeight: 400,
           }}
+          to={"/outcomes"}
         >
-          Back
-        </Typography>
-      </NavLink>
+          <IconCheveronLeft
+            style={{
+              fontSize: "20px",
+              marginLeft: 0,
+              paddingLeft: 0,
+            }}
+            fill="#0033AD"
+          />
+          <Typography
+            sx={{
+              fontSize: "14px",
+              lineHeight: "20px",
+              color: "inherit",
+            }}
+          >
+            Back
+          </Typography>
+        </NavLink>
+      </Box>
       {renderGovernanceAction()}
     </Box>
   );

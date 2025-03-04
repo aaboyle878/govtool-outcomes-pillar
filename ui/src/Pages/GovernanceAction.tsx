@@ -35,11 +35,11 @@ function GovernanceAction({ id }: GovernanceActionProps) {
     addSuccessAlert("Copied to clipboard!");
   };
 
-  const abstractText = governanceAction?.abstract || metadata?.body?.abstract;
+  const abstractText = governanceAction?.abstract || metadata?.data?.abstract;
   const motivationText =
-    governanceAction?.motivation || metadata?.body?.motivation;
+    governanceAction?.motivation || metadata?.data?.motivation;
   const rationaleText =
-    governanceAction?.rationale || metadata?.body?.rationale;
+    governanceAction?.rationale || metadata?.data?.rationale;
 
   const hasAnyContent = abstractText || motivationText || rationaleText;
 
@@ -63,7 +63,7 @@ function GovernanceAction({ id }: GovernanceActionProps) {
           <Breadcrumbs
             elementOne="Outcomes"
             elementOnePath="/outcomes"
-            elementTwo={governanceAction?.title || metadata?.body?.title}
+            elementTwo={governanceAction?.title || metadata?.data?.title}
             isMetadataLoading={isMetadataLoading}
           />
           <Box
@@ -80,7 +80,7 @@ function GovernanceAction({ id }: GovernanceActionProps) {
                 fontSize="1.75rem"
                 lineHeight="2.25rem"
               >
-                {governanceAction?.title || metadata?.body?.title}
+                {governanceAction?.title || metadata?.data?.title}
               </Typography>
             )}
             <ButtonBase
@@ -158,7 +158,8 @@ function GovernanceAction({ id }: GovernanceActionProps) {
                       <ReasoningElement
                         label="Abstract"
                         text={
-                          governanceAction?.abstract || metadata?.body?.abstract
+                          governanceAction?.abstract ||
+                          (metadata?.data?.abstract as string)
                         }
                       />
                     )}
@@ -167,7 +168,7 @@ function GovernanceAction({ id }: GovernanceActionProps) {
                         label="Motivation"
                         text={
                           governanceAction?.motivation ||
-                          metadata?.body?.motivation
+                          (metadata?.data?.motivation as string)
                         }
                       />
                     )}
@@ -176,13 +177,14 @@ function GovernanceAction({ id }: GovernanceActionProps) {
                         label="Rationale"
                         text={
                           governanceAction?.rationale ||
-                          metadata?.body?.rationale
+                          (metadata?.data?.rationale as string)
                         }
                       />
                     )}
-                    {metadata?.body?.references.length > 0 && (
-                      <References links={metadata?.body?.references} />
-                    )}
+                    {metadata?.data?.references &&
+                      metadata?.data?.references.length > 0 && (
+                        <References links={metadata?.data?.references} />
+                      )}
                   </Box>
                 )}
               </Box>
