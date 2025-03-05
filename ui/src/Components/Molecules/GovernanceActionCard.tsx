@@ -1,6 +1,6 @@
-import { Box, Button, Card, CardContent, CardActions } from "@mui/material";
-import GovernanceActionCardElement from "./GovernanceActionCardElement";
-import GovernanceActionCardIdElement from "./GovernanceActionCardIdElement";
+import { Box, Card, CardContent, CardActions } from "@mui/material";
+import GovernanceActionCardElement from "../ActionCard/GovernanceActionCardElement";
+import GovernanceActionCardIdElement from "../ActionCard/GovernanceActionCardIdElement";
 import {
   encodeCIP129Identifier,
   getFullGovActionId,
@@ -8,11 +8,12 @@ import {
 } from "../../lib/utils";
 import { useMetadata } from "../../hooks/useMetadata";
 import { GovernanceAction } from "../../types/api";
-import GovActionDatesInfo from "../Atoms/GovActionDatesInfo";
+import GovActionDatesInfo from "./GovActionDatesInfo";
 import GovernanceActionStatus from "./GovernanceActionStatus";
 import { GOVERNANCE_ACTION_FILTERS } from "../../consts/filters";
-import { GovernanceActionCardHeader } from "./GovernanceActionCardHeader";
+import { GovernanceActionCardHeader } from "../ActionCard/GovernanceActionCardHeader";
 import { NavLink } from "react-router-dom";
+import { Button } from "../Atoms/Button";
 
 interface GovernanceActionCardProps {
   action: GovernanceAction;

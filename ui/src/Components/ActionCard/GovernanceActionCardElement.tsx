@@ -1,4 +1,5 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
+import { Typography } from "../Atoms/Typography";
 
 interface GovernanceActionCardElementProps {
   title: string;
@@ -36,6 +37,7 @@ export default function GovernanceActionCardElement({
           lineHeight: "20px",
           WebkitLineClamp: 2,
           maxWidth: "auto",
+          fontWeight: 400,
         }}
       >
         {description}

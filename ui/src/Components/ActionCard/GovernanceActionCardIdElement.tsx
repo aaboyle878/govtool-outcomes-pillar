@@ -1,6 +1,7 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import CopyIcon from "../../Assets/Icons/CopyIcon";
 import { useSnackbar } from "../../contexts/Snackbar";
+import { Typography } from "../Atoms/Typography";
 interface GovernanceActionCardIdElementProps {
   title: string;
   id: string;
@@ -48,6 +49,7 @@ export default function GovernanceActionCardIdElement({
             fontSize: 14,
             color: "primaryBlue",
             lineHeight: "20px",
+            fontWeight: 400,
           }}
         >
           {id}

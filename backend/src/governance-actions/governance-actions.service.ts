@@ -72,6 +72,7 @@ export class GovernanceActionsService {
               "User-Agent": "GovTool/Metadata-Validation-Tool",
               "Content-Type": "application/json",
             },
+            responseType: "text",
           })
           .pipe(
             finalize(() => Logger.log(`Fetching ${httpUrl} completed`)),
@@ -108,9 +109,7 @@ export class GovernanceActionsService {
         await validateMetadataStandard(parsedData.body, standard);
         metadata = parseMetadata(parsedData.body);
       }
-      const rawDataForHashing =
-        typeof rawData === "object" ? JSON.stringify(rawData) : rawData;
-      const hashedMetadata = blake.blake2bHex(rawDataForHashing, undefined, 32);
+      const hashedMetadata = blake.blake2bHex(rawData, undefined, 32);
 
       if (hashedMetadata !== hash) {
         // Optionally validate on a parsed metadata
@@ -149,7 +148,11 @@ export class GovernanceActionsService {
       }
     }
 
-    return { metadataStatus, metadataValid: !Boolean(metadataStatus), data: metadata };
+    return {
+      metadataStatus,
+      metadataValid: !Boolean(metadataStatus),
+      data: metadata,
+    };
   }
 
   findOne(id: string) {

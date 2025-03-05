@@ -1,12 +1,13 @@
 import { IconInformationCircle } from "@intersect.mbo/intersectmbo.org-icons-set";
-import { Box, Icon, Typography } from "@mui/material";
+import { Box, Icon } from "@mui/material";
 import { GovernanceAction } from "../../types/api";
 import {
   encodeCIP129Identifier,
   formatTimeStamp,
   getProposalStatus,
 } from "../../lib/utils";
-import { Tooltip } from "./Tooltip";
+import { Tooltip } from "../Atoms/Tooltip";
+import { Typography } from "../Atoms/Typography";
 
 interface GovActionDatesInfoProps {
   action: GovernanceAction;

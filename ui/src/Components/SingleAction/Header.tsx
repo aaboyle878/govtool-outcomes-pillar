@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { formatTimeStamp } from "../../lib/utils";
-import StatusChip from "./StatusChip";
+import StatusChip from "../Molecules/StatusChip";
 import { Status } from "../../types/api";
 
 interface HeaderProps {

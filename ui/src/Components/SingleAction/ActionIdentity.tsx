@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
-import GovernanceActionCardElement from "../Molecules/GovernanceActionCardElement";
-import GovernanceActionCardIdElement from "../Molecules/GovernanceActionCardIdElement";
+import GovernanceActionCardElement from "../ActionCard/GovernanceActionCardElement";
+import GovernanceActionCardIdElement from "../ActionCard/GovernanceActionCardIdElement";
 import { encodeCIP129Identifier, getFullGovActionId } from "../../lib/utils";
 type governanceActionProps = {
   governanceAction: any;
