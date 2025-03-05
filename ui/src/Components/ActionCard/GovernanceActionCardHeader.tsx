@@ -1,9 +1,10 @@
-import { Box, Icon, Typography } from "@mui/material";
+import { Box, Icon } from "@mui/material";
 import { IconInformationCircle } from "@intersect.mbo/intersectmbo.org-icons-set";
 import { MetadataValidationStatus } from "../../types/api";
 import { getMetadataDataMissingStatusTranslation } from "../../lib/getMetadataDataMissingStatusTranslation";
 import { dataMissingErrors } from "../../consts/dataMissingErrors";
 import { Tooltip } from "../Atoms/Tooltip";
+import { Typography } from "../Atoms/Typography";
 
 type GovernanceActionCardHeaderProps = {
   title?: string;

@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { Status } from "../../types/api";
-import StatusChip from "../SingleAction/StatusChip";
+import StatusChip from "../Molecules/StatusChip";
 
 interface GovernanceActionStatusLegacyProps {
   status: Status;

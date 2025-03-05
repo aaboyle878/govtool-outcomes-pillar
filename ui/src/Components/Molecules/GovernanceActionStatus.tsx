@@ -1,6 +1,7 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { Status } from "../../types/api";
-import StatusChip from "../SingleAction/StatusChip";
+import StatusChip from "./StatusChip";
+import { Typography } from "../Atoms/Typography";
 
 interface GovernanceActionStatusProps {
   status: Status;
@@ -21,7 +22,7 @@ export default function GovernanceActionStatus({
 
     if (ratified_epoch && enacted_epoch) {
       return (
-        <Box display="flex" flexDirection="row" gap="4px">
+        <Box display="flex" flexDirection="row" gap={1}>
           <StatusChip status="Ratified" />
           <StatusChip status="Enacted" />
         </Box>
@@ -38,7 +39,7 @@ export default function GovernanceActionStatus({
 
     if (expired_epoch && dropped_epoch) {
       return (
-        <Box display="flex" flexDirection="row" gap="4px">
+        <Box display="flex" flexDirection="row" gap={1}>
           <StatusChip status="Expired" />
           <StatusChip status="Not Ratified" />
         </Box>
@@ -68,7 +69,6 @@ export default function GovernanceActionStatus({
             fontSize: 12,
             color: "textGray",
             fontWeight: 500,
-            lineHeight: "16px",
           }}
         >
           Status
