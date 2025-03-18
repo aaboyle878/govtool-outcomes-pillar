@@ -1,3 +1,4 @@
+import { PropsWithChildren } from "react";
 import { Box } from "@mui/material";
 import { Typography } from "../Atoms/Typography";
 import Markdown from "react-markdown";
@@ -36,6 +37,13 @@ export default function GovernanceActionCardElement({
     }
 
     if (type === "markdown") {
+      const truncateMarkdown = (markdown: string) => {
+        return markdown.split("\n").slice(0, 2).join("\n");
+      };
+
+      const truncatedDescription = truncateMarkdown(
+        description?.toString() || ""
+      );
       return (
         <Box
           sx={{
@@ -48,8 +56,7 @@ export default function GovernanceActionCardElement({
         >
           <Markdown
             components={{
-              // eslint-disable-next-line
-              p(props) {
+              p(props: PropsWithChildren) {
                 const { children } = props;
                 return (
                   <Typography
@@ -57,10 +64,13 @@ export default function GovernanceActionCardElement({
                       fontSize: 14,
                       fontWeight: 400,
                       lineHeight: "20px",
-                      maxWidth: "auto",
+                      maxWidth: "100%",
                       display: "-webkit-box",
                       WebkitBoxOrient: "vertical",
                       WebkitLineClamp: 2,
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "normal",
                     }}
                   >
                     {children}
@@ -69,7 +79,7 @@ export default function GovernanceActionCardElement({
               },
             }}
           >
-            {description?.toString()}
+            {truncatedDescription}
           </Markdown>
         </Box>
       );
