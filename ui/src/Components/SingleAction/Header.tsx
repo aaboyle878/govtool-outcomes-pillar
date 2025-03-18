@@ -1,84 +1,76 @@
-import { Box, Typography } from "@mui/material";
-import { formatTimeStamp } from "../../lib/utils";
-import StatusChip from "../Molecules/StatusChip";
-import { Status } from "../../types/api";
+import { Box, Skeleton } from "@mui/material";
+import ShareIcon from "../../Assets/Icons/ShareIcon";
+import { MetadataValidationStatus } from "../../types/api";
+import { useSnackbar } from "../../contexts/Snackbar";
+import { Typography } from "../Atoms/Typography";
+
+import { getMetadataDataMissingStatusTranslation } from "../../lib/getMetadataDataMissingStatusTranslation";
+import { Button } from "../Atoms/Button";
 
 interface HeaderProps {
-  dateSubmitted: string;
-  epochSubmitted: number;
-  status: Status;
+  title: string | null;
+  isGovernanceActionLoading: boolean;
+  isMetadataLoading: boolean;
+  isDataMissing: MetadataValidationStatus | null;
 }
 
-
 export default function Header({
-  dateSubmitted,
-  epochSubmitted,
-  status,
+  title,
+  isGovernanceActionLoading,
+  isMetadataLoading,
+  isDataMissing,
 }: HeaderProps) {
-  const getStatusChips = () => {
-    const { ratified_epoch, enacted_epoch, dropped_epoch, expired_epoch } =
-      status;
+  const { addSuccessAlert } = useSnackbar();
 
-    if (!ratified_epoch && !enacted_epoch && !dropped_epoch && !expired_epoch) {
-      return <StatusChip status="Live" />;
-    }
-
-    if (ratified_epoch && enacted_epoch) {
-      return (
-        <Box display="flex" flexDirection="row" gap="4px">
-          <StatusChip status="Ratified" />
-          <StatusChip status="Enacted" />
-        </Box>
-      );
-    }
-
-    if (ratified_epoch && !enacted_epoch) {
-      return <StatusChip status="Ratified" />;
-    }
-
-    if (!ratified_epoch && enacted_epoch) {
-      return <StatusChip status="Enacted" />;
-    }
-
-    if (expired_epoch && dropped_epoch) {
-      return (
-        <Box display="flex" flexDirection="row" gap="4px">
-          <StatusChip status="Expired" />
-          <StatusChip status="Not Ratified" />
-        </Box>
-      );
-    }
-
-    if (dropped_epoch) {
-      return <StatusChip status="Not Ratified" />;
-    }
-
-    if (expired_epoch) {
-      return <StatusChip status="Expired" />;
-    }
-
-    return null;
+  const onCopy = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    navigator.clipboard.writeText(window.location.href);
+    addSuccessAlert("Copied to clipboard!");
   };
+
   return (
-    <Box>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        width="100%"
-        alignItems="center"
-      >
-        <Typography sx={{ fontSize: "12px" }}>
-          Submitted:{" "}
-          <Typography
-            sx={{ fontSize: "12px", fontWeight: "bold" }}
-            component="span"
-          >
-            {formatTimeStamp(dateSubmitted)}
-          </Typography>{" "}
-          {`(Epoch ${epochSubmitted})`}
+    <Box
+      data-testid={`single-action-header`}
+      display="flex"
+      justifyContent="space-between"
+    >
+      {isGovernanceActionLoading || isMetadataLoading ? (
+        <Skeleton variant="rounded" width="75%" height={32} />
+      ) : (
+        <Typography
+          data-testid={`single-action-title`}
+          sx={{
+            fontSize: 22,
+            py: "6px",
+            fontWeight: 600,
+            lineHeight: "24px",
+            WebkitLineClamp: 2,
+            wordBreak: "break-word",
+            ...(isDataMissing && { color: "errorRed" }),
+          }}
+        >
+          {(isDataMissing &&
+            getMetadataDataMissingStatusTranslation(
+              isDataMissing as MetadataValidationStatus
+            )) ||
+            title}
         </Typography>
-        {getStatusChips()}
-      </Box>
+      )}
+      <Button
+        size="small"
+        variant="text"
+        dataTestId={`single-action-share-link`}
+        onClick={onCopy}
+        sx={(theme) => ({
+          padding: 0,
+          transition: "all 0.3s",
+          "&:hover": {
+            boxShadow: theme.shadows[1],
+          },
+        })}
+      >
+        <ShareIcon />
+      </Button>
     </Box>
   );
 }

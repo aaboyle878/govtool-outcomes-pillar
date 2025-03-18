@@ -1,12 +1,15 @@
 import { NavLink, To } from "react-router-dom";
-import { Box, Divider, Skeleton, Typography } from "@mui/material";
-import { useScreenDimension } from "../../hooks/useDimensions";
+import { Box, Divider, Skeleton } from "@mui/material";
+import { Typography } from "../Atoms/Typography";
+import { MetadataValidationStatus } from "../../types/api";
+import { getMetadataDataMissingStatusTranslation } from "../../lib/getMetadataDataMissingStatusTranslation";
 
 type BreadcrumbsProps = {
   elementOne: string;
   elementOnePath: To;
   elementTwo: string;
   isMetadataLoading?: boolean | null;
+  isDataMissing: MetadataValidationStatus | null;
 };
 
 export const Breadcrumbs = ({
@@ -14,28 +17,37 @@ export const Breadcrumbs = ({
   elementOnePath,
   elementTwo,
   isMetadataLoading,
+  isDataMissing,
 }: BreadcrumbsProps) => {
-  const { isMobile } = useScreenDimension();
+  const showLoader =
+    isMetadataLoading ||
+    (!(
+      isDataMissing && getMetadataDataMissingStatusTranslation(isDataMissing)
+    ) &&
+      !elementTwo);
+
   return (
     <Box
+      data-testid="breadcrumb-component"
       sx={{
         display: "flex",
         alignItems: "center",
-        margin: `2px 0 ${isMobile ? "44px" : "24px"}`,
+        margin: "2px 0 20px",
       }}
     >
       <img
         src="/icons/ArrowLeftThin.svg"
         alt="arrow"
-        style={{ marginRight: "12px" }}
+        style={{ marginRight: "6px" }}
       />
       <NavLink to={elementOnePath} style={{ textDecorationColor: "#0033AD" }}>
         <Typography
-          color="primary"
+          color="primaryBlue"
           variant="caption"
           sx={{
             whiteSpace: "nowrap",
             fontSize: 12,
+            fontWeight: 500,
           }}
         >
           {elementOne}
@@ -47,7 +59,7 @@ export const Breadcrumbs = ({
         color="textBlack"
         sx={{ margin: "0 12px" }}
       />
-      {isMetadataLoading ? (
+      {showLoader ? (
         <Skeleton variant="rounded" width={200} height={15} />
       ) : (
         <Typography
@@ -60,7 +72,11 @@ export const Breadcrumbs = ({
             fontSize: 12,
           }}
         >
-          {(!elementTwo && "Data not processable!") || elementTwo}
+          {(isDataMissing &&
+            getMetadataDataMissingStatusTranslation(
+              isDataMissing as MetadataValidationStatus
+            )) ||
+            elementTwo}
         </Typography>
       )}
     </Box>
