@@ -98,7 +98,7 @@ export const VoteSection = ({
   const formatValue = (value: number) =>
     isCC ? value : `₳ ${correctAdaFormatWithSuffix(value)}`;
   if (isLoading) {
-    return <VoteSectionLoader title={title} isCC={isCC} />;
+    return <VoteSectionLoader title={title} />;
   }
 
   return (
