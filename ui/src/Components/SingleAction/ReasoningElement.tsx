@@ -1,5 +1,8 @@
 import { Box, Typography } from "@mui/material";
 import Markdown from "react-markdown";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+
 type ReasoningElementProps = {
   label: string;
   text: string;
@@ -31,7 +34,6 @@ function ReasoningElement({ label, text, dataTestId }: ReasoningElementProps) {
       >
         <Markdown
           components={{
-            // eslint-disable-next-line
             p(props) {
               const { children } = props;
               return (
@@ -49,6 +51,8 @@ function ReasoningElement({ label, text, dataTestId }: ReasoningElementProps) {
               );
             },
           }}
+          remarkPlugins={[remarkMath]}
+          rehypePlugins={[rehypeKatex]}
         >
           {text?.toString()}
         </Markdown>

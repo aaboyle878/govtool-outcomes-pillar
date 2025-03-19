@@ -6,7 +6,6 @@ import {
   formatTimeStamp,
   getProposalStatus,
 } from "../../lib/utils";
-// import { Tooltip } from "../Atoms/Tooltip";
 import { Typography } from "../Atoms/Typography";
 
 interface GovActionDatesInfoProps {
@@ -32,19 +31,9 @@ const GovActionDatesInfo = ({
 
   const renderSubmissionInfoTooltip = () => {
     return (
-      // <Tooltip
-      //   heading="Submission Date"
-      //   paragraphOne="The date when the governance action was submitted on-chain."
-      //   placement="bottom-end"
-      //   arrow
-      // >
-      //   <Icon>
-      //     <IconInformationCircle width={19} height={19} />
-      //   </Icon>
-      // </Tooltip>
       <Tooltip
         title={
-          <Box sx={{ bgcolor: "rgb(36, 34, 50)", p: 1, borderRadius: 2 }}>
+          <Box sx={{ bgcolor: "rgb(36, 34, 50)", p: 1, borderRadius: 1 }}>
             <Typography variant="body1" color={"white"}>
               Submission Date
             </Typography>
@@ -78,23 +67,9 @@ const GovActionDatesInfo = ({
 
   const renderExpirationInfoTooltip = () => {
     return (
-      // <Tooltip
-      //   heading={isExpired ? "Expired Date" : "Expiry Date"}
-      //   paragraphOne="The date when the governance action will expiry if it doesn't
-      //         reach ratification thresholds."
-      //   paragraphTwo="IMPORTANT: If the governance action is ratified before the
-      //          expiry date it will be considered ratified and it will not be
-      //          available to vote on afterwards."
-      //   placement="bottom-end"
-      //   arrow
-      // >
-      //   <Icon>
-      //     <IconInformationCircle width={19} height={19} />
-      //   </Icon>
-      // </Tooltip>
       <Tooltip
         title={
-          <Box sx={{ bgcolor: "rgb(36, 34, 50)", p: 1, borderRadius: 2 }}>
+          <Box sx={{ bgcolor: "rgb(36, 34, 50)", p: 1, borderRadius: 1 }}>
             <Typography variant="body1" color={"white"}>
               {isExpired ? "Expired Date" : "Expiry Date"}
             </Typography>

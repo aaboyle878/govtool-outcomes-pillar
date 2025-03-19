@@ -3,7 +3,6 @@ import { Typography } from "../Atoms/Typography";
 
 type VoteSectionLoaderProps = {
   title?: string;
-  isCC?: boolean;
 };
 
 const ProgressContainer = styled(Box)({
@@ -16,11 +15,10 @@ const ProgressContainer = styled(Box)({
 
 export const VoteSectionLoader = ({
   title = "Loading...",
-  isCC = false,
 }: VoteSectionLoaderProps) => {
   return (
     <Box mb={3}>
-      <Box display="flex" alignItems="center" gap={1} mb={1}>
+      <Box mb={1}>
         <Typography
           color="textGray"
           sx={{
@@ -30,17 +28,12 @@ export const VoteSectionLoader = ({
         >
           {title}
         </Typography>
-        <Skeleton variant="text" width={80} height={24} />
       </Box>
-
       <Grid container spacing={1}>
         <Grid item xs={12}>
           <Box display="flex" justifyContent="space-between" mb={0.5}>
-            <Skeleton variant="text" width={140} height={20} />
-            <Skeleton variant="text" width={30} height={20} />
-            <Skeleton variant="text" width={140} height={20} />
+            <Skeleton variant="text" width={160} height={20} />
           </Box>
-
           <ProgressContainer>
             <Skeleton
               variant="rectangular"
@@ -51,17 +44,10 @@ export const VoteSectionLoader = ({
           </ProgressContainer>
         </Grid>
         <Grid item xs={12}>
-          <Box
-            mb={0.5}
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
+          <Box display="flex" flexDirection="column" gap={0.5}>
             <Skeleton variant="text" width={140} height={20} />
             <Skeleton variant="text" width={140} height={20} />
           </Box>
-
-          {!isCC && <Skeleton variant="text" width={140} height={20} />}
         </Grid>
       </Grid>
     </Box>

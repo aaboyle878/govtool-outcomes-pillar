@@ -29,6 +29,25 @@ declare module "@mui/material/styles" {
     textGray: string;
     lightOrange: string;
     fadedPurple: string;
+    badgeColors: {
+      primary: string;
+      error: string;
+      errorLight: string;
+      secondary: string;
+      lightPurple: string;
+      success_text: string;
+      success: string;
+      grey: string;
+    };
+    textColors: {
+      grey: string;
+      darkPurple: string;
+      black: string;
+      orange: string;
+    };
+    customDivider: {
+      primary: string;
+    };
   }
 
   interface Theme extends MuiTheme {

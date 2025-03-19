@@ -58,12 +58,7 @@ const GovernanceActionsList = () => {
       ) : null}
 
       {displayedActions.length > 0 && (
-        <Grid
-          container
-          rowSpacing={4}
-          columnSpacing={4}
-          sx={{ marginBottom: 4 }}
-        >
+        <Grid container rowSpacing={4} columnSpacing={4}>
           {displayedActions.map((action) => (
             <Grid
               item
@@ -72,7 +67,6 @@ const GovernanceActionsList = () => {
               md={6}
               lg={4}
               key={`${action.id}-${action.tx_hash}`}
-              sx={{ marginBottom: { xs: 0, sm: 2, md: 4 } }}
             >
               <Box sx={{ display: "flex", height: "100%" }}>
                 <GovernanceActionCard action={action} />

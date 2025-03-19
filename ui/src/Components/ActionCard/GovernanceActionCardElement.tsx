@@ -2,6 +2,8 @@ import { PropsWithChildren } from "react";
 import { Box } from "@mui/material";
 import { Typography } from "../Atoms/Typography";
 import Markdown from "react-markdown";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 
 type GovernanceActionCardElementProps = {
   title: string;
@@ -78,6 +80,8 @@ export default function GovernanceActionCardElement({
                 );
               },
             }}
+            remarkPlugins={[remarkMath]}
+            rehypePlugins={[rehypeKatex]}
           >
             {truncatedDescription}
           </Markdown>

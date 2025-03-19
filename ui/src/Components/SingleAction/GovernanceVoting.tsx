@@ -181,7 +181,7 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
           mb: 3,
         }}
       >
-        Votes submitted for this Governance Action:
+        Voting results for this Governance Action
       </Typography>
 
       <VoteSection
@@ -257,8 +257,17 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
       <Divider sx={{ my: 2 }} />
 
       <Box>
-        <Typography sx={{ mb: 1 }}>Outcome</Typography>
-        <Box display="flex" justifyContent="flex-start" gap={1}>
+        <Typography
+          color="textGray"
+          sx={{
+            fontWeight: 600,
+            fontSize: 18,
+            mb: 1,
+          }}
+        >
+          Outcome
+        </Typography>
+        <Box display="flex" justifyContent="flex-start" gap={5} paddingY={0.5}>
           <OutcomeIndicator
             title="DReps"
             passed={isDRepPassed}
