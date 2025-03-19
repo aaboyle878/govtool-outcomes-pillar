@@ -51,7 +51,7 @@ export const OutcomeIndicator = ({
       </Avatar>
       <Typography
         data-testid="voter-type-label"
-        variant="caption"
+        variant="body2"
         color={!isDisplayed ? "text.disabled" : "textGray"}
       >
         {title}

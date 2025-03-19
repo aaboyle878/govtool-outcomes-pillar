@@ -62,7 +62,8 @@ export default function GovernanceActionStatus({
     <Box
       data-testid={`${actionId}-status`}
       display="flex"
-      justifyContent="space-between"
+      justifyContent={isCard ? "space-between" : ""}
+      gap={isCard ? 0 : 3}
       width="100%"
       alignItems="center"
     >
