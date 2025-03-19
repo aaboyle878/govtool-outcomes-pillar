@@ -9,6 +9,7 @@ import { EpochParams, NetworkMetrics } from "../types/api";
 import { useGetEpochParams } from "../hooks/useGetEpochParams";
 import { useGetNetworkMetrics } from "../hooks/useGetNetworkMetrics";
 import { setItemToLocalStorage } from "../lib/utils";
+import { WalletAPIData } from "../types/walletAPI";
 
 // Default IPFS gateway
 const DEFAULT_IPFS_GATEWAY = "https://dweb.link/ipfs";
@@ -17,15 +18,21 @@ type AppContextType = {
   epochParams?: EpochParams;
   networkMetrics?: NetworkMetrics;
   ipfsGateway: string;
+  walletAPI: WalletAPIData;
 };
 
 type AppContextProviderProps = PropsWithChildren<{
   ipfsGateway?: string;
+  walletAPI: WalletAPIData;
 }>;
 
 const AppContext = createContext<AppContextType | null>(null);
 
-const AppContextProvider = ({ children, ipfsGateway = DEFAULT_IPFS_GATEWAY }: AppContextProviderProps) => {
+const AppContextProvider = ({
+  children,
+  ipfsGateway = DEFAULT_IPFS_GATEWAY,
+  walletAPI,
+}: AppContextProviderProps) => {
   const { fetchEpochParams, epochParams } = useGetEpochParams();
   const { fetchNetworkMetrics, networkMetrics } = useGetNetworkMetrics();
 
@@ -54,8 +61,9 @@ const AppContextProvider = ({ children, ipfsGateway = DEFAULT_IPFS_GATEWAY }: Ap
       epochParams,
       networkMetrics,
       ipfsGateway,
+      walletAPI,
     }),
-    [epochParams, networkMetrics, ipfsGateway]
+    [epochParams, networkMetrics, ipfsGateway, walletAPI]
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

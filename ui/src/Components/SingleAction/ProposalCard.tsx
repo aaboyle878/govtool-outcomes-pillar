@@ -1,7 +1,6 @@
 import {
   IconChatAlt,
   IconInformationCircle,
-  IconLink,
   IconShare,
 } from "@intersect.mbo/intersectmbo.org-icons-set";
 import {
@@ -13,8 +12,6 @@ import {
   CardContent,
   CardHeader,
   IconButton,
-  Menu,
-  Stack,
   Tooltip,
   Typography,
   alpha,
@@ -25,10 +22,16 @@ import { Link } from "react-router-dom";
 import { formatTimeStamp } from "../../lib/utils";
 import Markdown from "react-markdown";
 import { useSnackbar } from "../../contexts/Snackbar";
+import { theme } from "../../theme";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 
 const ProposalCard = ({ proposal }: { proposal: any }) => {
   const [proposalLink, setProposalLink] = useState("");
   const { addSuccessAlert } = useSnackbar();
+  const {
+    palette: { badgeColors, textColors, customDivider },
+  } = theme;
 
   useEffect(() => {
     let domain = new URL(window.location.href);
@@ -53,8 +56,16 @@ const ProposalCard = ({ proposal }: { proposal: any }) => {
     height: "100%",
     "& .MuiBadge-badge": {
       transform: "translate(-25px, -15px)",
-      color: submitted ? "white" : draft ? "#212A3D" : "#315E29",
-      backgroundColor: submitted ? "#506288" : draft ? "#D6D8FF" : "#C0E4BA",
+      color: submitted
+        ? "white"
+        : draft
+        ? textColors.black
+        : badgeColors.success_text,
+      backgroundColor: submitted
+        ? badgeColors.grey
+        : draft
+        ? badgeColors.lightPurple
+        : badgeColors.success,
       padding: "14px 12px",
       borderRadius: 100,
     },
@@ -119,7 +130,7 @@ const ProposalCard = ({ proposal }: { proposal: any }) => {
                 variant="body2"
                 component={"h5"}
                 sx={{
-                  color: "#242232",
+                  color: textColors.darkPurple,
                 }}
                 mt={1}
               >
@@ -137,7 +148,11 @@ const ProposalCard = ({ proposal }: { proposal: any }) => {
         >
           <Box display={"flex"} flexDirection={"column"} gap={2} mb={3}>
             <Box>
-              <Typography variant="caption" component="p" color="#506288">
+              <Typography
+                variant="caption"
+                component="p"
+                color={textColors.grey}
+              >
                 Abstract
               </Typography>
 
@@ -164,7 +179,7 @@ const ProposalCard = ({ proposal }: { proposal: any }) => {
                             maxWidth: "auto",
                             display: "-webkit-box",
                             WebkitBoxOrient: "vertical",
-                            color: "#242232",
+                            color: textColors.darkPurple,
                             WebkitLineClamp: 2,
                           }}
                         >
@@ -173,6 +188,8 @@ const ProposalCard = ({ proposal }: { proposal: any }) => {
                       );
                     },
                   }}
+                  remarkPlugins={[remarkMath]}
+                  rehypePlugins={[rehypeKatex]}
                 >
                   {proposal?.attributes?.content?.attributes?.prop_abstract.toString() ??
                     ""}
@@ -180,13 +197,17 @@ const ProposalCard = ({ proposal }: { proposal: any }) => {
               </Box>
             </Box>
             <Box>
-              <Typography variant="caption" component="p" color="#506288">
+              <Typography
+                variant="caption"
+                component="p"
+                color={textColors.grey}
+              >
                 Governance Action Type
               </Typography>
               <Typography
                 variant="body2"
                 component="p"
-                color="#242232"
+                color={textColors.darkPurple}
                 data-testid="governance-action-type"
               >
                 {
@@ -211,7 +232,7 @@ const ProposalCard = ({ proposal }: { proposal: any }) => {
               py={1}
               px={1}
               sx={{
-                backgroundColor: "#B8CDFF",
+                backgroundColor: customDivider.primary,
                 borderRadius: "14px",
               }}
             >
@@ -223,7 +244,7 @@ const ProposalCard = ({ proposal }: { proposal: any }) => {
               <Typography
                 variant="body2"
                 component="p"
-                color="text.black"
+                color={textColors.black}
                 data-testid={
                   proposal?.attributes?.content?.attributes?.is_draft
                     ? "not-submitted-text"
@@ -259,7 +280,7 @@ const ProposalCard = ({ proposal }: { proposal: any }) => {
                             "& .MuiBadge-badge": {
                               transform: "translate(40px, -30px) !important",
                               color: "white !important",
-                              backgroundColor: "#CC0000",
+                              backgroundColor: badgeColors.error,
                               padding: "unset !important",
                               borderRadius: "none !important",
                             },

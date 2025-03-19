@@ -3,7 +3,6 @@ import { IconInformationCircle } from "@intersect.mbo/intersectmbo.org-icons-set
 import { MetadataValidationStatus } from "../../types/api";
 import { getMetadataDataMissingStatusTranslation } from "../../lib/getMetadataDataMissingStatusTranslation";
 import { dataMissingErrors } from "../../consts/dataMissingErrors";
-// import { Tooltip } from "../Atoms/Tooltip";
 import { Typography } from "../Atoms/Typography";
 
 type GovernanceActionCardHeaderProps = {
@@ -73,21 +72,9 @@ export const GovernanceActionCardHeader = ({
         </Typography>
       )}
       {isDataMissing && typeof isDataMissing === "string" && (
-        // <Tooltip
-        //   heading={getMetadataDataMissingStatusTranslation(
-        //     isDataMissing as MetadataValidationStatus
-        //   )}
-        //   paragraphOne={dataMissingErrors.dataMissingTooltipExplanation}
-        //   placement="bottom-end"
-        //   arrow
-        // >
-        //   <Icon>
-        //     <IconInformationCircle width={19} height={19} />
-        //   </Icon>
-        // </Tooltip>
         <Tooltip
           title={
-            <Box sx={{ bgcolor: "rgb(36, 34, 50)", p: 1, borderRadius: 2 }}>
+            <Box sx={{ bgcolor: "rgb(36, 34, 50)", p: 1, borderRadius: 1 }}>
               <Typography variant="body1" color={"white"}>
                 {getMetadataDataMissingStatusTranslation(
                   isDataMissing as MetadataValidationStatus

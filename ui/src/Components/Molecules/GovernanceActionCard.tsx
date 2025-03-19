@@ -43,13 +43,13 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
       data-testid={`${idCIP129}-outcome-card`}
       sx={{
         width: "100%",
-        height: "100%",
+        height: "auto",
         borderRadius: "20px",
         display: "flex",
-        padding: { xs: 1, sm: 2 },
+        paddingX: 3,
+        paddingTop: 3,
         flexDirection: "column",
         justifyContent: "space-between",
-        flexGrow: 1,
         boxShadow: "0px 4px 15px 0px #DDE3F5",
         backgroundColor: !metadataValid
           ? "rgba(251, 235, 235, 0.50)"
@@ -67,7 +67,7 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
       <CardContent
         id={`${idCIP129}-outcome-card-content`}
         data-testid={`${idCIP129}-outcome-card-content`}
-        sx={{ flexGrow: 1 }}
+        sx={{ padding: 0 }}
       >
         <GovernanceActionCardHeader
           title={action.title || metadata?.data?.title}
@@ -123,6 +123,7 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
       <CardActions
         id={`${idCIP129}-outcome-card-actions`}
         data-testid={`${idCIP129}-outcome-card-actions`}
+        sx={{ paddingX: 0, paddingY: 3 }}
       >
         <ViewDetailsLink id={fullGovActionId} />
       </CardActions>

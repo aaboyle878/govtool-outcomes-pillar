@@ -73,7 +73,9 @@
     "bech32": "^2.0.0",
     "buffer": "^6.0.3",
     "react-diff-view": "^3.2.1",
-    "unidiff": "^1.0.4"
+    "unidiff": "^1.0.4",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0"
   },
   "peerDependencies": {
     "@emotion/react": "^11.11.4",
