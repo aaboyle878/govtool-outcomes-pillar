@@ -7,7 +7,6 @@ import { useScreenDimension } from "../hooks/useDimensions";
 
 export default function Outcomes() {
   const { walletAPI } = useAppContext();
-  const { isEnabled } = walletAPI;
   const { isMobile } = useScreenDimension();
 
   return (
@@ -17,9 +16,9 @@ export default function Outcomes() {
       flexDirection={"column"}
       flexGrow={1}
     >
-      {!isEnabled && (
+      {!walletAPI?.isEnabled && (
         <Typography
-          sx={{ mb: isMobile ? 3.75 : 6 }}
+          sx={{ paddingX: 1, paddingY: 2 }}
           variant={isMobile ? "title1" : "headline3"}
         >
           Outcomes
