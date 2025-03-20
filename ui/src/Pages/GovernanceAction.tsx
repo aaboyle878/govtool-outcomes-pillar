@@ -72,7 +72,6 @@ function GovernanceAction({ id }: GovernanceActionProps) {
     useGetGovernanceActionQuery(id);
   const { metadata, metadataValid, isMetadataLoading } =
     useMetadata(governanceAction);
-  const { proposal } = useGetProposalQuery(governanceAction?.tx_hash);
 
   const { epochParams } = useNetworkMetrics(governanceAction);
   const [selectedTab, setSelectedTab] = useState<number>(0);
@@ -291,7 +290,6 @@ function GovernanceAction({ id }: GovernanceActionProps) {
         isMetadataLoading={isMetadataLoading}
         isDataMissing={isDataMissing}
       />
-
       <Grid container spacing={2} marginTop={0.5}>
         <Grid item xs={12} lg={7} sx={{ marginBottom: { xs: 3, lg: 0 } }}>
           <Box
@@ -317,20 +315,17 @@ function GovernanceAction({ id }: GovernanceActionProps) {
                   isMetadataLoading={isMetadataLoading}
                   isDataMissing={isDataMissing}
                 />
-
                 <DataMissingInfoBox isDataMissing={isDataMissing} />
                 <ActionIdentity
                   governanceAction={governanceAction}
                   metadata={metadata}
                 />
-
                 {!hasAnyContent && (!governanceAction || isMetadataLoading) && (
                   <>
                     <Skeleton variant="rounded" width="20%" height={15} />
                     <Skeleton variant="rounded" width="100%" height={400} />
                   </>
                 )}
-
                 {visibleTabs.length > 0 && (
                   <>
                     {visibleTabs.length === 1 ? (
@@ -362,7 +357,6 @@ function GovernanceAction({ id }: GovernanceActionProps) {
                     )}
                   </>
                 )}
-
                 {governanceAction?.description &&
                   governanceAction?.type ===
                     GovernanceActionType.TreasuryWithdrawals &&
@@ -374,7 +368,6 @@ function GovernanceAction({ id }: GovernanceActionProps) {
                       amount={withdrawal.amount}
                     />
                   ))}
-
                 {governanceAction?.type !==
                   GovernanceActionType.NewConstitution && (
                   <>
@@ -401,7 +394,6 @@ function GovernanceAction({ id }: GovernanceActionProps) {
             )}
           </Box>
         </Grid>
-
         <Grid item xs={12} lg={5} sx={{ position: "relative" }}>
           <Box
             data-testid={`single-action-outcome-numbers`}
@@ -421,28 +413,6 @@ function GovernanceAction({ id }: GovernanceActionProps) {
           </Box>
         </Grid>
       </Grid>
-      {proposal?.data?.length > 0 && (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 3,
-            mt: 4.5,
-            maxWidth: "425px",
-          }}
-        >
-          <Typography
-            data-testid={`single-action-title`}
-            sx={{
-              fontSize: 22,
-              fontWeight: 600,
-            }}
-          >
-            Related Proposal
-          </Typography>
-          <ProposalCard proposal={proposal?.data?.[0]} />
-        </Box>
-      )}
     </Box>
   );
 }

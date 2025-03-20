@@ -9,34 +9,38 @@ type FieldSetProps = BoxProps & {
 const FieldSet = ({ title, children, sx, ...props }: FieldSetProps) => {
   return (
     <Box
+      component="fieldset"
       sx={{
         position: "relative",
         border: "1px solid rgba(0, 0, 0, 0.23)",
         borderRadius: 1,
-        padding: 2,
-        mt: 1,
+        paddingX: 2,
+        legend: {
+          padding: "0 8px",
+          lineHeight: 1,
+          fontWeight: 600,
+          fontSize: "14px",
+        },
         ...sx,
       }}
       {...props}
     >
-      {title && (
-        <Typography
-          variant="body2"
-          color="textBlack"
-          sx={{
-            position: "absolute",
-            top: 0,
-            transform: "translateY(-50%)",
-            backgroundColor: "background.paper",
-            px: 1,
-            lineHeight: 1,
-            fontWeight: 600,
-          }}
-        >
-          {title}
-        </Typography>
-      )}
-      {children}
+      <legend>
+        {title && (
+          <Typography
+            variant="body2"
+            color="textBlack"
+            sx={{
+              fontWeight: 600,
+              px: 0,
+              display: "inline-block",
+            }}
+          >
+            {title}
+          </Typography>
+        )}
+      </legend>
+      <Box paddingY={0.5}>{children}</Box>
     </Box>
   );
 };

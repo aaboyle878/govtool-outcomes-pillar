@@ -8,12 +8,18 @@ import { Typography } from "../Atoms/Typography";
 import { primaryBlue } from "../../consts/colors";
 import StatusChip from "../Molecules/StatusChip";
 import { GovActionMetadata, GovernanceAction } from "../../types/api";
+import { useGetProposalQuery } from "../../hooks/useGetProposalQuery";
+import ProposalCard from "./ProposalCard";
+import ProposalCardLoader from "../Loaders/ProposalCardLoader";
 
 type ActionIdentityProps = {
   governanceAction: GovernanceAction;
   metadata: GovActionMetadata;
 };
 function ActionIdentity({ governanceAction, metadata }: ActionIdentityProps) {
+  const { proposal, isProposalLoading } = useGetProposalQuery(
+    governanceAction?.tx_hash
+  );
   const idCIP129 = encodeCIP129Identifier({
     txID: governanceAction?.tx_hash,
     index: governanceAction?.index.toString(16).padStart(2, "0"),
@@ -44,7 +50,7 @@ function ActionIdentity({ governanceAction, metadata }: ActionIdentityProps) {
           width: "100%",
           display: "flex",
           flexDirection: "column",
-          gap: 0.5,
+          gap: 1,
         }}
       >
         <Typography
@@ -112,6 +118,36 @@ function ActionIdentity({ governanceAction, metadata }: ActionIdentityProps) {
         isCopyable
         dataTestId={`single-action-CIP-129-id`}
       />
+
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 1,
+        }}
+      >
+        <Typography
+          data-testid={`related-proposal-label`}
+          sx={{
+            color: "textGray",
+            fontWeight: 600,
+            fontSize: 14,
+          }}
+        >
+          Proposal Discussion
+        </Typography>
+        {isProposalLoading ? (
+          <ProposalCardLoader />
+        ) : proposal?.data?.length > 0 ? (
+          <ProposalCard proposal={proposal?.data?.[0]} />
+        ) : (
+          <Typography
+            sx={{ fontSize: 16, fontWeight: 400, color: "neutralGray" }}
+          >
+            No discussion available for this item!
+          </Typography>
+        )}
+      </Box>
     </Box>
   );
 }

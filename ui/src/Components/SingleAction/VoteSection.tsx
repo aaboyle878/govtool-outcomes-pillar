@@ -136,7 +136,7 @@ export const VoteSection = ({
                 />
                 <PercentageOverlay>
                   <PercentageText data-testid="yes-percentage-text">
-                    {isCC ? "Constitutional" : "Yes"}:
+                    Yes:
                     <Box component="span" sx={{ fontWeight: 600, marginX: 1 }}>
                       {formatValue(yesVotes)}
                     </Box>
@@ -145,7 +145,7 @@ export const VoteSection = ({
                     </Box>
                   </PercentageText>
                   <PercentageText data-testid="no-percentage-text">
-                    {isCC ? "Unconstitutional" : "No"}:
+                    No:
                     <Box component="span" sx={{ fontWeight: 600, marginX: 1 }}>
                       {formatValue(noVotes)}
                     </Box>
