@@ -94,7 +94,7 @@ export const GovernanceActionCardTreasuryWithdrawalElement = ({
             lineHeight: "20px",
           }}
         >
-          ₳{correctVoteAdaFormat(amount) ?? 0}
+          ₳ {correctVoteAdaFormat(amount) ?? 0}
         </Typography>
       </Box>
     </Box>

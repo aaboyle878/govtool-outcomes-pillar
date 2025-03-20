@@ -50,9 +50,9 @@ const ProposalCard = ({ proposal }: { proposal: any }) => {
             data-testid="proposed-date-wrapper"
           >
             Proposed on:
-            <span data-testid="proposed-date">
+            <Box component="span" data-testid="proposed-date" ml={0.5}>
               {formatTimeStamp(proposal?.attributes?.createdAt, "short")}
-            </span>
+            </Box>
           </Typography>
         </Box>
         <Box>

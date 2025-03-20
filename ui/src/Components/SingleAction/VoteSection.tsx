@@ -18,6 +18,7 @@ type VoteSectionProps = {
   isCC?: boolean;
   isDisplayed: boolean;
   isLoading?: boolean;
+  isDataReady?: boolean;
   dataTestId?: string;
 };
 
@@ -94,11 +95,12 @@ export const VoteSection = ({
   isCC = false,
   isDisplayed,
   isLoading = true,
+  isDataReady = false,
   dataTestId,
 }: VoteSectionProps) => {
   const formatValue = (value: number) =>
     isCC ? value : `₳ ${correctAdaFormatWithSuffix(value)}`;
-  if (isLoading) {
+  if (!isDataReady || isLoading) {
     return <VoteSectionLoader title={title} />;
   }
 

@@ -206,6 +206,7 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
           isSecurityGroup()
         )}
         isLoading={isLoading}
+        isDataReady={!isLoading && Boolean(networkMetrics)}
         dataTestId="DReps-voting-results-data"
       />
 
@@ -233,6 +234,7 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
           isSecurityGroup()
         )}
         isLoading={isLoading}
+        isDataReady={!isLoading && Boolean(networkMetrics)}
         dataTestId="SPOs-voting-results-data"
       />
 
@@ -251,6 +253,7 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
         isCC
         isDisplayed={areCCVoteTotalsDisplayed(type as GovernanceActionType)}
         isLoading={isLoading}
+        isDataReady={!isLoading && Boolean(networkMetrics)}
         dataTestId="CC-voting-results-data"
       />
 
