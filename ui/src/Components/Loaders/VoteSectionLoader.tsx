@@ -31,9 +31,6 @@ export const VoteSectionLoader = ({
       </Box>
       <Grid container spacing={1}>
         <Grid item xs={12}>
-          <Box display="flex" justifyContent="space-between" mb={0.5}>
-            <Skeleton variant="text" width={160} height={20} />
-          </Box>
           <ProgressContainer>
             <Skeleton
               variant="rectangular"
@@ -44,10 +41,12 @@ export const VoteSectionLoader = ({
           </ProgressContainer>
         </Grid>
         <Grid item xs={12}>
-          <Box display="flex" flexDirection="column" gap={0.5}>
-            <Skeleton variant="text" width={140} height={20} />
-            <Skeleton variant="text" width={140} height={20} />
-          </Box>
+          <Skeleton
+            variant="rectangular"
+            width="100%"
+            height={105}
+            sx={{ borderRadius: 1 }}
+          />
         </Grid>
       </Grid>
     </Box>

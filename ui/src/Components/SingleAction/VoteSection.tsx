@@ -106,7 +106,7 @@ export const VoteSection = ({
     <Box data-testid={dataTestId} mb={3}>
       <Typography
         data-testid="outcome-voter-label"
-        color="textGray"
+        color="textBlack"
         sx={{
           fontWeight: 600,
           fontSize: 18,
@@ -137,31 +137,19 @@ export const VoteSection = ({
                 <PercentageOverlay>
                   <PercentageText data-testid="yes-percentage-text">
                     {isCC ? "Constitutional" : "Yes"}:
-                    <Box
-                      component="span"
-                      sx={{ fontWeight: "bold", marginX: 1, fontSize: 13 }}
-                    >
+                    <Box component="span" sx={{ fontWeight: 600, marginX: 1 }}>
                       {formatValue(yesVotes)}
                     </Box>
-                    <Box
-                      component="span"
-                      sx={{ fontWeight: "bold", fontSize: 13 }}
-                    >
+                    <Box component="span" sx={{ fontWeight: 600 }}>
                       ({yesPercentage?.toFixed(2)}%)
                     </Box>
                   </PercentageText>
                   <PercentageText data-testid="no-percentage-text">
                     {isCC ? "Unconstitutional" : "No"}:
-                    <Box
-                      component="span"
-                      sx={{ fontWeight: "bold", marginX: 1, fontSize: 13 }}
-                    >
+                    <Box component="span" sx={{ fontWeight: 600, marginX: 1 }}>
                       {formatValue(noVotes)}
                     </Box>
-                    <Box
-                      component="span"
-                      sx={{ fontWeight: "bold", fontSize: 13 }}
-                    >
+                    <Box component="span" sx={{ fontWeight: 600 }}>
                       ({noPercentage?.toFixed(2)}%)
                     </Box>
                   </PercentageText>
@@ -196,8 +184,8 @@ export const VoteSection = ({
                     component="span"
                     sx={{
                       color: "textBlack",
-                      fontWeight: "bold",
-                      fontSize: 13,
+                      fontWeight: 600,
+                      fontSize: 14,
                       ml: 1,
                     }}
                   >
@@ -214,8 +202,8 @@ export const VoteSection = ({
                     component="span"
                     sx={{
                       color: "textBlack",
-                      fontWeight: "bold",
-                      fontSize: 13,
+                      fontWeight: 600,
+                      fontSize: 14,
                       ml: 1,
                     }}
                   >
@@ -233,8 +221,8 @@ export const VoteSection = ({
                     component="span"
                     sx={{
                       color: "textBlack",
-                      fontWeight: "bold",
-                      fontSize: 13,
+                      fontWeight: 600,
+                      fontSize: 14,
                       ml: 1,
                     }}
                   >

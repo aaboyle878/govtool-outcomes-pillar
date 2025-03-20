@@ -1,4 +1,5 @@
-import { Box, Typography, BoxProps } from "@mui/material";
+import { Box, BoxProps } from "@mui/material";
+import { Typography } from "./Typography";
 
 type FieldSetProps = BoxProps & {
   title: string;
@@ -20,18 +21,16 @@ const FieldSet = ({ title, children, sx, ...props }: FieldSetProps) => {
     >
       {title && (
         <Typography
-          component="legend"
-          color="textGray"
+          variant="body2"
+          color="textBlack"
           sx={{
             position: "absolute",
             top: 0,
             transform: "translateY(-50%)",
             backgroundColor: "background.paper",
             px: 1,
-            ml: 1,
             lineHeight: 1,
-            fontWeight: "bold",
-            fontSize: 13,
+            fontWeight: 600,
           }}
         >
           {title}
