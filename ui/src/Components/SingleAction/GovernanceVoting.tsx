@@ -209,7 +209,7 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
         dataTestId="DReps-voting-results-data"
       />
 
-      <Divider sx={{ my: 2 }} />
+      <Divider sx={{ my: 2, color: "textGray" }} />
 
       <VoteSection
         title="SPOs"
@@ -236,7 +236,7 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
         dataTestId="SPOs-voting-results-data"
       />
 
-      <Divider sx={{ my: 2 }} />
+      <Divider sx={{ my: 2, color: "textGray" }} />
 
       <VoteSection
         title="CC Committee"
@@ -254,7 +254,7 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
         dataTestId="CC-voting-results-data"
       />
 
-      <Divider sx={{ my: 2 }} />
+      <Divider sx={{ my: 2, color: "textGray" }} />
 
       <Box>
         <Typography

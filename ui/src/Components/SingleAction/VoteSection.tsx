@@ -3,6 +3,7 @@ import { correctAdaFormatWithSuffix } from "../../lib/utils";
 import { errorRed, successGreen } from "../../consts/colors";
 import { Typography } from "../Atoms/Typography";
 import { VoteSectionLoader } from "../Loaders/VoteSectionLoader";
+import FieldSet from "../Atoms/FieldSet";
 
 type VoteSectionProps = {
   title: string;
@@ -126,27 +127,6 @@ export const VoteSection = ({
       {isDisplayed && (
         <Grid container spacing={1}>
           <Grid item xs={12}>
-            <Typography
-              data-testid="total-controlled-amount"
-              variant="body2"
-              sx={{
-                mb: 1,
-                color: "textGray",
-              }}
-            >
-              {isCC ? "Number" : "Total Stake"}:
-              <Box
-                component="span"
-                sx={{
-                  color: "textBlack",
-                  fontWeight: "bold",
-                  fontSize: 13,
-                  ml: 1,
-                }}
-              >
-                {formatValue(totalControlled)}
-              </Box>
-            </Typography>
             <ProgressWrapper>
               <ProgressContainer>
                 <StyledLinearProgress
@@ -204,45 +184,65 @@ export const VoteSection = ({
           </Grid>
 
           <Grid item xs={12}>
-            <Box display="flex" flexDirection="column" gap={0.5}>
-              <Typography
-                data-testid="outcome-abstain-votes"
-                variant="body2"
-                color="textGray"
-              >
-                {isCC ? "Abstain Vote:" : "Abstain Vote Stake:"}
-                <Box
-                  component="span"
-                  sx={{
-                    color: "textBlack",
-                    fontWeight: "bold",
-                    fontSize: 13,
-                    ml: 1,
-                  }}
+            <FieldSet title="Vote Metrics">
+              <Box display="flex" flexDirection="column" gap={0.5}>
+                <Typography
+                  data-testid="total-controlled-amount"
+                  variant="body2"
+                  color="textGray"
                 >
-                  {formatValue(abstainVotes)}
-                </Box>
-              </Typography>
+                  {isCC ? "Number of Active CCs" : "Total Stake"}:
+                  <Box
+                    component="span"
+                    sx={{
+                      color: "textBlack",
+                      fontWeight: "bold",
+                      fontSize: 13,
+                      ml: 1,
+                    }}
+                  >
+                    {formatValue(totalControlled)}
+                  </Box>
+                </Typography>
+                <Typography
+                  data-testid="outcome-abstain-votes"
+                  variant="body2"
+                  color="textGray"
+                >
+                  {isCC ? "Abstain Votes:" : "Abstain Vote Stake:"}
+                  <Box
+                    component="span"
+                    sx={{
+                      color: "textBlack",
+                      fontWeight: "bold",
+                      fontSize: 13,
+                      ml: 1,
+                    }}
+                  >
+                    {formatValue(abstainVotes)}
+                  </Box>
+                </Typography>
 
-              <Typography
-                data-testid="outcome-not-voted-votes"
-                variant="body2"
-                color="textGray"
-              >
-                {isCC ? "Not Voted" : "Not Voted Stake:"}
-                <Box
-                  component="span"
-                  sx={{
-                    color: "textBlack",
-                    fontWeight: "bold",
-                    fontSize: 13,
-                    ml: 1,
-                  }}
+                <Typography
+                  data-testid="outcome-not-voted-votes"
+                  variant="body2"
+                  color="textGray"
                 >
-                  {formatValue(notVotedVotes)}
-                </Box>
-              </Typography>
-            </Box>
+                  {isCC ? "Not Voted:" : "Not Voted Stake:"}
+                  <Box
+                    component="span"
+                    sx={{
+                      color: "textBlack",
+                      fontWeight: "bold",
+                      fontSize: 13,
+                      ml: 1,
+                    }}
+                  >
+                    {formatValue(notVotedVotes)}
+                  </Box>
+                </Typography>
+              </Box>
+            </FieldSet>
           </Grid>
         </Grid>
       )}
