@@ -168,7 +168,11 @@ export const GovernanceActionNewCommitteeDetailsTabContent = ({
           {membersToBeUpdated.map(
             ({ cip129Identifier, newExpirationEpoch, expirationEpoch }) => (
               <>
-                <Box display="flex" flexDirection="row">
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  justifyContent="space-between"
+                >
                   <Typography
                     sx={{
                       fontSize: 16,

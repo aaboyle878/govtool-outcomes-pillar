@@ -39,12 +39,6 @@ declare module "@mui/material/styles" {
       success: string;
       grey: string;
     };
-    textColors: {
-      grey: string;
-      darkPurple: string;
-      black: string;
-      orange: string;
-    };
     customDivider: {
       primary: string;
     };

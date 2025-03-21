@@ -46,7 +46,7 @@ const ProposalCard = ({ proposal }: { proposal: any }) => {
           <Typography
             variant="body2"
             component="p"
-            color={textColors.black}
+            color="textBlack"
             data-testid="proposed-date-wrapper"
           >
             Proposed on:

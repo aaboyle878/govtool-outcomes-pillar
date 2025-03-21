@@ -24,7 +24,7 @@ export default function GovernanceActionStatus({
 
     if (ratified_epoch && enacted_epoch) {
       return (
-        <Box display="flex" flexDirection="row" gap={1}>
+        <Box display="flex" flexDirection="row" gap={2}>
           <StatusChip status="Ratified" />
           <StatusChip status="Enacted" />
         </Box>
@@ -41,7 +41,7 @@ export default function GovernanceActionStatus({
 
     if (expired_epoch && dropped_epoch) {
       return (
-        <Box display="flex" flexDirection="row" gap={1}>
+        <Box display="flex" flexDirection="row" gap={2}>
           <StatusChip status="Expired" />
           <StatusChip status="Not Ratified" />
         </Box>

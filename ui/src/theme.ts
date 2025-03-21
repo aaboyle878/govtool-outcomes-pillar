@@ -157,12 +157,6 @@ export const theme = createTheme({
       success: "#C0E4BA",
       grey: "#506288",
     },
-    textColors: {
-      grey: "#506288",
-      darkPurple: "#242232",
-      black: "#212A3D",
-      orange: "#E76309",
-    },
     customDivider: {
       primary: "#B8CDFF",
     },

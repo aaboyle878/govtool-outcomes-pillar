@@ -1,6 +1,6 @@
 import { Box, Grid, LinearProgress, styled } from "@mui/material";
 import { correctAdaFormatWithSuffix } from "../../lib/utils";
-import { errorRed, successGreen } from "../../consts/colors";
+import { errorRed, gray, successGreen } from "../../consts/colors";
 import { Typography } from "../Atoms/Typography";
 import { VoteSectionLoader } from "../Loaders/VoteSectionLoader";
 import FieldSet from "../Atoms/FieldSet";
@@ -57,30 +57,45 @@ const PercentageOverlay = styled(Box)({
 
 const PercentageText = styled(Typography)({
   fontSize: 14,
-  color: "#242232",
+  color: "textBlack",
   padding: "0 10px",
   zIndex: 10,
 });
 
-const ThresholdMarker = styled("div")<{ left: number }>(({ left }) => ({
-  position: "absolute",
-  left: `${left}%`,
-  top: "0",
-  height: "100%",
-  width: "2px",
-  backgroundColor: "#8E908E",
-  zIndex: 3,
-}));
-
-const ThresholdText = styled(Typography)<{ left: number }>(({ left }) => ({
+const ThresholdIndicator = styled(Box)<{ left: number }>(({ left }) => ({
   position: "absolute",
   left: `${left}%`,
   top: "-24px",
   transform: "translateX(-50%)",
-  fontSize: 13,
-  color: "#525252",
-  zIndex: 3,
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  zIndex: 5,
 }));
+
+const ThresholdBubble = styled(Box)({
+  backgroundColor: gray.c50,
+  borderRadius: "12px",
+  padding: "2px 8px",
+  border: `1px solid ${gray.c300}`,
+  boxShadow: "0px 1px 2px rgba(0,0,0,0.08)",
+});
+
+const ThresholdText = styled(Typography)({
+  fontSize: 13,
+  fontWeight: 600,
+  color: gray.c600,
+  lineHeight: 1.2,
+});
+
+const ThresholdArrow = styled(Box)({
+  width: 0,
+  height: 0,
+  borderLeft: "6px solid transparent",
+  borderRight: "6px solid transparent",
+  borderTop: `6px solid ${gray.c300}`,
+  marginTop: "-1px",
+});
 
 export const VoteSection = ({
   title,
@@ -130,6 +145,16 @@ export const VoteSection = ({
         <Grid container spacing={1}>
           <Grid item xs={12}>
             <ProgressWrapper>
+              {threshold !== null && (
+                <ThresholdIndicator left={threshold * 100}>
+                  <ThresholdBubble>
+                    <ThresholdText data-testid="outcome-threshold">
+                      {(threshold * 100).toFixed(0)}%
+                    </ThresholdText>
+                  </ThresholdBubble>
+                  <ThresholdArrow />
+                </ThresholdIndicator>
+              )}
               <ProgressContainer>
                 <StyledLinearProgress
                   data-testid="percentages-progress-bar"
@@ -156,20 +181,7 @@ export const VoteSection = ({
                     </Box>
                   </PercentageText>
                 </PercentageOverlay>
-                {threshold !== null && (
-                  <>
-                    <ThresholdMarker left={threshold * 100} />
-                  </>
-                )}
               </ProgressContainer>
-              {threshold !== null && (
-                <ThresholdText
-                  left={threshold * 100}
-                  data-testid="outcome-threshold"
-                >
-                  {(threshold * 100).toFixed(0)}%
-                </ThresholdText>
-              )}
             </ProgressWrapper>
           </Grid>
 

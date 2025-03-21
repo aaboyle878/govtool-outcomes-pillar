@@ -144,7 +144,7 @@ function ActionIdentity({ governanceAction, metadata }: ActionIdentityProps) {
           <Typography
             sx={{ fontSize: 16, fontWeight: 400, color: "neutralGray" }}
           >
-            No discussion available for this item!
+            Discussion history unavailable for this action
           </Typography>
         )}
       </Box>
