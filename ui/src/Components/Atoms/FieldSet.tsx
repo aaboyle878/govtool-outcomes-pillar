@@ -1,5 +1,6 @@
 import { Box, BoxProps } from "@mui/material";
 import { Typography } from "./Typography";
+import { theme } from "../../theme";
 
 type FieldSetProps = BoxProps & {
   title: string;
@@ -7,13 +8,16 @@ type FieldSetProps = BoxProps & {
 };
 
 const FieldSet = ({ title, children, sx, ...props }: FieldSetProps) => {
+  const {
+    palette: { textBlack },
+  } = theme;
   return (
     <Box
       component="fieldset"
       sx={{
         position: "relative",
-        border: "1px solid rgba(0, 0, 0, 0.23)",
-        borderRadius: 1,
+        border: `0.5px solid ${textBlack}33`,
+        borderRadius: 1.25,
         paddingX: 2,
         legend: {
           padding: "0 8px",

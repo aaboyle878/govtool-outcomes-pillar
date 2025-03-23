@@ -13,7 +13,7 @@ export const HardForkDetailsTabContent = ({
   const { epochParams } = useAppContext();
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
       <Box
         data-testid="hard-fork-current-version"
         sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}

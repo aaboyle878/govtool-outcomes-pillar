@@ -12,7 +12,7 @@ function ReasoningElement({ label, text, dataTestId }: ReasoningElementProps) {
   return (
     <Box
       data-testid={dataTestId}
-      sx={{ display: "flex", flexDirection: "column", gap: 1 }}
+      sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}
     >
       <Typography
         sx={{

@@ -7,6 +7,7 @@ import { getGovActionVotingThresholdKey } from "../../lib/utils";
 import { useCallback } from "react";
 import { useNetworkMetrics } from "../../hooks/useNetworkMetrics";
 import { SECURITY_RELEVANT_PARAMS_MAP } from "../../consts/params";
+import { theme } from "../../theme";
 
 type GovernanceVotingProps = {
   action: GovernanceAction;
@@ -33,6 +34,9 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
     areSPOVoteTotalsDisplayed,
     areCCVoteTotalsDisplayed,
   } = useNetworkMetrics(action);
+  const {
+    palette: { textBlack },
+  } = theme;
 
   const isSecurityGroup = useCallback(
     () =>
@@ -176,7 +180,6 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
           display: "-webkit-box",
           WebkitBoxOrient: "vertical",
           WebkitLineClamp: 2,
-          py: "6px",
           wordBreak: "break-word",
           mb: 3,
         }}
@@ -210,7 +213,7 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
         dataTestId="DReps-voting-results-data"
       />
 
-      <Divider sx={{ my: 2 }} />
+      <Divider sx={{ my: 2, bgcolor: `${textBlack}10` }} />
 
       <VoteSection
         title="SPOs"
@@ -241,7 +244,7 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
       <Divider sx={{ my: 2 }} />
 
       <VoteSection
-        title="CC Committee"
+        title="Constitutional Committee"
         yesVotes={ccYesVotes}
         noVotes={ccNoVotes}
         totalControlled={noOfCommitteeMembers}
@@ -265,12 +268,12 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
           sx={{
             fontWeight: 600,
             fontSize: 18,
-            mb: 1,
+            mb: 1.875,
           }}
         >
           Outcome
         </Typography>
-        <Box display="flex" justifyContent="flex-start" gap={5} paddingY={0.5}>
+        <Box display="flex" justifyContent="space-between" width="100%" gap={1}>
           <OutcomeIndicator
             title="DReps"
             passed={isDRepPassed}
@@ -294,7 +297,7 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
           />
 
           <OutcomeIndicator
-            title="CC Committee"
+            title="CC"
             passed={isCCPassed}
             isDisplayed={areCCVoteTotalsDisplayed(type as GovernanceActionType)}
             isLoading={isLoading}

@@ -63,7 +63,7 @@ export default function GovernanceActionStatus({
       data-testid={`${actionId}-status`}
       display="flex"
       justifyContent={isCard ? "space-between" : ""}
-      gap={isCard ? 0 : 3}
+      gap={isCard ? 0 : 8.65}
       width="100%"
       alignItems="center"
     >

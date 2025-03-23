@@ -47,7 +47,8 @@ export const Breadcrumbs = ({
           sx={{
             whiteSpace: "nowrap",
             fontSize: 12,
-            fontWeight: 500,
+            fontWeight: 400,
+            lineHeight: 2,
           }}
         >
           {elementOne}

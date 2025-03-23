@@ -36,7 +36,7 @@ export const GovernanceActionNewCommitteeDetailsTabContent = ({
     }));
 
   return (
-    <Box display="flex" flexDirection="column" gap={3}>
+    <Box display="flex" flexDirection="column" gap={2.5}>
       {membersToBeAdded.length > 0 && (
         <Box
           data-testid="members-to-be-added-to-the-committee"
@@ -60,29 +60,33 @@ export const GovernanceActionNewCommitteeDetailsTabContent = ({
           >
             Members to be added to the Committee
           </Typography>
-          {membersToBeAdded.map(({ cip129Identifier }) => (
-            <Box
-              display="flex"
-              flexDirection="row"
-              justifyContent="space-between"
-            >
-              <Typography
-                data-testid={`member-to-be-added-to-the-committee-id-${cip129Identifier}`}
-                sx={{
-                  fontSize: 16,
-                  fontWeight: 400,
-                  width: "100%",
-                  lineHeight: "24px",
-                  color: "primaryBlue",
-                }}
+          <Box display="flex" flexDirection="column">
+            {membersToBeAdded.map(({ cip129Identifier }) => (
+              <Box
+                key={cip129Identifier}
+                display="flex"
+                flexDirection="row"
+                justifyContent="space-between"
+                alignItems="center"
               >
-                {cip129Identifier}
-              </Typography>
-              <Box ml={1}>
-                <CopyButton text={cip129Identifier.toString()} />
+                <Typography
+                  data-testid={`member-to-be-added-to-the-committee-id-${cip129Identifier}`}
+                  sx={{
+                    fontSize: 16,
+                    fontWeight: 400,
+                    width: "100%",
+                    lineHeight: "24px",
+                    color: "primaryBlue",
+                  }}
+                >
+                  {cip129Identifier}
+                </Typography>
+                <Box>
+                  <CopyButton text={cip129Identifier.toString()} />
+                </Box>
               </Box>
-            </Box>
-          ))}
+            ))}
+          </Box>
         </Box>
       )}
       {(description?.membersToBeRemoved as string[]).length > 0 && (
@@ -108,37 +112,41 @@ export const GovernanceActionNewCommitteeDetailsTabContent = ({
           >
             Members to be removed from the Committee
           </Typography>
-          {(description?.membersToBeRemoved as string[]).map((hash) => (
-            <Box
-              display="flex"
-              flexDirection="row"
-              justifyContent="space-between"
-            >
-              <Typography
-                data-testid="members-to-be-removed-from-the-committee-id"
-                sx={{
-                  fontSize: 16,
-                  fontWeight: 400,
-                  maxWidth: "auto",
-                  lineHeight: "24px",
-                  color: "primaryBlue",
-                }}
+          <Box display="flex" flexDirection="column">
+            {(description?.membersToBeRemoved as string[]).map((hash) => (
+              <Box
+                display="flex"
+                flexDirection="row"
+                justifyContent="space-between"
+                alignItems="center"
+                key={hash}
               >
-                {encodeCIP129Identifier({
-                  txID: hash,
-                  bech32Prefix: "cc_cold",
-                })}
-              </Typography>
-              <Box ml={1}>
-                <CopyButton
-                  text={encodeCIP129Identifier({
+                <Typography
+                  data-testid="members-to-be-removed-from-the-committee-id"
+                  sx={{
+                    fontSize: 16,
+                    fontWeight: 400,
+                    maxWidth: "auto",
+                    lineHeight: "24px",
+                    color: "primaryBlue",
+                  }}
+                >
+                  {encodeCIP129Identifier({
                     txID: hash,
                     bech32Prefix: "cc_cold",
                   })}
-                />
+                </Typography>
+                <Box>
+                  <CopyButton
+                    text={encodeCIP129Identifier({
+                      txID: hash,
+                      bech32Prefix: "cc_cold",
+                    })}
+                  />
+                </Box>
               </Box>
-            </Box>
-          ))}
+            ))}
+          </Box>
         </Box>
       )}
 
@@ -167,11 +175,14 @@ export const GovernanceActionNewCommitteeDetailsTabContent = ({
           </Typography>
           {membersToBeUpdated.map(
             ({ cip129Identifier, newExpirationEpoch, expirationEpoch }) => (
-              <>
+              <Box display="flex" flexDirection="column">
                 <Box
                   display="flex"
                   flexDirection="row"
                   justifyContent="space-between"
+                  alignItems="center"
+                  data-testid={`${cip129Identifier}-member-id`}
+                  key={cip129Identifier}
                 >
                   <Typography
                     sx={{
@@ -184,7 +195,7 @@ export const GovernanceActionNewCommitteeDetailsTabContent = ({
                   >
                     {cip129Identifier}
                   </Typography>
-                  <Box ml={1}>
+                  <Box>
                     <CopyButton text={cip129Identifier.toString()} />
                   </Box>
                 </Box>
@@ -192,14 +203,16 @@ export const GovernanceActionNewCommitteeDetailsTabContent = ({
                   data-testid="member-expiration-update"
                   sx={{
                     fontSize: 14,
-                    fontWeight: 500,
+                    fontWeight: 400,
                     lineHeight: "24px",
-                    color: "neutralGray",
+                    color: "textGray",
                   }}
                 >
-                  {`To ${newExpirationEpoch} epoch ${expirationEpoch} epoch`}
+                  {`To epoch ${
+                    newExpirationEpoch ? newExpirationEpoch : "-"
+                  } from epoch ${expirationEpoch ? expirationEpoch : "-"}`}
                 </Typography>
-              </>
+              </Box>
             )
           )}
         </Box>
@@ -231,10 +244,10 @@ export const GovernanceActionNewCommitteeDetailsTabContent = ({
             data-testid="new-threshold-value"
             sx={{
               fontSize: 16,
-              fontWeight: 500,
+              fontWeight: 400,
               maxWidth: "auto",
               lineHeight: "24px",
-              color: "neutralGray",
+              color: "textGray",
             }}
           >
             {(description?.threshold as number).toString()}

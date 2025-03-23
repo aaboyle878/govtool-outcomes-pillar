@@ -32,6 +32,7 @@ export default function GovernanceActionElement({
     flexGrow: 1,
     flexShrink: 1,
     minWidth: 0,
+    padding: 0,
   };
 
   const contentContainerStyles = {
@@ -60,8 +61,8 @@ export default function GovernanceActionElement({
           style={{ textDecoration: "none" }}
         >
           <Typography sx={contentTypographyStyles}>{content}</Typography>
-          <IconButton>
-            <IconExternalLink fill="#0033AD" />
+          <IconButton size="small">
+            <IconExternalLink fill="#0033AD" height="20" width="20" />
           </IconButton>
         </Link>
       );

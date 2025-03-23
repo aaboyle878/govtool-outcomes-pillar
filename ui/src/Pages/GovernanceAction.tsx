@@ -6,7 +6,6 @@ import {
   styled,
   Tab,
   Tabs,
-  Typography,
 } from "@mui/material";
 import { Breadcrumbs } from "../Components/Molecules/Breadcrumbs";
 import { useGetGovernanceActionQuery } from "../hooks/useGetGovernanceActionQuery";
@@ -33,6 +32,8 @@ import { GovernanceActionCardTreasuryWithdrawalElement } from "../Components/Sin
 import { HardForkDetailsTabContent } from "../Components/SingleAction/HardForkDetailsTabContent";
 import { useGetProposalQuery } from "../hooks/useGetProposalQuery";
 import ProposalCard from "../Components/SingleAction/ProposalCard";
+import { Typography } from "../Components/Atoms/Typography";
+import ProposalCardLoader from "../Components/Loaders/ProposalCardLoader";
 
 type GovernanceActionProps = {
   id: string;
@@ -72,6 +73,9 @@ function GovernanceAction({ id }: GovernanceActionProps) {
     useGetGovernanceActionQuery(id);
   const { metadata, metadataValid, isMetadataLoading } =
     useMetadata(governanceAction);
+  const { proposal, isProposalLoading } = useGetProposalQuery(
+    governanceAction?.tx_hash
+  );
 
   const { epochParams } = useNetworkMetrics(governanceAction);
   const [selectedTab, setSelectedTab] = useState<number>(0);
@@ -297,8 +301,9 @@ function GovernanceAction({ id }: GovernanceActionProps) {
             sx={{
               height: "auto",
               boxShadow: "0px 4px 15px 0px #DDE3F5",
-              borderRadius: "20px",
-              padding: 2,
+              borderRadius: "16px",
+              paddingX: 2,
+              paddingY: 2.75,
               backgroundColor: !metadataValid
                 ? "rgba(251, 235, 235, 0.50)"
                 : "rgba(255, 255, 255, 0.3)",
@@ -308,7 +313,7 @@ function GovernanceAction({ id }: GovernanceActionProps) {
             }}
           >
             {governanceAction && (
-              <Box display="flex" flexDirection="column" gap={3}>
+              <Box display="flex" flexDirection="column" gap={2.5}>
                 <Header
                   title={content.title}
                   isGovernanceActionLoading={isGovernanceActionLoading}
@@ -390,6 +395,39 @@ function GovernanceAction({ id }: GovernanceActionProps) {
                 {metadataValid && content.references.length > 0 && (
                   <References links={content.references} />
                 )}
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 0.5,
+                  }}
+                >
+                  <Typography
+                    data-testid={`related-proposal-label`}
+                    sx={{
+                      color: "textGray",
+                      fontWeight: 600,
+                      fontSize: 14,
+                    }}
+                  >
+                    Proposal Discussion
+                  </Typography>
+                  {isProposalLoading ? (
+                    <ProposalCardLoader />
+                  ) : proposal?.data?.length > 0 ? (
+                    <ProposalCard proposal={proposal?.data?.[0]} />
+                  ) : (
+                    <Typography
+                      sx={{
+                        fontSize: 16,
+                        fontWeight: 400,
+                        color: "neutralGray",
+                      }}
+                    >
+                      Discussion history unavailable for this action!
+                    </Typography>
+                  )}
+                </Box>
               </Box>
             )}
           </Box>
@@ -402,9 +440,10 @@ function GovernanceAction({ id }: GovernanceActionProps) {
               flexDirection: "column",
               justifyContent: "space-between",
               boxShadow: "0px 4px 15px 0px #DDE3F5",
-              borderRadius: "20px",
+              borderRadius: "16px",
               backgroundColor: "rgba(255, 255, 255, 0.3)",
-              padding: 2,
+              paddingX: 2,
+              paddingY: 2.75,
               position: "sticky",
               top: "96px",
             }}

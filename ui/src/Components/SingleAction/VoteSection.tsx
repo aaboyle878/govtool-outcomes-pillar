@@ -4,6 +4,11 @@ import { errorRed, gray, successGreen } from "../../consts/colors";
 import { Typography } from "../Atoms/Typography";
 import { VoteSectionLoader } from "../Loaders/VoteSectionLoader";
 import FieldSet from "../Atoms/FieldSet";
+import { theme } from "../../theme";
+
+const {
+  palette: { badgeColors },
+} = theme;
 
 type VoteSectionProps = {
   title: string;
@@ -56,10 +61,19 @@ const PercentageOverlay = styled(Box)({
 });
 
 const PercentageText = styled(Typography)({
-  fontSize: 14,
+  fontSize: 13,
+  fontWeight: 400,
   color: "textBlack",
   padding: "0 10px",
   zIndex: 10,
+});
+
+const ThresholdLine = styled(Box)({
+  position: "absolute",
+  width: "2px",
+  height: "100%",
+  backgroundColor: badgeColors.lightPurple,
+  zIndex: 4,
 });
 
 const ThresholdIndicator = styled(Box)<{ left: number }>(({ left }) => ({
@@ -74,17 +88,17 @@ const ThresholdIndicator = styled(Box)<{ left: number }>(({ left }) => ({
 }));
 
 const ThresholdBubble = styled(Box)({
-  backgroundColor: gray.c50,
+  backgroundColor: badgeColors.lightPurple,
   borderRadius: "12px",
   padding: "2px 8px",
-  border: `1px solid ${gray.c300}`,
+  border: `1px solid ${badgeColors.lightPurple}`,
   boxShadow: "0px 1px 2px rgba(0,0,0,0.08)",
 });
 
 const ThresholdText = styled(Typography)({
-  fontSize: 13,
+  fontSize: 12,
   fontWeight: 600,
-  color: gray.c600,
+  color: "textBlack",
   lineHeight: 1.2,
 });
 
@@ -93,7 +107,7 @@ const ThresholdArrow = styled(Box)({
   height: 0,
   borderLeft: "6px solid transparent",
   borderRight: "6px solid transparent",
-  borderTop: `6px solid ${gray.c300}`,
+  borderTop: `6px solid ${badgeColors.lightPurple}`,
   marginTop: "-1px",
 });
 
@@ -126,8 +140,8 @@ export const VoteSection = ({
         color="textBlack"
         sx={{
           fontWeight: 600,
-          fontSize: 18,
-          mb: 1,
+          fontSize: 16,
+          mb: 1.875,
         }}
       >
         {title}
@@ -135,25 +149,36 @@ export const VoteSection = ({
       {!isDisplayed && (
         <Typography
           data-testid="voting-not-available-label"
-          variant="body2"
-          color="textGray"
+          sx={{
+            fontWeight: 400,
+            fontSize: 13,
+          }}
+          color="textBlack"
         >
           {`Voting for this action is not available for ${title}`}
         </Typography>
       )}
       {isDisplayed && (
-        <Grid container spacing={1}>
+        <Grid container spacing={1.875}>
           <Grid item xs={12}>
             <ProgressWrapper>
               {threshold !== null && (
-                <ThresholdIndicator left={threshold * 100}>
-                  <ThresholdBubble>
-                    <ThresholdText data-testid="outcome-threshold">
-                      {(threshold * 100).toFixed(0)}%
-                    </ThresholdText>
-                  </ThresholdBubble>
-                  <ThresholdArrow />
-                </ThresholdIndicator>
+                <>
+                  <ThresholdIndicator left={threshold * 100}>
+                    <ThresholdBubble>
+                      <ThresholdText data-testid="outcome-threshold">
+                        {(threshold * 100).toFixed(0)}%
+                      </ThresholdText>
+                    </ThresholdBubble>
+                    <ThresholdArrow />
+                  </ThresholdIndicator>
+                  <ThresholdLine
+                    sx={{
+                      left: `${threshold * 100}%`,
+                      transform: "translateX(-50%)",
+                    }}
+                  />
+                </>
               )}
               <ProgressContainer>
                 <StyledLinearProgress
@@ -164,20 +189,32 @@ export const VoteSection = ({
                 <PercentageOverlay>
                   <PercentageText data-testid="yes-percentage-text">
                     Yes:
-                    <Box component="span" sx={{ fontWeight: 600, marginX: 1 }}>
-                      {formatValue(yesVotes)}
-                    </Box>
-                    <Box component="span" sx={{ fontWeight: 600 }}>
-                      ({yesPercentage?.toFixed(2)}%)
+                    <Box
+                      component="span"
+                      sx={{
+                        fontWeight: 600,
+                        marginLeft: 0.5,
+                        fontSize: 13,
+                        lineHeight: 1.75,
+                      }}
+                    >
+                      {`${formatValue(yesVotes)} (${yesPercentage?.toFixed(
+                        2
+                      )}%)`}
                     </Box>
                   </PercentageText>
                   <PercentageText data-testid="no-percentage-text">
                     No:
-                    <Box component="span" sx={{ fontWeight: 600, marginX: 1 }}>
-                      {formatValue(noVotes)}
-                    </Box>
-                    <Box component="span" sx={{ fontWeight: 600 }}>
-                      ({noPercentage?.toFixed(2)}%)
+                    <Box
+                      component="span"
+                      sx={{
+                        fontWeight: 600,
+                        marginLeft: 0.5,
+                        fontSize: 13,
+                        lineHeight: 1.75,
+                      }}
+                    >
+                      {`${formatValue(noVotes)} (${noPercentage?.toFixed(2)}%)`}
                     </Box>
                   </PercentageText>
                 </PercentageOverlay>
@@ -187,11 +224,15 @@ export const VoteSection = ({
 
           <Grid item xs={12}>
             <FieldSet title="Vote Metrics">
-              <Box display="flex" flexDirection="column" gap={0.5}>
+              <Box display="flex" flexDirection="column" gap={1}>
                 <Typography
                   data-testid="total-controlled-amount"
-                  variant="body2"
-                  color="textGray"
+                  sx={{
+                    fontWeight: 400,
+                    fontSize: 13,
+                    lineHeight: 1.75,
+                  }}
+                  color="textBlack"
                 >
                   {isCC ? "Number of Active CCs" : "Total Stake"}:
                   <Box
@@ -199,7 +240,6 @@ export const VoteSection = ({
                     sx={{
                       color: "textBlack",
                       fontWeight: 600,
-                      fontSize: 14,
                       ml: 1,
                     }}
                   >
@@ -208,8 +248,12 @@ export const VoteSection = ({
                 </Typography>
                 <Typography
                   data-testid="outcome-abstain-votes"
-                  variant="body2"
-                  color="textGray"
+                  sx={{
+                    fontWeight: 400,
+                    fontSize: 13,
+                    lineHeight: 1.75,
+                  }}
+                  color="textBlack"
                 >
                   {isCC ? "Abstain Votes:" : "Abstain Vote Stake:"}
                   <Box
@@ -217,7 +261,6 @@ export const VoteSection = ({
                     sx={{
                       color: "textBlack",
                       fontWeight: 600,
-                      fontSize: 14,
                       ml: 1,
                     }}
                   >
@@ -227,8 +270,12 @@ export const VoteSection = ({
 
                 <Typography
                   data-testid="outcome-not-voted-votes"
-                  variant="body2"
-                  color="textGray"
+                  sx={{
+                    fontWeight: 400,
+                    fontSize: 13,
+                    lineHeight: 1.75,
+                  }}
+                  color="textBlack"
                 >
                   {isCC ? "Not Voted:" : "Not Voted Stake:"}
                   <Box
@@ -236,7 +283,6 @@ export const VoteSection = ({
                     sx={{
                       color: "textBlack",
                       fontWeight: 600,
-                      fontSize: 14,
                       ml: 1,
                     }}
                   >

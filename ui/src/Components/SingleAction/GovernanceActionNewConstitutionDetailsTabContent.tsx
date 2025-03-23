@@ -7,7 +7,7 @@ export const GovernanceActionNewConstitutionDetailsTabContent = ({
 }: Pick<GovernanceAction, "description">) => {
   return (
     <Box
-      sx={{ width: "100%", display: "flex", flexDirection: "column", gap: 3 }}
+      sx={{ width: "100%", display: "flex", flexDirection: "column", gap: 2.5 }}
     >
       <GovernanceActionElement
         title="New constitution link"

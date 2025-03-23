@@ -8,7 +8,7 @@ export const ReasoningTabContent = ({
   rationale,
 }: Pick<GovernanceAction, "abstract" | "motivation" | "rationale">) => {
   return (
-    <Box display="flex" flexDirection="column" gap={3}>
+    <Box display="flex" flexDirection="column" gap={2.5}>
       <ReasoningElement
         label="Abstract"
         text={abstract as string}

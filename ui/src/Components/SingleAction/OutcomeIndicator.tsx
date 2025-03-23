@@ -1,4 +1,4 @@
-import { Avatar, Box } from "@mui/material";
+import { Avatar, Box, IconButton } from "@mui/material";
 import { Typography } from "../Atoms/Typography";
 import CloseIcon from "../../Assets/Icons/CloseIcon";
 import CheckMarkIcon from "../../Assets/Icons/CheckMarkIcon";
@@ -20,14 +20,10 @@ export const OutcomeIndicator = ({
   dataTestId,
 }: OutcomeIndicatorProps) => {
   return (
-    <Box
-      data-testid={dataTestId}
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-    >
+    <Box data-testid={dataTestId} width="100%">
       <Avatar
         data-testid="outcome-icon"
+        variant="rounded"
         sx={{
           bgcolor: isLoading
             ? "gray"
@@ -36,26 +32,38 @@ export const OutcomeIndicator = ({
             : passed
             ? successGreen.c600
             : errorRed.c500,
-          width: 35,
-          height: 35,
+          width: "auto",
+          height: 24,
+          borderRadius: 10,
+          paddingY: 0.625,
           mb: 1,
           opacity: !isDisplayed ? 0.6 : 1,
           transition: "background-color 0.3s ease-in-out",
         }}
       >
-        {passed ? (
-          <CheckMarkIcon width={13} height={13} />
-        ) : (
-          <CloseIcon width={11} height={11} />
-        )}
+        <Box display="flex" flexDirection="row" alignItems="center">
+          {passed ? (
+            <IconButton sx={{ backgroundColor: "transparent" }}>
+              <CheckMarkIcon width={13} height={13} />
+            </IconButton>
+          ) : (
+            <IconButton sx={{ backgroundColor: "transparent" }}>
+              <CloseIcon width={11} height={11} />
+            </IconButton>
+          )}
+          <Typography
+            data-testid="voter-type-label"
+            sx={{
+              fontWeight: 400,
+              fontSize: 13,
+              lineHeight: 1.75,
+            }}
+            color="white"
+          >
+            {title}
+          </Typography>
+        </Box>
       </Avatar>
-      <Typography
-        data-testid="voter-type-label"
-        variant="body2"
-        color={!isDisplayed ? "text.disabled" : "textGray"}
-      >
-        {title}
-      </Typography>
     </Box>
   );
 };

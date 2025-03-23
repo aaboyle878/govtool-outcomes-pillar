@@ -19,12 +19,12 @@ function References({ links }: ReferencesProps) {
           fontSize: 14,
           color: "textGray",
           fontWeight: 600,
-          marginBottom: 1,
+          marginBottom: 0.5,
         }}
       >
         Supporting Links
       </Typography>
-      <Box display="flex" flexDirection="column" gap={1}>
+      <Box display="flex" flexDirection="column" gap={2}>
         {links &&
           links.map((link, index) => (
             <Box key={index}>
@@ -33,6 +33,7 @@ function References({ links }: ReferencesProps) {
                   fontSize: 14,
                   fontWeight: 600,
                   color: "textGray",
+                  wordBreak: "break-word",
                 }}
               >
                 {link?.label}
@@ -58,11 +59,12 @@ function References({ links }: ReferencesProps) {
                   />
                   <Typography
                     sx={{
-                      fontSize: 13,
-                      fontWeight: 500,
+                      fontSize: 16,
+                      fontWeight: 400,
                       overflow: "hidden",
                       width: "100%",
                       color: "primaryBlue",
+                      wordBreak: "break-word",
                     }}
                   >
                     {link?.uri}
