@@ -41,16 +41,27 @@ export const OutcomeIndicator = ({
           transition: "background-color 0.3s ease-in-out",
         }}
       >
-        <Box display="flex" flexDirection="row" alignItems="center">
-          {passed ? (
-            <IconButton sx={{ backgroundColor: "transparent" }}>
+        <Box
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+          sx={{ gap: 0.5 }}
+        >
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            sx={{
+              width: 13,
+              height: 13,
+            }}
+          >
+            {passed ? (
               <CheckMarkIcon width={13} height={13} />
-            </IconButton>
-          ) : (
-            <IconButton sx={{ backgroundColor: "transparent" }}>
+            ) : (
               <CloseIcon width={11} height={11} />
-            </IconButton>
-          )}
+            )}
+          </Box>
           <Typography
             data-testid="voter-type-label"
             sx={{
