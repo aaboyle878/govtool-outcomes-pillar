@@ -1,21 +1,24 @@
 import { Box, Typography } from "@mui/material";
 import Markdown from "react-markdown";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+
 type ReasoningElementProps = {
   label: string;
   text: string;
+  dataTestId?: string;
 };
-function ReasoningElement({ label, text }: ReasoningElementProps) {
+function ReasoningElement({ label, text, dataTestId }: ReasoningElementProps) {
   return (
-    <Box>
+    <Box
+      data-testid={dataTestId}
+      sx={{ display: "flex", flexDirection: "column", gap: 0.5 }}
+    >
       <Typography
         sx={{
-          fontSize: "0.875rem",
-          fontWeight: 500,
-          lineHeight: "1rem",
-          color: "neutralGray",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
+          fontSize: 14,
+          fontWeight: 600,
+          color: "textGray",
         }}
       >
         {label}
@@ -27,21 +30,20 @@ function ReasoningElement({ label, text }: ReasoningElementProps) {
           overflow: "hidden",
           flexDirection: "column",
           fontFamily: "Poppins, Arial",
-          marginTop: 1,
         }}
       >
         <Markdown
           components={{
-            // eslint-disable-next-line
             p(props) {
               const { children } = props;
               return (
                 <Typography
                   sx={{
-                    fontSize: "1rem",
+                    fontSize: 16,
                     fontWeight: 400,
-                    lineHeight: "1.5rem",
+                    lineHeight: "24px",
                     maxWidth: "auto",
+                    color: "textBlack",
                   }}
                 >
                   {children}
@@ -49,6 +51,8 @@ function ReasoningElement({ label, text }: ReasoningElementProps) {
               );
             },
           }}
+          remarkPlugins={[remarkMath]}
+          rehypePlugins={[rehypeKatex]}
         >
           {text?.toString()}
         </Markdown>

@@ -12,15 +12,15 @@ import GovActionDatesInfo from "./GovActionDatesInfo";
 import GovernanceActionStatus from "./GovernanceActionStatus";
 import { GOVERNANCE_ACTION_FILTERS } from "../../consts/filters";
 import { GovernanceActionCardHeader } from "../ActionCard/GovernanceActionCardHeader";
-import { NavLink } from "react-router-dom";
-import { Button } from "../Atoms/Button";
+import AbstractLoader from "../Loaders/GovernanceActionAbstractLoader";
+import ViewDetailsLink from "../ActionCard/ViewDetailsLink";
 
 interface GovernanceActionCardProps {
   action: GovernanceAction;
 }
 
 function GovernanceActionCard({ action }: GovernanceActionCardProps) {
-  const { metadata, metadataValid } = useMetadata(action);
+  const { metadata, metadataValid, isMetadataLoading } = useMetadata(action);
 
   const idCIP129 = encodeCIP129Identifier({
     txID: action?.tx_hash,
@@ -35,19 +35,21 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
     GOVERNANCE_ACTION_FILTERS.find((filter) => filter.value === action?.type)
       ?.label || action?.type;
 
+  const abstract = action.abstract || metadata?.data?.abstract;
+
   return (
     <Card
       id={`${idCIP129}-outcome-card`}
       data-testid={`${idCIP129}-outcome-card`}
       sx={{
         width: "100%",
-        height: "100%",
+        height: "auto",
         borderRadius: "20px",
         display: "flex",
-        padding: { xs: 1, sm: 2 },
+        paddingX: 3,
+        paddingTop: 3,
         flexDirection: "column",
         justifyContent: "space-between",
-        flexGrow: 1,
         boxShadow: "0px 4px 15px 0px #DDE3F5",
         backgroundColor: !metadataValid
           ? "rgba(251, 235, 235, 0.50)"
@@ -65,25 +67,29 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
       <CardContent
         id={`${idCIP129}-outcome-card-content`}
         data-testid={`${idCIP129}-outcome-card-content`}
-        sx={{ flexGrow: 1 }}
+        sx={{ padding: 0 }}
       >
         <GovernanceActionCardHeader
           title={action.title || metadata?.data?.title}
           isDataMissing={metadata?.metadataStatus || null}
+          isMetadataLoading={isMetadataLoading}
           dataTestId={`${idCIP129}-card-title`}
         />
         <Box sx={{ marginTop: 2.5 }}>
-          <GovActionDatesInfo action={action} />
+          <GovActionDatesInfo action={action} isCard />
         </Box>
         {metadataValid && (
           <Box sx={{ marginTop: 2.5 }}>
-            <GovernanceActionCardElement
-              title="Abstract"
-              description={
-                action.abstract || (metadata?.data?.abstract as string)
-              }
-              dataTestId={`${idCIP129}-abstract`}
-            />
+            {!abstract || isMetadataLoading ? (
+              <AbstractLoader />
+            ) : (
+              <GovernanceActionCardElement
+                title="Abstract"
+                description={abstract}
+                type="markdown"
+                dataTestId={`${idCIP129}-abstract`}
+              />
+            )}
           </Box>
         )}
         <Box
@@ -95,6 +101,7 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
           <GovernanceActionCardElement
             title="Governance Action Type"
             description={typeInWords}
+            type="text"
             dataTestId={`${idCIP129}-type`}
           />
 
@@ -116,30 +123,9 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
       <CardActions
         id={`${idCIP129}-outcome-card-actions`}
         data-testid={`${idCIP129}-outcome-card-actions`}
+        sx={{ paddingX: 0, paddingY: 3 }}
       >
-        <NavLink
-          data-testid={`${idCIP129}-view-details`}
-          to={`/outcomes/governance_actions/${fullGovActionId}`}
-          color="inherit"
-          style={{
-            display: "block",
-            width: "100%",
-            textDecoration: "none",
-          }}
-        >
-          <Button
-            variant="contained"
-            sx={{
-              borderRadius: "50px",
-              color: "neutralWhite",
-              backgroundColor: "primaryBlue",
-              width: "100%",
-            }}
-            aria-label={`${idCIP129}-view-details`}
-          >
-            View Details
-          </Button>
-        </NavLink>
+        <ViewDetailsLink id={fullGovActionId} />
       </CardActions>
     </Card>
   );

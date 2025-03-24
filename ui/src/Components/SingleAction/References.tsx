@@ -1,4 +1,7 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Link } from "@mui/material";
+import { Typography } from "../Atoms/Typography";
+import { openInNewTab } from "../../lib/openInNewTab";
+import { useAppContext } from "../../contexts/AppContext";
 interface Reference {
   "@type": string;
   label: string;
@@ -8,75 +11,68 @@ type ReferencesProps = {
   links: Reference[];
 };
 function References({ links }: ReferencesProps) {
+  const { ipfsGateway } = useAppContext();
   return (
     <Box>
       <Typography
         sx={{
-          fontSize: "0.875rem",
-          color: "neutralGray",
-          fontWeight: 500,
-          marginBottom: 1,
+          fontSize: 14,
+          color: "textGray",
+          fontWeight: 600,
+          marginBottom: 0.5,
         }}
       >
         Supporting Links
       </Typography>
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={2}>
-          {links &&
-            links.map((link, index) => (
-              <Grid item xs={6} key={index}>
-                <Box>
+      <Box display="flex" flexDirection="column" gap={2}>
+        {links &&
+          links.map((link, index) => (
+            <Box key={index}>
+              <Typography
+                sx={{
+                  fontSize: 14,
+                  fontWeight: 600,
+                  color: "textGray",
+                  wordBreak: "break-word",
+                }}
+              >
+                {link?.label}
+              </Typography>
+              <Link
+                onClick={() => openInNewTab(link?.uri, ipfsGateway)}
+                style={{ textDecoration: "none" }}
+                sx={{
+                  cursor: "pointer",
+                }}
+              >
+                <Box
+                  display="flex"
+                  flexDirection="row"
+                  alignItems="center"
+                  gap="4px"
+                >
+                  <img
+                    alt="Link icon."
+                    height={15}
+                    width={15}
+                    src="/icons/Link.svg"
+                  />
                   <Typography
                     sx={{
-                      fontSize: "0.85rem",
+                      fontSize: 16,
                       fontWeight: 400,
-                      color: "textBlack",
-                      marginBottom: 0.5,
+                      overflow: "hidden",
+                      width: "100%",
+                      color: "primaryBlue",
+                      wordBreak: "break-word",
                     }}
                   >
-                    {link?.label}
+                    {link?.uri}
                   </Typography>
-                  <a
-                    href={link.uri}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ textDecoration: "none" }}
-                  >
-                    <Box
-                      display="flex"
-                      flexDirection="row"
-                      alignItems="center"
-                      gap="0.25rem"
-                    >
-                      <img
-                        alt="Link icon."
-                        height={15}
-                        width={15}
-                        src="/icons/Link.svg"
-                      />
-                      <Typography
-                        sx={(theme) => ({
-                          fontSize: "0.75rem",
-                          display: "-webkit-box",
-                          WebkitBoxOrient: "vertical",
-                          overflow: "hidden",
-                          padding: 1,
-                          borderRadius: "0.25rem",
-                          width: "100%",
-                          color: "primaryBlue",
-                          "&:hover": {
-                            boxShadow: theme.shadows[1],
-                          },
-                        })}
-                      >
-                        {link?.uri}
-                      </Typography>
-                    </Box>
-                  </a>
                 </Box>
-              </Grid>
-            ))}
-        </Grid>
+              </Link>
+            </Box>
+          ))}
       </Box>
     </Box>
   );

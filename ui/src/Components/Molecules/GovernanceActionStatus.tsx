@@ -2,16 +2,20 @@ import { Box } from "@mui/material";
 import { Status } from "../../types/api";
 import StatusChip from "./StatusChip";
 import { Typography } from "../Atoms/Typography";
+import { useScreenDimension } from "../../hooks/useDimensions";
 
 interface GovernanceActionStatusProps {
   status: Status;
   actionId: string;
+  isCard?: boolean;
 }
 
 export default function GovernanceActionStatus({
   status,
   actionId,
+  isCard = true,
 }: GovernanceActionStatusProps) {
+  const { isMobile } = useScreenDimension();
   const getStatusChips = () => {
     const { ratified_epoch, enacted_epoch, dropped_epoch, expired_epoch } =
       status;
@@ -22,7 +26,7 @@ export default function GovernanceActionStatus({
 
     if (ratified_epoch && enacted_epoch) {
       return (
-        <Box display="flex" flexDirection="row" gap={1}>
+        <Box display="flex" flexDirection="row" gap={2}>
           <StatusChip status="Ratified" />
           <StatusChip status="Enacted" />
         </Box>
@@ -39,7 +43,7 @@ export default function GovernanceActionStatus({
 
     if (expired_epoch && dropped_epoch) {
       return (
-        <Box display="flex" flexDirection="row" gap={1}>
+        <Box display="flex" flexDirection="row" gap={2}>
           <StatusChip status="Expired" />
           <StatusChip status="Not Ratified" />
         </Box>
@@ -57,24 +61,24 @@ export default function GovernanceActionStatus({
     return null;
   };
   return (
-    <Box data-testid={`${actionId}-status`}>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        width="100%"
-        alignItems="center"
+    <Box
+      data-testid={`${actionId}-status`}
+      display="flex"
+      justifyContent={isCard ? "space-between" : ""}
+      gap={isCard ? 0 : isMobile ? 3 : 8.65}
+      width="100%"
+      alignItems="center"
+    >
+      <Typography
+        sx={{
+          fontSize: isCard ? 12 : 14,
+          color: "textGray",
+          fontWeight: isCard ? 500 : 600,
+        }}
       >
-        <Typography
-          sx={{
-            fontSize: 12,
-            color: "textGray",
-            fontWeight: 500,
-          }}
-        >
-          Status
-        </Typography>
-        {getStatusChips()}
-      </Box>
+        Status
+      </Typography>
+      {getStatusChips()}
     </Box>
   );
 }

@@ -1,15 +1,16 @@
-import { Box, IconButton, Tooltip, Typography } from "@mui/material";
-import CopyIcon from "../../Assets/Icons/CopyIcon";
-import { useSnackbar } from "../../contexts/Snackbar";
+import { Box, IconButton, Link } from "@mui/material";
 import { IconExternalLink } from "@intersect.mbo/intersectmbo.org-icons-set";
 import { openInNewTab } from "../../lib/openInNewTab";
 import { useAppContext } from "../../contexts/AppContext";
+import { Typography } from "../Atoms/Typography";
+import CopyButton from "../Atoms/CopyButton";
 
 interface GovernanceActionElementProps {
   title: string;
   type: string;
   content: string;
   isCopyable?: boolean;
+  dataTestId?: string;
 }
 
 export default function GovernanceActionElement({
@@ -17,23 +18,18 @@ export default function GovernanceActionElement({
   type,
   content,
   isCopyable = false,
+  dataTestId,
 }: GovernanceActionElementProps) {
-  const { addSuccessAlert } = useSnackbar();
   const { ipfsGateway } = useAppContext();
-
-  const handleCopyClick = () => {
-    navigator.clipboard.writeText(content);
-    addSuccessAlert("Copied to clipboard!");
-  };
+  if (!content) return;
 
   const contentTypographyStyles = {
-    fontSize: "1rem",
+    fontSize: 16,
+    fontWeight: 400,
     color: "primaryBlue",
     wordBreak: "break-word",
     overflow: "hidden",
-    flexGrow: 1,
-    flexShrink: 1,
-    minWidth: 0,
+    padding: 0,
   };
 
   const contentContainerStyles = {
@@ -41,9 +37,7 @@ export default function GovernanceActionElement({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
     gap: 1,
-    minWidth: 0,
   };
 
   const renderContent = () => {
@@ -51,27 +45,23 @@ export default function GovernanceActionElement({
       return (
         <Box sx={contentContainerStyles}>
           <Typography sx={contentTypographyStyles}>{content}</Typography>
-          {isCopyable && (
-            <Tooltip title="Copy to clipboard">
-              <IconButton onClick={handleCopyClick} size="small">
-                <CopyIcon width={16} height={16} />
-              </IconButton>
-            </Tooltip>
-          )}
+          {isCopyable && <CopyButton text={content} />}
         </Box>
       );
     }
 
     if (type === "link") {
       return (
-        <Box sx={contentContainerStyles}>
-          <a href={content} style={{ textDecoration: "none" }}>
-            <Typography sx={contentTypographyStyles}>{content}</Typography>
-          </a>
-          <IconButton onClick={() => openInNewTab(content, ipfsGateway)}>
-            <IconExternalLink fill="#0033AD" />
+        <Link
+          onClick={() => openInNewTab(content, ipfsGateway)}
+          sx={{ ...contentContainerStyles, cursor: "pointer" }}
+          style={{ textDecoration: "none" }}
+        >
+          <Typography sx={contentTypographyStyles}>{content}</Typography>
+          <IconButton size="small">
+            <IconExternalLink fill="#0033AD" height="21" width="21" />
           </IconButton>
-        </Box>
+        </Link>
       );
     }
 
@@ -80,6 +70,7 @@ export default function GovernanceActionElement({
 
   return (
     <Box
+      data-testid={dataTestId}
       sx={{ width: "100%", display: "flex", flexDirection: "column", gap: 0.5 }}
     >
       <Typography

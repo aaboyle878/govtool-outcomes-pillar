@@ -1,84 +1,87 @@
-import { Box, Typography } from "@mui/material";
-import { formatTimeStamp } from "../../lib/utils";
-import StatusChip from "../Molecules/StatusChip";
-import { Status } from "../../types/api";
+import { Box, IconButton, Skeleton, Tooltip } from "@mui/material";
+import { MetadataValidationStatus } from "../../types/api";
+import { useSnackbar } from "../../contexts/Snackbar";
+import { Typography } from "../Atoms/Typography";
+import { getMetadataDataMissingStatusTranslation } from "../../lib/getMetadataDataMissingStatusTranslation";
+import { IconShare } from "@intersect.mbo/intersectmbo.org-icons-set";
+import { useState } from "react";
+import { theme } from "../../theme";
 
 interface HeaderProps {
-  dateSubmitted: string;
-  epochSubmitted: number;
-  status: Status;
+  title: string | null;
+  isGovernanceActionLoading: boolean;
+  isMetadataLoading: boolean;
+  isDataMissing: MetadataValidationStatus | null;
 }
 
-
 export default function Header({
-  dateSubmitted,
-  epochSubmitted,
-  status,
+  title,
+  isGovernanceActionLoading,
+  isMetadataLoading,
+  isDataMissing,
 }: HeaderProps) {
-  const getStatusChips = () => {
-    const { ratified_epoch, enacted_epoch, dropped_epoch, expired_epoch } =
-      status;
+  const [isShareHovered, setIsShareHovered] = useState<boolean>(false);
+  const { addSuccessAlert } = useSnackbar();
+  const {
+    palette: { textBlack, primaryBlue },
+  } = theme;
 
-    if (!ratified_epoch && !enacted_epoch && !dropped_epoch && !expired_epoch) {
-      return <StatusChip status="Live" />;
-    }
-
-    if (ratified_epoch && enacted_epoch) {
-      return (
-        <Box display="flex" flexDirection="row" gap="4px">
-          <StatusChip status="Ratified" />
-          <StatusChip status="Enacted" />
-        </Box>
-      );
-    }
-
-    if (ratified_epoch && !enacted_epoch) {
-      return <StatusChip status="Ratified" />;
-    }
-
-    if (!ratified_epoch && enacted_epoch) {
-      return <StatusChip status="Enacted" />;
-    }
-
-    if (expired_epoch && dropped_epoch) {
-      return (
-        <Box display="flex" flexDirection="row" gap="4px">
-          <StatusChip status="Expired" />
-          <StatusChip status="Not Ratified" />
-        </Box>
-      );
-    }
-
-    if (dropped_epoch) {
-      return <StatusChip status="Not Ratified" />;
-    }
-
-    if (expired_epoch) {
-      return <StatusChip status="Expired" />;
-    }
-
-    return null;
+  const onCopy = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    navigator.clipboard.writeText(window.location.href);
+    addSuccessAlert("Copied to clipboard!");
   };
+
   return (
-    <Box>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        width="100%"
-        alignItems="center"
-      >
-        <Typography sx={{ fontSize: "12px" }}>
-          Submitted:{" "}
-          <Typography
-            sx={{ fontSize: "12px", fontWeight: "bold" }}
-            component="span"
-          >
-            {formatTimeStamp(dateSubmitted)}
-          </Typography>{" "}
-          {`(Epoch ${epochSubmitted})`}
+    <Box
+      data-testid="single-action-header"
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+    >
+      {isGovernanceActionLoading || isMetadataLoading ? (
+        <Skeleton variant="rounded" width="75%" height={32} />
+      ) : (
+        <Typography
+          data-testid={`single-action-title`}
+          sx={{
+            fontSize: 22,
+            fontWeight: 600,
+            lineHeight: "24px",
+            lineClamp: 2,
+            wordBreak: "break-word",
+            ...(isDataMissing && { color: "errorRed" }),
+          }}
+        >
+          {(isDataMissing &&
+            getMetadataDataMissingStatusTranslation(
+              isDataMissing as MetadataValidationStatus
+            )) ||
+            title}
         </Typography>
-        {getStatusChips()}
-      </Box>
+      )}
+      <Tooltip title="Share Governance Action">
+        <IconButton
+          sx={{
+            width: 24,
+            height: 24,
+            padding: 0,
+            "&:hover": {
+              backgroundColor: "transparent",
+            },
+          }}
+          onClick={onCopy}
+          onMouseEnter={() => setIsShareHovered(true)}
+          onMouseLeave={() => setIsShareHovered(false)}
+          data-testid="single-action-share-link"
+        >
+          <IconShare
+            width="24"
+            height="24"
+            fill={isShareHovered ? primaryBlue : textBlack}
+          />
+        </IconButton>
+      </Tooltip>
     </Box>
   );
 }

@@ -24,14 +24,12 @@ export const DataMissingInfoBox = ({
   return (
     <Box
       sx={{
-        maxWidth: {
-          xs: "295px",
-          md: "100%",
-        },
+        maxWidth: "100%",
         ...sx,
       }}
     >
       <Typography
+        data-testid="metadata-error-message"
         sx={{
           fontSize: "18px",
           fontWeight: 500,
@@ -42,6 +40,7 @@ export const DataMissingInfoBox = ({
         {errorMessage}
       </Typography>
       <Typography
+        data-testid="metadata-error-description"
         sx={{
           fontWeight: 400,
           color: "errorRed",
@@ -51,6 +50,7 @@ export const DataMissingInfoBox = ({
         {errorDescription}
       </Typography>
       <Link
+        data-testid="metadata-error-learn-more"
         onClick={() => openInNewTab(URLS.DREP_ERROR_CONDITIONS, ipfsGateway)}
         sx={{
           fontFamily: "Poppins",

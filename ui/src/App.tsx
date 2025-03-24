@@ -10,11 +10,12 @@ import { AppContextProvider } from "./contexts/AppContext";
 export type AppProps = {
   apiUrl?: string;
   ipfsGateway?: string;
+  walletAPI?: any;
 };
 
 const queryClient = new QueryClient();
 
-function App({ apiUrl, ipfsGateway }: AppProps) {
+function App({ apiUrl, ipfsGateway, walletAPI }: AppProps) {
   setAxiosBaseURL(apiUrl);
 
   return (
@@ -27,7 +28,7 @@ function App({ apiUrl, ipfsGateway }: AppProps) {
     >
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
-          <AppContextProvider ipfsGateway={ipfsGateway}>
+          <AppContextProvider ipfsGateway={ipfsGateway} walletAPI={walletAPI}>
             <SnackbarProvider>
               <GlobalWrapper />
             </SnackbarProvider>
