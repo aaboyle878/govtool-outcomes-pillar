@@ -44,7 +44,7 @@ const FieldSet = ({ title, children, sx, ...props }: FieldSetProps) => {
           </Typography>
         )}
       </legend>
-      <Box paddingY={0.5}>{children}</Box>
+      <Box>{children}</Box>
     </Box>
   );
 };
