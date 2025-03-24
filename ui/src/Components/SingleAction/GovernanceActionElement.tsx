@@ -29,9 +29,6 @@ export default function GovernanceActionElement({
     color: "primaryBlue",
     wordBreak: "break-word",
     overflow: "hidden",
-    flexGrow: 1,
-    flexShrink: 1,
-    minWidth: 0,
     padding: 0,
   };
 
@@ -40,7 +37,7 @@ export default function GovernanceActionElement({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
+    gap: 1,
   };
 
   const renderContent = () => {
@@ -62,7 +59,7 @@ export default function GovernanceActionElement({
         >
           <Typography sx={contentTypographyStyles}>{content}</Typography>
           <IconButton size="small">
-            <IconExternalLink fill="#0033AD" height="20" width="20" />
+            <IconExternalLink fill="#0033AD" height="21" width="21" />
           </IconButton>
         </Link>
       );

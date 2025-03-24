@@ -3,6 +3,7 @@ import { Box, Divider, Skeleton } from "@mui/material";
 import { Typography } from "../Atoms/Typography";
 import { MetadataValidationStatus } from "../../types/api";
 import { getMetadataDataMissingStatusTranslation } from "../../lib/getMetadataDataMissingStatusTranslation";
+import { useScreenDimension } from "../../hooks/useDimensions";
 
 type BreadcrumbsProps = {
   elementOne: string;
@@ -19,6 +20,7 @@ export const Breadcrumbs = ({
   isMetadataLoading,
   isDataMissing,
 }: BreadcrumbsProps) => {
+  const { isMobile } = useScreenDimension();
   const showLoader =
     isMetadataLoading ||
     (!(
@@ -32,7 +34,7 @@ export const Breadcrumbs = ({
       sx={{
         display: "flex",
         alignItems: "center",
-        margin: "2px 0 20px",
+        margin: `2px 0 ${isMobile ? "8px" : "24px"}`,
       }}
     >
       <img

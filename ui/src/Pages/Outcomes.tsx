@@ -16,14 +16,15 @@ export default function Outcomes() {
       flexDirection={"column"}
       flexGrow={1}
     >
-      {/* {!walletAPI?.isEnabled && (
+      {!walletAPI?.isEnabled && (
         <Typography
           sx={{ paddingX: 1, paddingY: 2 }}
           variant={isMobile ? "title1" : "headline3"}
+          component="h1"
         >
           Outcomes
         </Typography>
-      )} */}
+      )}
       <SearchFiltersSortBar />
       <Box marginTop={4}>
         <GovernanceActionsList />

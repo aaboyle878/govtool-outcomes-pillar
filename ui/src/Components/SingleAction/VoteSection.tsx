@@ -1,6 +1,6 @@
 import { Box, Grid, LinearProgress, styled } from "@mui/material";
 import { correctAdaFormatWithSuffix } from "../../lib/utils";
-import { errorRed, gray, successGreen } from "../../consts/colors";
+import { errorRed, successGreen } from "../../consts/colors";
 import { Typography } from "../Atoms/Typography";
 import { VoteSectionLoader } from "../Loaders/VoteSectionLoader";
 import FieldSet from "../Atoms/FieldSet";
@@ -66,6 +66,10 @@ const PercentageText = styled(Typography)({
   color: "textBlack",
   padding: "0 10px",
   zIndex: 10,
+  whiteSpace: "nowrap",
+  [theme.breakpoints.down("sm")]: {
+    padding: "0 4px",
+  },
 });
 
 const ThresholdLine = styled(Box)({

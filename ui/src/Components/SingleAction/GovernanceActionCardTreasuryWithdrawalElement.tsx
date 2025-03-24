@@ -46,7 +46,7 @@ export const GovernanceActionCardTreasuryWithdrawalElement = ({
             alignItems: "center",
             overflow: "hidden",
             flexDirection: "row",
-            justifyContent: "space-between",
+            gap: 1,
           }}
         >
           <Typography
@@ -62,7 +62,7 @@ export const GovernanceActionCardTreasuryWithdrawalElement = ({
           >
             {receivingAddress}
           </Typography>
-          <Box ml={1}>
+          <Box>
             <CopyButton text={receivingAddress} />
           </Box>
         </Box>

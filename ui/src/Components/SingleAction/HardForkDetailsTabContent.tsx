@@ -67,7 +67,7 @@ export const HardForkDetailsTabContent = ({
           Previous Governance Action ID
         </Typography>
         {prevGovActionId ? (
-          <Box sx={{ display: "flex", gap: 1 }}>
+          <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
             <Typography
               variant="body1"
               sx={{

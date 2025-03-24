@@ -66,8 +66,8 @@ export const GovernanceActionNewCommitteeDetailsTabContent = ({
                 key={cip129Identifier}
                 display="flex"
                 flexDirection="row"
-                justifyContent="space-between"
                 alignItems="center"
+                gap={1}
               >
                 <Typography
                   data-testid={`member-to-be-added-to-the-committee-id-${cip129Identifier}`}
@@ -115,11 +115,11 @@ export const GovernanceActionNewCommitteeDetailsTabContent = ({
           <Box display="flex" flexDirection="column">
             {(description?.membersToBeRemoved as string[]).map((hash) => (
               <Box
+                key={hash}
                 display="flex"
                 flexDirection="row"
-                justifyContent="space-between"
                 alignItems="center"
-                key={hash}
+                gap={1}
               >
                 <Typography
                   data-testid="members-to-be-removed-from-the-committee-id"
@@ -177,12 +177,12 @@ export const GovernanceActionNewCommitteeDetailsTabContent = ({
             ({ cip129Identifier, newExpirationEpoch, expirationEpoch }) => (
               <Box display="flex" flexDirection="column">
                 <Box
+                  key={cip129Identifier}
                   display="flex"
                   flexDirection="row"
-                  justifyContent="space-between"
                   alignItems="center"
                   data-testid={`${cip129Identifier}-member-id`}
-                  key={cip129Identifier}
+                  gap={1}
                 >
                   <Typography
                     sx={{

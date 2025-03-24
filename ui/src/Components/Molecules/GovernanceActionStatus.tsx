@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import { Status } from "../../types/api";
 import StatusChip from "./StatusChip";
 import { Typography } from "../Atoms/Typography";
+import { useScreenDimension } from "../../hooks/useDimensions";
 
 interface GovernanceActionStatusProps {
   status: Status;
@@ -14,6 +15,7 @@ export default function GovernanceActionStatus({
   actionId,
   isCard = true,
 }: GovernanceActionStatusProps) {
+  const { isMobile } = useScreenDimension();
   const getStatusChips = () => {
     const { ratified_epoch, enacted_epoch, dropped_epoch, expired_epoch } =
       status;
@@ -63,7 +65,7 @@ export default function GovernanceActionStatus({
       data-testid={`${actionId}-status`}
       display="flex"
       justifyContent={isCard ? "space-between" : ""}
-      gap={isCard ? 0 : 8.65}
+      gap={isCard ? 0 : isMobile ? 3 : 8.65}
       width="100%"
       alignItems="center"
     >

@@ -7,6 +7,7 @@ import {
   getProposalStatus,
 } from "../../lib/utils";
 import { Typography } from "../Atoms/Typography";
+import { useScreenDimension } from "../../hooks/useDimensions";
 
 interface GovActionDatesInfoProps {
   action: GovernanceAction;
@@ -17,6 +18,7 @@ const GovActionDatesInfo = ({
   action,
   isCard = false,
 }: GovActionDatesInfoProps) => {
+  const { isMobile } = useScreenDimension();
   const proposalStatus = getProposalStatus(action.status);
 
   const isExpired = ["Expired", "Not Ratified", "Enacted"].includes(
@@ -135,7 +137,10 @@ const GovActionDatesInfo = ({
         <Typography variant="caption" sx={{ fontSize: 12 }}>
           Submitted:{" "}
           <Typography component="span" fontWeight={600} variant="caption">
-            {formatTimeStamp(action.time, isCard ? "short" : "full")}
+            {formatTimeStamp(
+              action.time,
+              isCard || isMobile ? "short" : "full"
+            )}
           </Typography>
         </Typography>
         {action.epoch_no && (
@@ -167,9 +172,12 @@ const GovActionDatesInfo = ({
             {action.status.expired_epoch !== null
               ? formatTimeStamp(
                   action.status_times.expired_time as string,
-                  isCard ? "short" : "full"
+                  isCard || isMobile ? "short" : "full"
                 )
-              : formatTimeStamp(action.expiry_date, isCard ? "short" : "full")}
+              : formatTimeStamp(
+                  action.expiry_date,
+                  isCard || isMobile ? "short" : "full"
+                )}
           </Typography>
         </Typography>
         <Typography variant="caption">

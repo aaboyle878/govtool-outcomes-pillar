@@ -295,7 +295,7 @@ function GovernanceAction({ id }: GovernanceActionProps) {
         isDataMissing={isDataMissing}
       />
       <Grid container spacing={2} marginTop={0.5}>
-        <Grid item xs={12} lg={7} sx={{ marginBottom: { xs: 3, lg: 0 } }}>
+        <Grid item xs={12} lg={7.5} sx={{ marginBottom: { xs: 3, lg: 0 } }}>
           <Box
             data-testid={`single-action-${idCIP129}-description`}
             sx={{
@@ -304,9 +304,7 @@ function GovernanceAction({ id }: GovernanceActionProps) {
               borderRadius: "16px",
               paddingX: 2,
               paddingY: 2.75,
-              backgroundColor: !metadataValid
-                ? "rgba(251, 235, 235, 0.50)"
-                : "rgba(255, 255, 255, 0.3)",
+              backgroundColor: "white",
               ...(!metadataValid && {
                 border: "1px solid #F6D5D5",
               }),
@@ -432,7 +430,7 @@ function GovernanceAction({ id }: GovernanceActionProps) {
             )}
           </Box>
         </Grid>
-        <Grid item xs={12} lg={5} sx={{ position: "relative" }}>
+        <Grid item xs={12} lg={4.5} sx={{ position: "relative" }}>
           <Box
             data-testid={`single-action-outcome-numbers`}
             sx={{
@@ -441,7 +439,7 @@ function GovernanceAction({ id }: GovernanceActionProps) {
               justifyContent: "space-between",
               boxShadow: "0px 4px 15px 0px #DDE3F5",
               borderRadius: "16px",
-              backgroundColor: "rgba(255, 255, 255, 0.3)",
+              backgroundColor: "white",
               paddingX: 2,
               paddingY: 2.75,
               position: "sticky",
