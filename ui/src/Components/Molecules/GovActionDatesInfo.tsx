@@ -1,5 +1,5 @@
 import { IconInformationCircle } from "@intersect.mbo/intersectmbo.org-icons-set";
-import { Box, Icon, Tooltip } from "@mui/material";
+import { Box, Icon } from "@mui/material";
 import { GovernanceAction } from "../../types/api";
 import {
   encodeCIP129Identifier,
@@ -9,6 +9,7 @@ import {
 import { Typography } from "../Atoms/Typography";
 import { useScreenDimension } from "../../hooks/useDimensions";
 import { useTranslation } from "../../contexts/I18nContext";
+import { Tooltip } from "../Atoms/Tooltip";
 
 interface GovActionDatesInfoProps {
   action: GovernanceAction;
@@ -37,31 +38,8 @@ const GovActionDatesInfo = ({
   const renderSubmissionInfoTooltip = () => {
     return (
       <Tooltip
-        title={
-          <Box sx={{ bgcolor: "rgb(36, 34, 50)", p: 1, borderRadius: 1 }}>
-            <Typography variant="body1" fontWeight={400} color={"white"}>
-              {t("outcome.dates.submission.title")}
-            </Typography>
-            <Typography variant="body2" fontWeight={400} color={"gray"}>
-              {t("outcome.dates.submission.description")}
-            </Typography>
-          </Box>
-        }
-        arrow
-        slotProps={{
-          tooltip: {
-            sx: {
-              backgroundColor: "transparent",
-              p: 0,
-              m: 0,
-            },
-          },
-          arrow: {
-            sx: {
-              color: "rgb(36, 34, 50)",
-            },
-          },
-        }}
+        heading={t("outcome.dates.submission.title")}
+        paragraphOne={t("outcome.dates.submission.description")}
       >
         <Icon>
           <IconInformationCircle width={19} height={19} />
@@ -73,33 +51,9 @@ const GovActionDatesInfo = ({
   const renderExpirationInfoTooltip = () => {
     return (
       <Tooltip
-        title={
-          <Box sx={{ bgcolor: "rgb(36, 34, 50)", p: 1, borderRadius: 1 }}>
-            <Typography variant="body1" fontWeight={400} color={"white"}>
-              {t("outcome.dates.expired.title")}
-            </Typography>
-            <Typography variant="body2" fontWeight={400} color={"gray"}>
-              {t("outcome.dates.expired.paragraphOne")}
-              <br />
-              {t("outcome.dates.expired.paragraphTwo")}
-            </Typography>
-          </Box>
-        }
-        arrow
-        slotProps={{
-          tooltip: {
-            sx: {
-              backgroundColor: "transparent",
-              p: 0,
-              m: 0,
-            },
-          },
-          arrow: {
-            sx: {
-              color: "rgb(36, 34, 50)",
-            },
-          },
-        }}
+        heading={t("outcome.dates.expired.title")}
+        paragraphOne={t("outcome.dates.expired.paragraphOne")}
+        paragraphTwo={t("outcome.dates.expired.paragraphTwo")}
       >
         <Icon>
           <IconInformationCircle width={19} height={19} />

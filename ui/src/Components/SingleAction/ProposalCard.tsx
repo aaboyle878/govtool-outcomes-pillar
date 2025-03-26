@@ -1,13 +1,17 @@
 import { IconInformationCircle } from "@intersect.mbo/intersectmbo.org-icons-set";
-import { Box, Button, Tooltip, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 
 import { Link } from "react-router-dom";
 import { formatTimeStamp } from "../../lib/utils";
 import { theme } from "../../theme";
+import { Tooltip } from "../Atoms/Tooltip";
+import { Typography } from "../Atoms/Typography";
+import { useTranslation } from "../../contexts/I18nContext";
 
 const ProposalCard = ({ proposal }: { proposal: any }) => {
+  const { t } = useTranslation();
   const {
-    palette: { textColors, customDivider },
+    palette: { customDivider },
   } = theme;
 
   return (
@@ -38,7 +42,7 @@ const ProposalCard = ({ proposal }: { proposal: any }) => {
             borderRadius: "14px",
           }}
         >
-          <Tooltip title={"Proposal Date"}>
+          <Tooltip paragraphOne={t("proposalDiscussion.proposalDate")}>
             <Box display={"flex"} alignItems={"center"}>
               <IconInformationCircle color="textBlack" />
             </Box>
@@ -49,7 +53,7 @@ const ProposalCard = ({ proposal }: { proposal: any }) => {
             color="textBlack"
             data-testid="proposed-date-wrapper"
           >
-            Proposed on:
+            {t("proposalDiscussion.proposedOn")}
             <Box component="span" data-testid="proposed-date" ml={0.5}>
               {formatTimeStamp(proposal?.attributes?.createdAt, "short")}
             </Box>
@@ -65,7 +69,7 @@ const ProposalCard = ({ proposal }: { proposal: any }) => {
               data-testid={`proposal-${proposal?.id}-view-details`}
               fullWidth
             >
-              View Details
+              {t("outcome.viewDetails")}
             </Button>
           </Link>
         </Box>

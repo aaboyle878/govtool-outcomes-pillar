@@ -1,60 +1,65 @@
-// import { styled } from "@mui/material";
-// import * as TooltipMUI from "@mui/material/Tooltip";
-// import Typography from "@mui/material/Typography";
+import { Box, Tooltip as MUIToolTip } from "@mui/material";
+import { Typography } from "./Typography";
+import React from "react";
 
-// export type TooltipProps = Omit<TooltipMUI.TooltipProps, "title"> & {
-//   heading?: string;
-//   paragraphOne?: string;
-//   paragraphTwo?: string;
-// };
+export type TooltipProps = {
+  heading?: string;
+  paragraphOne?: string;
+  paragraphTwo?: string;
+  children: React.ReactElement<any>;
+};
 
-// const StyledTooltip = styled(
-//   ({ className, ...props }: TooltipMUI.TooltipProps) => (
-//     // eslint-disable-next-line react/jsx-pascal-case
-//     <TooltipMUI.default {...props} arrow classes={{ popper: className }} />
-//   )
-// )(() => ({
-//   [`& .${TooltipMUI.tooltipClasses.arrow}`]: {
-//     color: "rgb(36, 34, 50)",
-//   },
-//   [`& .${TooltipMUI.tooltipClasses.tooltip}`]: {
-//     backgroundColor: "rgb(36, 34, 50)",
-//     padding: 12,
-//   },
-// }));
-
-// export const Tooltip = ({
-//   heading,
-//   paragraphOne,
-//   paragraphTwo,
-//   ...tooltipProps
-// }: TooltipProps) => (
-//   <StyledTooltip
-//     {...tooltipProps}
-//     enterTouchDelay={0}
-//     leaveTouchDelay={1000}
-//     title={
-//       <>
-//         {heading && (
-//           <Typography fontSize={16} fontWeight={400} color="#FBFBFF">
-//             {heading}
-//           </Typography>
-//         )}
-//         <Typography
-//           mt={0.5}
-//           fontSize={14}
-//           fontWeight={400}
-//           color="rgb(170, 170, 170)"
-//         >
-//           {paragraphOne && <>{paragraphOne}</>}
-//           {paragraphTwo && (
-//             <>
-//               <br /> <br />
-//               {paragraphTwo}
-//             </>
-//           )}
-//         </Typography>
-//       </>
-//     }
-//   />
-// );
+export const Tooltip = ({
+  heading,
+  paragraphOne,
+  paragraphTwo,
+  children,
+}: TooltipProps) => (
+  <MUIToolTip
+    enterTouchDelay={0}
+    leaveTouchDelay={1000}
+    title={
+      <>
+        {heading && (
+          <Typography variant="body1" fontWeight={400} color={"arcticWhite"}>
+            {heading}
+          </Typography>
+        )}
+        <Typography
+          variant="body2"
+          fontWeight={400}
+          color={"rgb(170, 170, 170)"}
+          sx={{
+            mt: heading ? 0.5 : 0,
+          }}
+        >
+          {paragraphOne && <>{paragraphOne}</>}
+          {paragraphTwo && (
+            <>
+              <br></br>
+              {paragraphTwo}
+            </>
+          )}
+        </Typography>
+      </>
+    }
+    arrow
+    slotProps={{
+      tooltip: {
+        sx: {
+          backgroundColor: "rgb(36, 34, 50)",
+          borderRadius: 1,
+          p: 1,
+          m: 0,
+        },
+      },
+      arrow: {
+        sx: {
+          color: "rgb(36, 34, 50)",
+        },
+      },
+    }}
+  >
+    {children}
+  </MUIToolTip>
+);

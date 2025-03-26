@@ -1,4 +1,4 @@
-import { Box, IconButton, Skeleton, Tooltip } from "@mui/material";
+import { Box, IconButton, Skeleton } from "@mui/material";
 import { MetadataValidationStatus } from "../../types/api";
 import { useSnackbar } from "../../contexts/Snackbar";
 import { Typography } from "../Atoms/Typography";
@@ -7,6 +7,7 @@ import { IconShare } from "@intersect.mbo/intersectmbo.org-icons-set";
 import { useState } from "react";
 import { theme } from "../../theme";
 import { useTranslation } from "../../contexts/I18nContext";
+import { Tooltip } from "../Atoms/Tooltip";
 
 interface HeaderProps {
   title: string | null;
@@ -63,7 +64,7 @@ export default function Header({
             title}
         </Typography>
       )}
-      <Tooltip title={t("tooltips.shareAction")}>
+      <Tooltip paragraphOne={t("tooltips.shareAction")}>
         <IconButton
           sx={{
             width: 24,

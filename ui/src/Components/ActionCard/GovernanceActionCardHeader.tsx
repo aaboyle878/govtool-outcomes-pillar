@@ -1,9 +1,10 @@
-import { Box, Icon, Tooltip } from "@mui/material";
+import { Box, Icon } from "@mui/material";
 import { IconInformationCircle } from "@intersect.mbo/intersectmbo.org-icons-set";
 import { MetadataValidationStatus } from "../../types/api";
 import { getMetadataDataMissingStatusTranslation } from "../../lib/getMetadataDataMissingStatusTranslation";
 import { Typography } from "../Atoms/Typography";
 import { useTranslation } from "../../contexts/I18nContext";
+import { Tooltip } from "../Atoms/Tooltip";
 
 type GovernanceActionCardHeaderProps = {
   title?: string;
@@ -76,34 +77,11 @@ export const GovernanceActionCardHeader = ({
       )}
       {isDataMissing && typeof isDataMissing === "string" && (
         <Tooltip
-          title={
-            <Box sx={{ bgcolor: "rgb(36, 34, 50)", p: 1, borderRadius: 1 }}>
-              <Typography variant="body1" fontWeight={400} color={"white"}>
-                {getMetadataDataMissingStatusTranslation(
-                  t,
-                  isDataMissing as MetadataValidationStatus
-                )}
-              </Typography>
-              <Typography variant="body2" fontWeight={400} color={"gray"}>
-                {t("dataMissingErrors.dataMissingTooltipExplanation")}
-              </Typography>
-            </Box>
-          }
-          arrow
-          slotProps={{
-            tooltip: {
-              sx: {
-                backgroundColor: "transparent",
-                p: 0,
-                m: 0,
-              },
-            },
-            arrow: {
-              sx: {
-                color: "rgb(36, 34, 50)",
-              },
-            },
-          }}
+          heading={getMetadataDataMissingStatusTranslation(
+            t,
+            isDataMissing as MetadataValidationStatus
+          )}
+          paragraphOne={t("dataMissingErrors.dataMissingTooltipExplanation")}
         >
           <Icon>
             <IconInformationCircle width={19} height={19} />

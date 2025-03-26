@@ -62,7 +62,12 @@ export const Breadcrumbs = ({
         orientation="vertical"
         flexItem
         color="textBlack"
-        sx={{ margin: "0 12px" }}
+        sx={{
+          margin: "0 12px",
+          height: "15px",
+          width: "0.5px",
+          alignSelf: "center",
+        }}
       />
       {showLoader ? (
         <Skeleton variant="rounded" width={200} height={15} />

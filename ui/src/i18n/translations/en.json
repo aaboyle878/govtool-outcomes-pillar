@@ -97,12 +97,15 @@
   },
   "proposalDiscussion": {
     "title": "Proposal Discussion",
-    "notFound": "Discussion history unavailable for this action!"
+    "notFound": "Discussion history unavailable for this action!",
+    "proposalDate": "Proposal was proposed on",
+    "proposedOn": "Proposed on:"
   },
   "tooltips": {
-    "shareAction": "Share Governance Action"
+    "shareAction": "Share governance action"
   },
   "copiedToClipboard": "Copied to clipboard!",
+  "copyToClipboard": "Copy to clipboard",
   "learnMore": "Learn More",
   "dataMissingErrors": {
     "dataMissingTooltipExplanation": "Please click “View Details” for more information.",
