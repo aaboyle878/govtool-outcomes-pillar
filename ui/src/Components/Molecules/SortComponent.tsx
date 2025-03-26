@@ -10,17 +10,17 @@ import {
   FormControlLabel,
   FormControl,
 } from "@mui/material";
-import { theme } from "../../theme";
 import { useEffect, useState } from "react";
-import UpDownArrowsIcon from "../../Assets/Icons/UpdownArrows";
 import React from "react";
 import { useSearchParams } from "react-router-dom";
 import { GOVERNANCE_ACTION_SORT_OPTIONS } from "../../consts/sort-options";
+import { useTranslation } from "../../contexts/I18nContext";
 
 export default function SortComponent() {
   const [isHovered, setIsHovered] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [sortParams, setSortParams] = useSearchParams();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const currentSort = sortParams.get("sort");
@@ -97,7 +97,8 @@ export default function SortComponent() {
             whiteSpace: "nowrap",
           }}
         >
-          Sort{sortValue() ? `: ${getDisplayLabel(sortValue())}` : ""}
+          {t("outcomesList.sort.title")}
+          {sortValue() ? `: ${getDisplayLabel(sortValue())}` : ""}
         </Typography>
       </Button>
       <Menu
@@ -119,7 +120,7 @@ export default function SortComponent() {
             <Typography
               sx={{ fontSize: 14, fontWeight: 500, color: "#9792B5" }}
             >
-              Sort Governance Actions
+              {t("outcomesList.sort.fullTitle")}
             </Typography>
           </Box>
           <Divider sx={{ marginTop: 1, backgroundColor: "neutralGray" }} />

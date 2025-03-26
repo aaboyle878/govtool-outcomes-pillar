@@ -6,6 +6,7 @@ import { getMetadataDataMissingStatusTranslation } from "../../lib/getMetadataDa
 import { IconShare } from "@intersect.mbo/intersectmbo.org-icons-set";
 import { useState } from "react";
 import { theme } from "../../theme";
+import { useTranslation } from "../../contexts/I18nContext";
 
 interface HeaderProps {
   title: string | null;
@@ -22,6 +23,7 @@ export default function Header({
 }: HeaderProps) {
   const [isShareHovered, setIsShareHovered] = useState<boolean>(false);
   const { addSuccessAlert } = useSnackbar();
+  const { t } = useTranslation();
   const {
     palette: { textBlack, primaryBlue },
   } = theme;
@@ -29,7 +31,7 @@ export default function Header({
   const onCopy = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     navigator.clipboard.writeText(window.location.href);
-    addSuccessAlert("Copied to clipboard!");
+    addSuccessAlert(t("copiedToClipboard"));
   };
 
   return (
@@ -55,12 +57,13 @@ export default function Header({
         >
           {(isDataMissing &&
             getMetadataDataMissingStatusTranslation(
+              t,
               isDataMissing as MetadataValidationStatus
             )) ||
             title}
         </Typography>
       )}
-      <Tooltip title="Share Governance Action">
+      <Tooltip title={t("tooltips.shareAction")}>
         <IconButton
           sx={{
             width: 24,

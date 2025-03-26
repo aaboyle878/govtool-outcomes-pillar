@@ -36,7 +36,6 @@ export const OutcomeIndicator = ({
           height: 24,
           borderRadius: 10,
           paddingY: 0.625,
-          mb: 1,
           opacity: !isDisplayed ? 0.6 : 1,
           transition: "background-color 0.3s ease-in-out",
         }}

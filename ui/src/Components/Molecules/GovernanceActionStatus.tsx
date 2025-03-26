@@ -3,6 +3,7 @@ import { Status } from "../../types/api";
 import StatusChip from "./StatusChip";
 import { Typography } from "../Atoms/Typography";
 import { useScreenDimension } from "../../hooks/useDimensions";
+import { useTranslation } from "../../contexts/I18nContext";
 
 interface GovernanceActionStatusProps {
   status: Status;
@@ -16,46 +17,48 @@ export default function GovernanceActionStatus({
   isCard = true,
 }: GovernanceActionStatusProps) {
   const { isMobile } = useScreenDimension();
+  const { t } = useTranslation();
+
   const getStatusChips = () => {
     const { ratified_epoch, enacted_epoch, dropped_epoch, expired_epoch } =
       status;
 
     if (!ratified_epoch && !enacted_epoch && !dropped_epoch && !expired_epoch) {
-      return <StatusChip status="Live" />;
+      return <StatusChip status={t("outcome.status.inProgress")} />;
     }
 
     if (ratified_epoch && enacted_epoch) {
       return (
         <Box display="flex" flexDirection="row" gap={2}>
-          <StatusChip status="Ratified" />
-          <StatusChip status="Enacted" />
+          <StatusChip status={t("outcome.status.ratified")} />
+          <StatusChip status={t("outcome.status.enacted")} />
         </Box>
       );
     }
 
     if (ratified_epoch && !enacted_epoch) {
-      return <StatusChip status="Ratified" />;
+      return <StatusChip status={t("outcome.status.ratified")} />;
     }
 
     if (!ratified_epoch && enacted_epoch) {
-      return <StatusChip status="Enacted" />;
+      return <StatusChip status={t("outcome.status.enacted")} />;
     }
 
     if (expired_epoch && dropped_epoch) {
       return (
         <Box display="flex" flexDirection="row" gap={2}>
-          <StatusChip status="Expired" />
-          <StatusChip status="Not Ratified" />
+          <StatusChip status={t("outcome.status.expired")} />
+          <StatusChip status={t("outcome.status.dropped")} />
         </Box>
       );
     }
 
     if (dropped_epoch) {
-      return <StatusChip status="Not Ratified" />;
+      return <StatusChip status={t("outcome.status.dropped")} />;
     }
 
     if (expired_epoch) {
-      return <StatusChip status="Expired" />;
+      return <StatusChip status={t("outcome.status.expired")} />;
     }
 
     return null;
@@ -76,7 +79,7 @@ export default function GovernanceActionStatus({
           fontWeight: isCard ? 500 : 600,
         }}
       >
-        Status
+        {t("outcome.status.title")}
       </Typography>
       {getStatusChips()}
     </Box>

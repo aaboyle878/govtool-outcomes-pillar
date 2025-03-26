@@ -2,8 +2,8 @@ import { Box, Icon, Tooltip } from "@mui/material";
 import { IconInformationCircle } from "@intersect.mbo/intersectmbo.org-icons-set";
 import { MetadataValidationStatus } from "../../types/api";
 import { getMetadataDataMissingStatusTranslation } from "../../lib/getMetadataDataMissingStatusTranslation";
-import { dataMissingErrors } from "../../consts/dataMissingErrors";
 import { Typography } from "../Atoms/Typography";
+import { useTranslation } from "../../contexts/I18nContext";
 
 type GovernanceActionCardHeaderProps = {
   title?: string;
@@ -18,10 +18,12 @@ export const GovernanceActionCardHeader = ({
   isMetadataLoading,
   dataTestId,
 }: GovernanceActionCardHeaderProps) => {
+  const { t } = useTranslation();
+
   const showLoader =
     isMetadataLoading ||
     (!(
-      isDataMissing && getMetadataDataMissingStatusTranslation(isDataMissing)
+      isDataMissing && getMetadataDataMissingStatusTranslation(t, isDataMissing)
     ) &&
       !title);
 
@@ -49,7 +51,7 @@ export const GovernanceActionCardHeader = ({
             color: "gray",
           }}
         >
-          Loading governance action title...
+          {t("loaders.loadingTitle")}
         </Typography>
       ) : (
         <Typography
@@ -66,6 +68,7 @@ export const GovernanceActionCardHeader = ({
         >
           {(isDataMissing &&
             getMetadataDataMissingStatusTranslation(
+              t,
               isDataMissing as MetadataValidationStatus
             )) ||
             title}
@@ -75,13 +78,14 @@ export const GovernanceActionCardHeader = ({
         <Tooltip
           title={
             <Box sx={{ bgcolor: "rgb(36, 34, 50)", p: 1, borderRadius: 1 }}>
-              <Typography variant="body1" color={"white"}>
+              <Typography variant="body1" fontWeight={400} color={"white"}>
                 {getMetadataDataMissingStatusTranslation(
+                  t,
                   isDataMissing as MetadataValidationStatus
                 )}
               </Typography>
-              <Typography variant="body2" color={"gray"}>
-                {dataMissingErrors.dataMissingTooltipExplanation}
+              <Typography variant="body2" fontWeight={400} color={"gray"}>
+                {t("dataMissingErrors.dataMissingTooltipExplanation")}
               </Typography>
             </Box>
           }

@@ -4,11 +4,13 @@ import { Button } from "../Atoms/Button";
 import GovernanceActionCard from "./GovernanceActionCard";
 import { ActionsEmptyState } from "./ActionsEmptyState";
 import { useGetGovernanceActionsQuery } from "../../hooks/useGetGovernanceActionsQuery";
+import { useTranslation } from "../../contexts/I18nContext";
 
 const ITEMS_PER_PAGE = 12;
 
 const GovernanceActionsList = () => {
   const [searchParams] = useSearchParams();
+  const { t } = useTranslation();
 
   const search = searchParams.get("q") || "";
   const typeFilters = searchParams.get("type")?.split(",") || [];
@@ -87,7 +89,7 @@ const GovernanceActionsList = () => {
             {isFetchingNextPage ? (
               <CircularProgress size={20} sx={{ mr: 1 }} />
             ) : null}
-            {isFetchingNextPage ? "Loading..." : "Show More Actions"}
+            {isFetchingNextPage ? t("loaders.loading") : t("showMore")}
           </Button>
         </Box>
       )}

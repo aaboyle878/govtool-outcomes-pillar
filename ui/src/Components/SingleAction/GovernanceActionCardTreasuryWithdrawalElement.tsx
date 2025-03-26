@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import { Typography } from "../Atoms/Typography";
 import CopyButton from "../Atoms/CopyButton";
 import { correctVoteAdaFormat } from "../../lib/utils";
+import { useTranslation } from "../../contexts/I18nContext";
 
 type Props = {
   receivingAddress: string;
@@ -12,6 +13,8 @@ export const GovernanceActionCardTreasuryWithdrawalElement = ({
   receivingAddress,
   amount,
 }: Props) => {
+  const { t } = useTranslation();
+
   return (
     <Box
       sx={{
@@ -37,7 +40,7 @@ export const GovernanceActionCardTreasuryWithdrawalElement = ({
             color: "textGray",
           }}
         >
-          Receiving Address:
+          {t("outcome.treasury.receivingAddress")}
         </Typography>
         <Box
           sx={{
@@ -84,7 +87,7 @@ export const GovernanceActionCardTreasuryWithdrawalElement = ({
           }}
           data-testid="amount-label"
         >
-          Amount:
+          {t("outcome.treasury.amount")}
         </Typography>
         <Typography
           data-testid="amount"

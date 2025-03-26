@@ -8,6 +8,7 @@ import {
 } from "../../lib/utils";
 import { Typography } from "../Atoms/Typography";
 import { useScreenDimension } from "../../hooks/useDimensions";
+import { useTranslation } from "../../contexts/I18nContext";
 
 interface GovActionDatesInfoProps {
   action: GovernanceAction;
@@ -19,6 +20,8 @@ const GovActionDatesInfo = ({
   isCard = false,
 }: GovActionDatesInfoProps) => {
   const { isMobile } = useScreenDimension();
+  const { t } = useTranslation();
+
   const proposalStatus = getProposalStatus(action.status);
 
   const isExpired = ["Expired", "Not Ratified", "Enacted"].includes(
@@ -36,11 +39,11 @@ const GovActionDatesInfo = ({
       <Tooltip
         title={
           <Box sx={{ bgcolor: "rgb(36, 34, 50)", p: 1, borderRadius: 1 }}>
-            <Typography variant="body1" color={"white"}>
-              Submission Date
+            <Typography variant="body1" fontWeight={400} color={"white"}>
+              {t("outcome.dates.submission.title")}
             </Typography>
-            <Typography variant="body2" color={"gray"}>
-              The date when the governance action was submitted on-chain.
+            <Typography variant="body2" fontWeight={400} color={"gray"}>
+              {t("outcome.dates.submission.description")}
             </Typography>
           </Box>
         }
@@ -72,15 +75,13 @@ const GovActionDatesInfo = ({
       <Tooltip
         title={
           <Box sx={{ bgcolor: "rgb(36, 34, 50)", p: 1, borderRadius: 1 }}>
-            <Typography variant="body1" color={"white"}>
-              {isExpired ? "Expired Date" : "Expiry Date"}
+            <Typography variant="body1" fontWeight={400} color={"white"}>
+              {t("outcome.dates.expired.title")}
             </Typography>
-            <Typography variant="body2" color={"gray"}>
-              The date when the governance action will expiry if it doesn&apos;t
-              reach ratification thresholds.
-              <br /> IMPORTANT: If the governance action is ratified before the
-              expiry date it will be considered ratified and it will not be
-              available to vote on afterwards.
+            <Typography variant="body2" fontWeight={400} color={"gray"}>
+              {t("outcome.dates.expired.paragraphOne")}
+              <br />
+              {t("outcome.dates.expired.paragraphTwo")}
             </Typography>
           </Box>
         }
@@ -127,7 +128,7 @@ const GovActionDatesInfo = ({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          gap: 1,
+          gap: 0.5,
           padding: "6px 0",
           borderTopLeftRadius: "inherit",
           borderTopRightRadius: "inherit",
@@ -135,7 +136,7 @@ const GovActionDatesInfo = ({
         }}
       >
         <Typography variant="caption" sx={{ fontSize: 12 }}>
-          Submitted:{" "}
+          {t("outcome.dates.submitted")}{" "}
           <Typography component="span" fontWeight={600} variant="caption">
             {formatTimeStamp(
               action.time,
@@ -143,15 +144,9 @@ const GovActionDatesInfo = ({
             )}
           </Typography>
         </Typography>
-        {action.epoch_no && (
-          <Typography variant="caption">
-            (Epoch{" "}
-            <Typography component="span" variant="caption">
-              {action.epoch_no}
-            </Typography>
-            )
-          </Typography>
-        )}
+        <Typography variant="caption">
+          ({t("outcome.epoch")} {action.epoch_no})
+        </Typography>
         {renderSubmissionInfoTooltip()}
       </Box>
       <Box
@@ -160,14 +155,16 @@ const GovActionDatesInfo = ({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          gap: 1,
+          gap: 0.5,
           padding: "6px 0",
           borderBottomLeftRadius: "inherit",
           borderBottomRightRadius: "inherit",
         }}
       >
         <Typography variant="caption">
-          {isExpired ? "Expired: " : "Expires: "}
+          {isExpired
+            ? t("outcome.dates.expired.label")
+            : t("outcome.dates.expires")}{" "}
           <Typography component="span" fontWeight={600} variant="caption">
             {action.status.expired_epoch !== null
               ? formatTimeStamp(
@@ -181,12 +178,10 @@ const GovActionDatesInfo = ({
           </Typography>
         </Typography>
         <Typography variant="caption">
-          (Epoch{" "}
-          <Typography component="span" variant="caption">
-            {action.status.expired_epoch !== null
-              ? action.status.expired_epoch
-              : action.expiration}
-          </Typography>
+          ({t("outcome.epoch")}{" "}
+          {action.status.expired_epoch !== null
+            ? action.status.expired_epoch
+            : action.expiration}
           )
         </Typography>
         {renderExpirationInfoTooltip()}

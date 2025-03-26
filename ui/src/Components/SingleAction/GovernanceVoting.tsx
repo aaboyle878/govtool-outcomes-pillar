@@ -8,6 +8,7 @@ import { useCallback } from "react";
 import { useNetworkMetrics } from "../../hooks/useNetworkMetrics";
 import { SECURITY_RELEVANT_PARAMS_MAP } from "../../consts/params";
 import { theme } from "../../theme";
+import { useTranslation } from "../../contexts/I18nContext";
 
 type GovernanceVotingProps = {
   action: GovernanceAction;
@@ -34,6 +35,7 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
     areSPOVoteTotalsDisplayed,
     areCCVoteTotalsDisplayed,
   } = useNetworkMetrics(action);
+  const { t } = useTranslation();
   const {
     palette: { textBlack },
   } = theme;
@@ -184,11 +186,11 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
           mb: 3,
         }}
       >
-        Voting results for this Governance Action
+        {t("outcome.votes.title")}
       </Typography>
 
       <VoteSection
-        title="DReps"
+        title={t("outcome.votes.dReps")}
         yesVotes={dRepYesVotes}
         noVotes={dRepNoVotes}
         totalControlled={totalStakeControlledByDReps}
@@ -216,7 +218,7 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
       <Divider sx={{ my: 2, bgcolor: `${textBlack}10` }} />
 
       <VoteSection
-        title="SPOs"
+        title={t("outcome.votes.sPos")}
         yesVotes={poolYesVotes}
         noVotes={poolNoVotes}
         totalControlled={totalStakeControlledBySPOs}
@@ -244,7 +246,7 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
       <Divider sx={{ my: 2 }} />
 
       <VoteSection
-        title="Constitutional Committee"
+        title={t("outcome.votes.cCommitteeFull")}
         yesVotes={ccYesVotes}
         noVotes={ccNoVotes}
         totalControlled={noOfCommitteeMembers}
@@ -262,7 +264,11 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
 
       <Divider sx={{ my: 2 }} />
 
-      <Box>
+      <Box
+        sx={{
+          mb: 1,
+        }}
+      >
         <Typography
           color="textBlack"
           sx={{
@@ -271,11 +277,11 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
             mb: 1.875,
           }}
         >
-          Outcome
+          {t("outcome.label")}
         </Typography>
         <Box display="flex" justifyContent="space-between" width="100%" gap={1}>
           <OutcomeIndicator
-            title="DReps"
+            title={t("outcome.votes.dReps")}
             passed={isDRepPassed}
             isDisplayed={areDRepVoteTotalsDisplayed(
               type as GovernanceActionType,
@@ -286,7 +292,7 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
           />
 
           <OutcomeIndicator
-            title="SPOs"
+            title={t("outcome.votes.sPos")}
             passed={isSPOPassed}
             isDisplayed={areSPOVoteTotalsDisplayed(
               type as GovernanceActionType,
@@ -297,7 +303,7 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
           />
 
           <OutcomeIndicator
-            title="CC"
+            title={t("outcome.votes.cCommitteeShort")}
             passed={isCCPassed}
             isDisplayed={areCCVoteTotalsDisplayed(type as GovernanceActionType)}
             isLoading={isLoading}

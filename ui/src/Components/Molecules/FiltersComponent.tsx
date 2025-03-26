@@ -16,15 +16,17 @@ import { GOVERNANCE_ACTION_FILTERS } from "../../consts/filters";
 import { GOVERNANCE_ACTION_STATUS_FILTERS } from "../../consts/status-filters";
 import { useSearchParams } from "react-router-dom";
 import { fadedPurple } from "../../consts/colors";
+import { useTranslation } from "../../contexts/I18nContext";
 
 export default function FiltersComponent() {
+  const [isHovered, setIsHovered] = useState(false);
+  const [filterParams, setFilterParams] = useSearchParams();
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const {
     palette: { primaryBlue, neutralWhite },
   } = theme;
-  const [isHovered, setIsHovered] = useState(false);
-  const [filterParams, setFilterParams] = useSearchParams();
 
   const handleTypeChange = (value: string) => {
     const newParams = new URLSearchParams(filterParams);
@@ -168,7 +170,7 @@ export default function FiltersComponent() {
               paddingLeft: 0.5,
             }}
           >
-            Filter
+            {t("outcomesList.filters.title")}
           </Typography>
         </Box>
       </Button>
@@ -194,7 +196,7 @@ export default function FiltersComponent() {
               fontSize: 14,
             }}
           >
-            Governance Action Type
+            {t("outcome.governanceActionType")}
           </Typography>
           <Button
             id="clear-filters-button"
@@ -211,7 +213,7 @@ export default function FiltersComponent() {
             onClick={clearFilters}
           >
             <Typography fontSize={14} fontWeight={500} color="primary">
-              clear
+              {t("outcomesList.filters.clear")}
             </Typography>
           </Button>
         </Box>
@@ -262,7 +264,7 @@ export default function FiltersComponent() {
               fontSize: 14,
             }}
           >
-            Governance Action Status
+            {t("outcome.status.fullTitle")}
           </Typography>
         </Box>
         <Divider sx={{ marginTop: 1, backgroundColor: "neutralGray" }} />

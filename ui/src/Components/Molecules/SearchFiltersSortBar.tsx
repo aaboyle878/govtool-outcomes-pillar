@@ -6,14 +6,15 @@ import FiltersComponent from "./FiltersComponent";
 import SortComponent from "./SortComponent";
 import { useScreenDimension } from "../../hooks/useDimensions";
 import { useSearchParams } from "react-router-dom";
+import { useTranslation } from "../../contexts/I18nContext";
 
 export default function SearchFiltersSortBar() {
   const {
     palette: { neutralGray },
   } = theme;
-
   const { isMobile } = useScreenDimension();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { t } = useTranslation();
 
   const [searchTerm, setSearchTerm] = useState(searchParams.get("q") || "");
 
@@ -43,7 +44,7 @@ export default function SearchFiltersSortBar() {
         id="search-input"
         inputProps={{ "data-testid": "search-input" }}
         onChange={(e) => setSearchTerm(e.target.value)}
-        placeholder="Search Action..."
+        placeholder={t("outcomesList.searchPlaceholder")}
         value={searchTerm}
         startAdornment={
           <IconSearch width={18} height={18} fill={neutralGray} />

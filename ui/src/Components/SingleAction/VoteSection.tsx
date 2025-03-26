@@ -5,6 +5,7 @@ import { Typography } from "../Atoms/Typography";
 import { VoteSectionLoader } from "../Loaders/VoteSectionLoader";
 import FieldSet from "../Atoms/FieldSet";
 import { theme } from "../../theme";
+import { useTranslation } from "../../contexts/I18nContext";
 
 const {
   palette: { badgeColors },
@@ -131,6 +132,7 @@ export const VoteSection = ({
   isDataReady = false,
   dataTestId,
 }: VoteSectionProps) => {
+  const { t } = useTranslation();
   const formatValue = (value: number) =>
     isCC ? value : `₳ ${correctAdaFormatWithSuffix(value)}`;
   if (!isDataReady || isLoading) {
@@ -159,7 +161,7 @@ export const VoteSection = ({
           }}
           color="textBlack"
         >
-          {`Voting for this action is not available for ${title}`}
+          {`${t("outcome.votes.votingNotAvailable")} ${t(title)}`}
         </Typography>
       )}
       {isDisplayed && (
@@ -192,7 +194,7 @@ export const VoteSection = ({
                 />
                 <PercentageOverlay>
                   <PercentageText data-testid="yes-percentage-text">
-                    Yes:
+                    {t("outcome.votes.yes")}
                     <Box
                       component="span"
                       sx={{
@@ -208,7 +210,7 @@ export const VoteSection = ({
                     </Box>
                   </PercentageText>
                   <PercentageText data-testid="no-percentage-text">
-                    No:
+                    {t("outcome.votes.no")}
                     <Box
                       component="span"
                       sx={{
@@ -227,7 +229,7 @@ export const VoteSection = ({
           </Grid>
 
           <Grid item xs={12}>
-            <FieldSet title="Vote Metrics">
+            <FieldSet title={t("outcome.votes.voteMetrics")}>
               <Box display="flex" flexDirection="column" gap={1}>
                 <Typography
                   data-testid="total-controlled-amount"
@@ -238,7 +240,10 @@ export const VoteSection = ({
                   }}
                   color="textBlack"
                 >
-                  {isCC ? "Number of Active CCs" : "Total Stake"}:
+                  {isCC
+                    ? t("outcome.votes.numberOfCCs")
+                    : t("outcome.votes.totalStake")}
+                  :
                   <Box
                     component="span"
                     sx={{
@@ -259,7 +264,10 @@ export const VoteSection = ({
                   }}
                   color="textBlack"
                 >
-                  {isCC ? "Abstain Votes:" : "Abstain Vote Stake:"}
+                  {isCC
+                    ? t("outcome.votes.abstainVotes")
+                    : t("outcome.votes.abstainVotesStake")}
+                  :
                   <Box
                     component="span"
                     sx={{
@@ -281,7 +289,10 @@ export const VoteSection = ({
                   }}
                   color="textBlack"
                 >
-                  {isCC ? "Not Voted:" : "Not Voted Stake:"}
+                  {isCC
+                    ? t("outcome.votes.notVoted")
+                    : t("outcome.votes.notVotedStake")}
+                  :
                   <Box
                     component="span"
                     sx={{

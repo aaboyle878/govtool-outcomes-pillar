@@ -34,6 +34,7 @@ import { useGetProposalQuery } from "../hooks/useGetProposalQuery";
 import ProposalCard from "../Components/SingleAction/ProposalCard";
 import { Typography } from "../Components/Atoms/Typography";
 import ProposalCardLoader from "../Components/Loaders/ProposalCardLoader";
+import { useTranslation } from "../contexts/I18nContext";
 
 type GovernanceActionProps = {
   id: string;
@@ -76,6 +77,7 @@ function GovernanceAction({ id }: GovernanceActionProps) {
   const { proposal, isProposalLoading } = useGetProposalQuery(
     governanceAction?.tx_hash
   );
+  const { t } = useTranslation();
 
   const { epochParams } = useNetworkMetrics(governanceAction);
   const [selectedTab, setSelectedTab] = useState<number>(0);
@@ -161,7 +163,7 @@ function GovernanceAction({ id }: GovernanceActionProps) {
   const tabDefinitions = useMemo(() => {
     return [
       {
-        label: "Reasoning",
+        label: t("outcome.tabs.reasoning"),
         dataTestId: "reasoning-tab",
         content: (
           <ReasoningTabContent
@@ -173,7 +175,7 @@ function GovernanceAction({ id }: GovernanceActionProps) {
         visible: showReasoningTab,
       },
       {
-        label: "Parameters",
+        label: t("outcome.tabs.parameters"),
         dataTestId: "parameters-tab",
         content: (
           <GovernanceActionDetailsDiffView
@@ -184,7 +186,7 @@ function GovernanceAction({ id }: GovernanceActionProps) {
         visible: showParametersTab,
       },
       {
-        label: "Details",
+        label: t("outcome.tabs.details"),
         dataTestId: "hardfork-details-tab",
         content: (
           <HardForkDetailsTabContent
@@ -195,7 +197,7 @@ function GovernanceAction({ id }: GovernanceActionProps) {
         visible: showHardforkDetailsTab,
       },
       {
-        label: "Parameters",
+        label: t("outcome.tabs.parameters"),
         dataTestId: "new-committee-tab",
         content: (
           <GovernanceActionNewCommitteeDetailsTabContent
@@ -205,7 +207,7 @@ function GovernanceAction({ id }: GovernanceActionProps) {
         visible: showNewCommitteeTab,
       },
       {
-        label: "Details",
+        label: t("outcome.tabs.details"),
         dataTestId: "new-constitution-tab",
         content: (
           <GovernanceActionNewConstitutionDetailsTabContent
@@ -243,14 +245,9 @@ function GovernanceAction({ id }: GovernanceActionProps) {
 
   if (isGovernanceActionLoading) {
     return (
-      <Box
-        data-testid={`single-action-${idCIP129}-page`}
-        display="flex"
-        flex={1}
-        flexDirection="column"
-        width="100%"
-      >
+      <Box display="flex" flex={1} flexDirection="column" width="100%">
         <Box
+          data-testid={`single-action-page-circular-loader`}
           sx={{
             alignItems: "center",
             display: "flex",
@@ -288,7 +285,7 @@ function GovernanceAction({ id }: GovernanceActionProps) {
       width="100%"
     >
       <Breadcrumbs
-        elementOne="Outcomes"
+        elementOne={t("outcomesList.title")}
         elementOnePath="/outcomes"
         elementTwo={content.title}
         isMetadataLoading={isMetadataLoading}
@@ -375,14 +372,14 @@ function GovernanceAction({ id }: GovernanceActionProps) {
                   GovernanceActionType.NewConstitution && (
                   <>
                     <GovernanceActionElement
-                      title="Metadata anchor link"
+                      title={t("outcome.metadataLink")}
                       type="link"
                       content={governanceAction?.url}
                       isCopyable
                       dataTestId="metadata-anchor-link"
                     />
                     <GovernanceActionElement
-                      title="Metadata anchor hash"
+                      title={t("outcome.metadataHash")}
                       type="text"
                       content={governanceAction?.data_hash}
                       isCopyable
@@ -408,7 +405,7 @@ function GovernanceAction({ id }: GovernanceActionProps) {
                       fontSize: 14,
                     }}
                   >
-                    Proposal Discussion
+                    {t("proposalDiscussion.title")}
                   </Typography>
                   {isProposalLoading ? (
                     <ProposalCardLoader />
@@ -422,7 +419,7 @@ function GovernanceAction({ id }: GovernanceActionProps) {
                         color: "neutralGray",
                       }}
                     >
-                      Discussion history unavailable for this action!
+                      {t("proposalDiscussion.notFound")}
                     </Typography>
                   )}
                 </Box>

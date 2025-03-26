@@ -8,12 +8,15 @@ import { Typography } from "../Atoms/Typography";
 import { primaryBlue } from "../../consts/colors";
 import StatusChip from "../Molecules/StatusChip";
 import { GovActionMetadata, GovernanceAction } from "../../types/api";
+import { useTranslation } from "../../contexts/I18nContext";
 
 type ActionIdentityProps = {
   governanceAction: GovernanceAction;
   metadata: GovActionMetadata;
 };
 function ActionIdentity({ governanceAction, metadata }: ActionIdentityProps) {
+  const { t } = useTranslation();
+
   const idCIP129 = encodeCIP129Identifier({
     txID: governanceAction?.tx_hash,
     index: governanceAction?.index.toString(16).padStart(2, "0"),
@@ -54,7 +57,7 @@ function ActionIdentity({ governanceAction, metadata }: ActionIdentityProps) {
             fontSize: 14,
           }}
         >
-          Governance Action Type
+          {t("outcome.governanceActionType")}
         </Typography>
         <Box sx={{ display: "inline-flex" }}>
           <StatusChip status={typeInWords} bgColor={primaryBlue.c100} />
@@ -75,7 +78,7 @@ function ActionIdentity({ governanceAction, metadata }: ActionIdentityProps) {
               fontSize: 14,
             }}
           >
-            Author(s)
+            {t("outcome.authors")}
           </Typography>
           <Box display="flex" gap={2} flexWrap="wrap">
             {metadata?.data?.authors?.map((author: { name: string }, index) => (
@@ -99,14 +102,14 @@ function ActionIdentity({ governanceAction, metadata }: ActionIdentityProps) {
         isCard={false}
       />
       <GovernanceActionElement
-        title="Governance Action ID"
+        title={t("outcome.governanceActionId105")}
         type="text"
         content={fullGovActionId}
         isCopyable
         dataTestId={`single-action-CIP-105-id`}
       />
       <GovernanceActionElement
-        title="(CIP-129) Governance Action ID"
+        title={t("outcome.governanceActionId129")}
         type="text"
         content={idCIP129}
         isCopyable

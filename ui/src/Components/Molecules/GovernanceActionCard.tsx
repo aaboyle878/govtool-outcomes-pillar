@@ -14,6 +14,7 @@ import { GOVERNANCE_ACTION_FILTERS } from "../../consts/filters";
 import { GovernanceActionCardHeader } from "../ActionCard/GovernanceActionCardHeader";
 import AbstractLoader from "../Loaders/GovernanceActionAbstractLoader";
 import ViewDetailsLink from "../ActionCard/ViewDetailsLink";
+import { useTranslation } from "../../contexts/I18nContext";
 
 interface GovernanceActionCardProps {
   action: GovernanceAction;
@@ -21,6 +22,7 @@ interface GovernanceActionCardProps {
 
 function GovernanceActionCard({ action }: GovernanceActionCardProps) {
   const { metadata, metadataValid, isMetadataLoading } = useMetadata(action);
+  const { t } = useTranslation();
 
   const idCIP129 = encodeCIP129Identifier({
     txID: action?.tx_hash,
@@ -84,7 +86,7 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
               <AbstractLoader />
             ) : (
               <GovernanceActionCardElement
-                title="Abstract"
+                title={t("outcome.abstract")}
                 description={abstract}
                 type="markdown"
                 dataTestId={`${idCIP129}-abstract`}
@@ -99,7 +101,7 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
           sx={{ marginTop: 2.5 }}
         >
           <GovernanceActionCardElement
-            title="Governance Action Type"
+            title={t("outcome.governanceActionType")}
             description={typeInWords}
             type="text"
             dataTestId={`${idCIP129}-type`}
@@ -108,13 +110,13 @@ function GovernanceActionCard({ action }: GovernanceActionCardProps) {
           <GovernanceActionStatus status={action?.status} actionId={idCIP129} />
 
           <GovernanceActionCardIdElement
-            title="Governance Action ID"
+            title={t("outcome.governanceActionId105")}
             id={fullGovActionId}
             dataTestId={`${fullGovActionId}-CIP-105-id`}
           />
 
           <GovernanceActionCardIdElement
-            title="(CIP-129) Governance Action ID"
+            title={t("outcome.governanceActionId129")}
             id={idCIP129}
             dataTestId={`${idCIP129}-CIP-129-id`}
           />
