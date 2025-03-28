@@ -194,7 +194,7 @@ export const VoteSection = ({
                 />
                 <PercentageOverlay>
                   <PercentageText>
-                    {t("outcome.votes.yes")}
+                    {t("outcome.votes.yes")}:
                     <Box
                       data-testid={`${title}-yes-votes-submitted`}
                       component="span"
@@ -211,7 +211,7 @@ export const VoteSection = ({
                     </Box>
                   </PercentageText>
                   <PercentageText>
-                    {t("outcome.votes.no")}
+                    {t("outcome.votes.no")}:
                     <Box
                       data-testid={`${title}-no-votes-submitted`}
                       component="span"

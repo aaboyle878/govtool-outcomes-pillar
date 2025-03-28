@@ -1,8 +1,7 @@
-import { Avatar, Box, IconButton } from "@mui/material";
+import { Avatar, Box } from "@mui/material";
 import { Typography } from "../Atoms/Typography";
-import CloseIcon from "../../Assets/Icons/CloseIcon";
-import CheckMarkIcon from "../../Assets/Icons/CheckMarkIcon";
 import { errorRed, successGreen } from "../../consts/colors";
+import { useTranslation } from "../../contexts/I18nContext";
 
 type OutcomeIndicatorProps = {
   title: string;
@@ -19,6 +18,8 @@ export const OutcomeIndicator = ({
   isLoading = true,
   dataTestId,
 }: OutcomeIndicatorProps) => {
+  const { t } = useTranslation();
+
   return (
     <Box data-testid={dataTestId} width="100%">
       <Avatar
@@ -60,11 +61,15 @@ export const OutcomeIndicator = ({
             color="textBlack"
             sx={{
               fontWeight: 600,
-              fontSize: 13,
+              fontSize: 14,
             }}
           >
             {" "}
-            {passed ? "Yes" : "No"}
+            {!isDisplayed
+              ? "-"
+              : passed
+              ? t("outcome.votes.yes")
+              : t("outcome.votes.no")}
           </Typography>
         </Box>
       </Avatar>
