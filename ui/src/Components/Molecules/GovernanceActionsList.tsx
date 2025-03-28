@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Grid } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "../Atoms/Button";
 import GovernanceActionCard from "./GovernanceActionCard";
@@ -60,22 +60,23 @@ const GovernanceActionsList = () => {
       ) : null}
 
       {displayedActions.length > 0 && (
-        <Grid container rowSpacing={4} columnSpacing={4}>
+        <Box
+          className="actions-grid"
+          sx={{
+            width: "100%",
+            maxWidth: "100%",
+          }}
+        >
           {displayedActions.map((action) => (
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              md={6}
-              lg={4}
+            <Box
+              className="action-card-wrapper"
               key={`${action.id}-${action.tx_hash}`}
+              sx={{ width: "100%" }}
             >
-              <Box sx={{ display: "flex", height: "100%" }}>
-                <GovernanceActionCard action={action} />
-              </Box>
-            </Grid>
+              <GovernanceActionCard action={action} />
+            </Box>
           ))}
-        </Grid>
+        </Box>
       )}
 
       {hasNextPage && (

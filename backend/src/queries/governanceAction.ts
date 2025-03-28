@@ -1,18 +1,38 @@
 export const getGovernanceAction = `
-WITH ActionEpoch AS (
-    SELECT
+WITH TargetAction AS (
+    SELECT 
         gov_action_proposal.id,
+        gov_action_proposal.tx_id,
+        gov_action_proposal.index,
+        gov_action_proposal.type,
+        gov_action_proposal.description,
+        gov_action_proposal.expiration,
+        gov_action_proposal.ratified_epoch,
+        gov_action_proposal.enacted_epoch,
+        gov_action_proposal.expired_epoch,
+        gov_action_proposal.dropped_epoch,
+        gov_action_proposal.voting_anchor_id,
+        gov_action_proposal.param_proposal,
+        gov_action_proposal.prev_gov_action_proposal
+    FROM
+        gov_action_proposal
+    JOIN
+        tx ON tx.id = gov_action_proposal.tx_id
+    WHERE
+        concat(encode(tx.hash, 'hex'), '#', gov_action_proposal.index) ILIKE $1
+),
+ActionEpoch AS (
+    SELECT
+        ta.id,
         CASE
-            WHEN gov_action_proposal.ratified_epoch IS NOT NULL THEN gov_action_proposal.ratified_epoch
-            WHEN gov_action_proposal.enacted_epoch IS NOT NULL THEN gov_action_proposal.enacted_epoch
-            WHEN gov_action_proposal.expired_epoch IS NOT NULL THEN gov_action_proposal.expired_epoch
-            WHEN gov_action_proposal.dropped_epoch IS NOT NULL THEN gov_action_proposal.dropped_epoch
+            WHEN ta.ratified_epoch IS NOT NULL THEN ta.ratified_epoch
+            WHEN ta.enacted_epoch IS NOT NULL THEN ta.enacted_epoch
+            WHEN ta.expired_epoch IS NOT NULL THEN ta.expired_epoch
+            WHEN ta.dropped_epoch IS NOT NULL THEN ta.dropped_epoch
             ELSE (SELECT MAX(no) FROM epoch)
         END AS relevant_epoch_no
     FROM
-        gov_action_proposal
-    WHERE
-        concat(encode((SELECT hash FROM tx WHERE tx.id = gov_action_proposal.tx_id), 'hex'), '#', gov_action_proposal.index) ILIKE $1
+        TargetAction ta
 ),
 LatestDrepDistr AS (
     SELECT
@@ -42,15 +62,6 @@ RelevantEpoch AS (
     JOIN 
         epoch e ON e.no = ae.relevant_epoch_no
 ),
-EpochBlocks AS (
-    SELECT DISTINCT ON (epoch_no)
-        epoch_no,
-        time as block_time
-    FROM
-        block
-    ORDER BY
-        epoch_no, time DESC
-),
 DRepVotingPower AS (
     SELECT
         SUM(CASE WHEN drep_hash.view = 'drep_always_no_confidence' THEN amount ELSE 0 END) AS no_confidence,
@@ -74,15 +85,15 @@ CommitteeData AS (
 ),
 ParsedDescription AS (
     SELECT
-        gov_action_proposal.id,
-        description->'tag' AS tag,
-        description->'contents'->1 AS members_to_be_removed,
-        description->'contents'->2 AS members,
-        description->'contents'->3 AS threshold
+        ta.id,
+        ta.description->'tag' AS tag,
+        ta.description->'contents'->1 AS members_to_be_removed,
+        ta.description->'contents'->2 AS members,
+        ta.description->'contents'->3 AS threshold
     FROM
-        gov_action_proposal
+        TargetAction ta
     WHERE
-        gov_action_proposal.type = 'NewCommittee'
+        ta.type = 'NewCommittee'
 ),
 MembersToBeRemoved AS (
     SELECT
@@ -139,6 +150,7 @@ RankedPoolVotes AS (
         ROW_NUMBER() OVER (PARTITION BY vp.pool_voter, vp.gov_action_proposal_id ORDER BY vp.tx_id DESC) AS rn
     FROM
         voting_procedure vp
+    JOIN TargetAction ta ON vp.gov_action_proposal_id = ta.id
     WHERE 
         vp.pool_voter IS NOT NULL
 ),
@@ -166,6 +178,9 @@ RankedDRepVotes AS (
         *
     FROM 
         voting_procedure vp
+    JOIN TargetAction ta ON vp.gov_action_proposal_id = ta.id
+    WHERE 
+        vp.drep_voter IS NOT NULL
     ORDER BY 
         vp.drep_voter,
         vp.gov_action_proposal_id,
@@ -188,6 +203,7 @@ CommitteeVotes AS (
         SUM(CASE WHEN vote = 'Abstain' THEN 1 ELSE 0 END) AS ccAbstainVotes
     FROM
         voting_procedure AS vp
+    JOIN TargetAction ta ON vp.gov_action_proposal_id = ta.id
     WHERE
         vp.committee_voter IS NOT NULL
         AND (vp.tx_id, vp.committee_voter, vp.gov_action_proposal_id) IN (
@@ -198,14 +214,27 @@ CommitteeVotes AS (
         )
     GROUP BY
         gov_action_proposal_id
+),
+StatusTimes AS (
+    SELECT
+        e_ratified.end_time AS ratified_time,
+        e_enacted.end_time AS enacted_time,
+        e_dropped.end_time AS dropped_time,
+        e_expired.end_time AS expired_time
+    FROM
+        TargetAction ta
+    LEFT JOIN epoch e_ratified ON ta.ratified_epoch = e_ratified.no
+    LEFT JOIN epoch e_enacted ON ta.enacted_epoch = e_enacted.no
+    LEFT JOIN epoch e_dropped ON ta.dropped_epoch = e_dropped.no
+    LEFT JOIN epoch e_expired ON ta.expired_epoch = e_expired.no
 )
 SELECT
-    gov_action_proposal.id,
+    ta.id,
     encode(creator_tx.hash, 'hex') tx_hash,
-    gov_action_proposal.index,
-    gov_action_proposal.type::text,
+    ta.index,
+    ta.type::text,
     COALESCE(
-        CASE WHEN gov_action_proposal.type = 'TreasuryWithdrawals' THEN
+        CASE WHEN ta.type = 'TreasuryWithdrawals' THEN
             (
                 SELECT json_agg(
                     jsonb_build_object(
@@ -216,29 +245,29 @@ SELECT
                 FROM treasury_withdrawal
                 LEFT JOIN stake_address
                     ON stake_address.id = treasury_withdrawal.stake_address_id
-                WHERE treasury_withdrawal.gov_action_proposal_id = gov_action_proposal.id
+                WHERE treasury_withdrawal.gov_action_proposal_id = ta.id
             )
-            WHEN gov_action_proposal.type::text = 'InfoAction' THEN
-            json_build_object('data', gov_action_proposal.description)
+            WHEN ta.type::text = 'InfoAction' THEN
+            json_build_object('data', ta.description)
 
-            WHEN gov_action_proposal.type::text = 'HardForkInitiation' THEN
+            WHEN ta.type::text = 'HardForkInitiation' THEN
             json_build_object(
-                'major', (gov_action_proposal.description->'contents'->1->>'major')::int,
-                'minor', (gov_action_proposal.description->'contents'->1->>'minor')::int
+                'major', (ta.description->'contents'->1->>'major')::int,
+                'minor', (ta.description->'contents'->1->>'minor')::int
             )
 
-            WHEN gov_action_proposal.type::text = 'NoConfidence' THEN
-            json_build_object('data', gov_action_proposal.description->'contents')
+            WHEN ta.type::text = 'NoConfidence' THEN
+            json_build_object('data', ta.description->'contents')
 
-            WHEN gov_action_proposal.type::text = 'ParameterChange' THEN
-            json_build_object('data', gov_action_proposal.description->'contents')
+            WHEN ta.type::text = 'ParameterChange' THEN
+            json_build_object('data', ta.description->'contents')
 
-            WHEN gov_action_proposal.type::text = 'NewConstitution' THEN
+            WHEN ta.type::text = 'NewConstitution' THEN
             json_build_object(
-                'anchor', gov_action_proposal.description->'contents'->1->'anchor',
-                'script', gov_action_proposal.description->'contents'->1->'script'
+                'anchor', ta.description->'contents'->1->'anchor',
+                'script', ta.description->'contents'->1->'script'
             )
-            WHEN gov_action_proposal.type::text = 'NewCommittee' THEN
+            WHEN ta.type::text = 'NewCommittee' THEN
             (
                 SELECT
                     json_build_object(
@@ -260,7 +289,7 @@ SELECT
                 JOIN
                     EnrichedCurrentMembers em ON pd.id = em.id
                 WHERE
-                    pd.id = gov_action_proposal.id
+                    pd.id = ta.id
             )
         ELSE
             NULL
@@ -268,11 +297,11 @@ SELECT
     , '{}'::JSON) AS description,
     CASE
         WHEN meta.network_name::text = 'mainnet' OR meta.network_name::text = 'preprod' THEN
-            latest_epoch.start_time + (gov_action_proposal.expiration - latest_epoch.no)::bigint * INTERVAL '5 days'
+            latest_epoch.start_time + (ta.expiration - latest_epoch.no)::bigint * INTERVAL '5 days'
         ELSE
-            latest_epoch.start_time + (gov_action_proposal.expiration - latest_epoch.no)::bigint * INTERVAL '1 day'
+            latest_epoch.start_time + (ta.expiration - latest_epoch.no)::bigint * INTERVAL '1 day'
     END AS expiry_date,
-    gov_action_proposal.expiration,
+    ta.expiration,
     creator_block.time,
     creator_block.epoch_no,
     voting_anchor.url,
@@ -292,13 +321,13 @@ SELECT
     off_chain_vote_gov_action_data.motivation,
     off_chain_vote_gov_action_data.rationale,
     COALESCE(SUM(ldd_drep.amount) FILTER (WHERE rdv.vote::text = 'Yes'), 0) + (
-        CASE WHEN gov_action_proposal.type = 'NoConfidence' THEN
+        CASE WHEN ta.type = 'NoConfidence' THEN
             drep_voting_power.no_confidence
         ELSE
             0
         END) yes_votes,
     COALESCE(SUM(ldd_drep.amount) FILTER (WHERE rdv.vote::text = 'No'), 0) + (
-        CASE WHEN gov_action_proposal.type = 'NoConfidence' THEN
+        CASE WHEN ta.type = 'NoConfidence' THEN
             0
         ELSE
             drep_voting_power.no_confidence
@@ -314,45 +343,48 @@ SELECT
     encode(prev_gov_action_tx.hash, 'hex') as prev_gov_action_tx_hash,
     ae.relevant_epoch_no AS used_epoch_no,
     JSON_BUILD_OBJECT(
-        'ratified_epoch', gov_action_proposal.ratified_epoch,
-        'enacted_epoch', gov_action_proposal.enacted_epoch,
-        'dropped_epoch', gov_action_proposal.dropped_epoch,
-        'expired_epoch', gov_action_proposal.expired_epoch
+        'ratified_epoch', ta.ratified_epoch,
+        'enacted_epoch', ta.enacted_epoch,
+        'dropped_epoch', ta.dropped_epoch,
+        'expired_epoch', ta.expired_epoch
     ) AS status,
     JSON_BUILD_OBJECT(
-        'ratified_time', MAX(ratified_block.block_time),
-        'enacted_time', MAX(enacted_block.block_time),
-        'dropped_time', MAX(dropped_block.block_time),
-        'expired_time', MAX(expired_block.block_time)
+        'ratified_time', st.ratified_time,
+        'enacted_time', st.enacted_time,
+        'dropped_time', st.dropped_time,
+        'expired_time', st.expired_time
     ) AS status_times
 FROM
-    gov_action_proposal
-    JOIN ActionEpoch ae ON gov_action_proposal.id = ae.id
+    TargetAction ta
+    JOIN ActionEpoch ae ON ta.id = ae.id
     CROSS JOIN LatestEpoch AS latest_epoch
     CROSS JOIN DRepVotingPower AS drep_voting_power
     CROSS JOIN meta
-    LEFT JOIN tx AS creator_tx ON creator_tx.id = gov_action_proposal.tx_id
+    LEFT JOIN tx AS creator_tx ON creator_tx.id = ta.tx_id
     LEFT JOIN block AS creator_block ON creator_block.id = creator_tx.block_id
-    LEFT JOIN voting_anchor ON voting_anchor.id = gov_action_proposal.voting_anchor_id
+    LEFT JOIN voting_anchor ON voting_anchor.id = ta.voting_anchor_id
     LEFT JOIN off_chain_vote_data ON off_chain_vote_data.voting_anchor_id = voting_anchor.id
     LEFT JOIN off_chain_vote_gov_action_data ON off_chain_vote_gov_action_data.off_chain_vote_data_id = off_chain_vote_data.id
-    LEFT JOIN param_proposal AS proposal_params ON gov_action_proposal.param_proposal = proposal_params.id
+    LEFT JOIN param_proposal AS proposal_params ON ta.param_proposal = proposal_params.id
     LEFT JOIN cost_model AS cost_model ON proposal_params.cost_model_id = cost_model.id
-    LEFT JOIN PoolVotes ps ON gov_action_proposal.id = ps.gov_action_proposal_id
-    LEFT JOIN CommitteeVotes cv ON gov_action_proposal.id = cv.gov_action_proposal_id
-    LEFT JOIN RankedDRepVotes rdv ON rdv.gov_action_proposal_id = gov_action_proposal.id
+    LEFT JOIN PoolVotes ps ON ta.id = ps.gov_action_proposal_id
+    LEFT JOIN CommitteeVotes cv ON ta.id = cv.gov_action_proposal_id
+    LEFT JOIN RankedDRepVotes rdv ON rdv.gov_action_proposal_id = ta.id
     LEFT JOIN RankedDRepRegistration rdr ON rdr.drep_hash_id = rdv.drep_voter AND COALESCE(rdr.deposit, 0) >= 0
     LEFT JOIN LatestDrepDistr ldd_drep ON ldd_drep.hash_id = rdr.drep_hash_id AND ldd_drep.rn = 1
-    LEFT JOIN gov_action_proposal AS prev_gov_action ON gov_action_proposal.prev_gov_action_proposal = prev_gov_action.id
+    LEFT JOIN gov_action_proposal AS prev_gov_action ON ta.prev_gov_action_proposal = prev_gov_action.id
     LEFT JOIN tx AS prev_gov_action_tx ON prev_gov_action.tx_id = prev_gov_action_tx.id
-    LEFT JOIN EpochBlocks ratified_block ON ratified_block.epoch_no = gov_action_proposal.ratified_epoch
-    LEFT JOIN EpochBlocks enacted_block ON enacted_block.epoch_no = gov_action_proposal.enacted_epoch
-    LEFT JOIN EpochBlocks dropped_block ON dropped_block.epoch_no = gov_action_proposal.dropped_epoch
-    LEFT JOIN EpochBlocks expired_block ON expired_block.epoch_no = gov_action_proposal.expired_epoch
-WHERE
-    concat(encode(creator_tx.hash, 'hex'), '#', gov_action_proposal.index) ILIKE $1
+    CROSS JOIN StatusTimes st
 GROUP BY
-    gov_action_proposal.id,
+    ta.id,
+    ta.index,
+    ta.type,
+    ta.description,
+    ta.expiration,
+    ta.ratified_epoch,
+    ta.enacted_epoch,
+    ta.dropped_epoch,
+    ta.expired_epoch,
     creator_tx.hash,
     creator_block.id,
     latest_epoch.start_time,
@@ -375,5 +407,9 @@ GROUP BY
     off_chain_vote_gov_action_data.abstract,
     off_chain_vote_gov_action_data.motivation,
     off_chain_vote_gov_action_data.rationale,
-    ae.relevant_epoch_no;
+    ae.relevant_epoch_no,
+    st.ratified_time,
+    st.enacted_time,
+    st.dropped_time,
+    st.expired_time;
 `;

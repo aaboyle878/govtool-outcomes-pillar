@@ -44,33 +44,27 @@ export const OutcomeIndicator = ({
           display="flex"
           flexDirection="row"
           alignItems="center"
-          sx={{ gap: 0.5 }}
+          sx={{ gap: 1 }}
         >
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            sx={{
-              width: 13,
-              height: 13,
-            }}
-          >
-            {passed ? (
-              <CheckMarkIcon width={13} height={13} />
-            ) : (
-              <CloseIcon width={11} height={11} />
-            )}
-          </Box>
           <Typography
             data-testid="voter-type-label"
             sx={{
               fontWeight: 400,
               fontSize: 13,
-              lineHeight: 1.75,
             }}
             color="white"
           >
-            {title}
+            {title}:
+          </Typography>
+          <Typography
+            color="textBlack"
+            sx={{
+              fontWeight: 600,
+              fontSize: 13,
+            }}
+          >
+            {" "}
+            {passed ? "Yes" : "No"}
           </Typography>
         </Box>
       </Avatar>

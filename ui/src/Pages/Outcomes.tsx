@@ -14,9 +14,10 @@ export default function Outcomes() {
   return (
     <Box
       component="section"
-      display={"flex"}
-      flexDirection={"column"}
+      display="flex"
+      flexDirection="column"
       flexGrow={1}
+      className="outcomes-container"
     >
       {!walletAPI?.isEnabled && (
         <Typography

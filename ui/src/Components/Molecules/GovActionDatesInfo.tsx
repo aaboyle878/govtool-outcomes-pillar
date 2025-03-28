@@ -98,10 +98,18 @@ const GovActionDatesInfo = ({
             )}
           </Typography>
         </Typography>
-        <Typography variant="caption">
-          ({t("outcome.epoch")} {action.epoch_no})
-        </Typography>
-        {renderSubmissionInfoTooltip()}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            flexWrap: "nowrap",
+          }}
+        >
+          <Typography variant="caption">
+            ({t("outcome.epoch")} {action.epoch_no})
+          </Typography>
+          {renderSubmissionInfoTooltip()}
+        </Box>
       </Box>
       <Box
         data-testid={`${idCIP129}-${isExpired ? "Expired" : "Expires"}-date`}
@@ -113,6 +121,7 @@ const GovActionDatesInfo = ({
           padding: "6px 0",
           borderBottomLeftRadius: "inherit",
           borderBottomRightRadius: "inherit",
+          flexWrap: "wrap",
         }}
       >
         <Typography variant="caption">
@@ -131,14 +140,22 @@ const GovActionDatesInfo = ({
                 )}
           </Typography>
         </Typography>
-        <Typography variant="caption">
-          ({t("outcome.epoch")}{" "}
-          {action.status.expired_epoch !== null
-            ? action.status.expired_epoch
-            : action.expiration}
-          )
-        </Typography>
-        {renderExpirationInfoTooltip()}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            flexWrap: "nowrap",
+          }}
+        >
+          <Typography variant="caption">
+            ({t("outcome.epoch")}{" "}
+            {action.status.expired_epoch !== null
+              ? action.status.expired_epoch
+              : action.expiration}
+            )
+          </Typography>
+          {renderExpirationInfoTooltip()}
+        </Box>
       </Box>
     </Box>
   );

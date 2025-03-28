@@ -80,12 +80,10 @@
       "yes": "Yes:",
       "no": "No:",
       "abstainVotes": "Abstain Votes",
-      "abstainVotesStake": "Abstain Vote Stake",
       "votingNotAvailable": "Voting for this action is not available for",
-      "totalStake": "Total Stake",
+      "totalStake": "Total Votes",
       "numberOfCCs": "Number of Active CCs",
       "notVoted": "Not voted",
-      "notVotedStake": "Not Voted Stake",
       "voteMetrics": "Vote Metrics"
     },
     "tabs": {

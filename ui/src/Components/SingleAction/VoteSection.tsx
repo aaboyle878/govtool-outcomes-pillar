@@ -142,7 +142,7 @@ export const VoteSection = ({
   return (
     <Box data-testid={dataTestId} mb={3}>
       <Typography
-        data-testid="outcome-voter-label"
+        data-testid={`${title}-outcome-voter-label`}
         color="textBlack"
         sx={{
           fontWeight: 600,
@@ -172,7 +172,7 @@ export const VoteSection = ({
                 <>
                   <ThresholdIndicator left={threshold * 100}>
                     <ThresholdBubble>
-                      <ThresholdText data-testid="outcome-threshold">
+                      <ThresholdText data-testid={`${title}-outcome-threshold`}>
                         {(threshold * 100).toFixed(0)}%
                       </ThresholdText>
                     </ThresholdBubble>
@@ -188,14 +188,15 @@ export const VoteSection = ({
               )}
               <ProgressContainer>
                 <StyledLinearProgress
-                  data-testid="percentages-progress-bar"
+                  data-testid={`${title}-percentages-progress-bar`}
                   variant="determinate"
                   value={yesPercentage}
                 />
                 <PercentageOverlay>
-                  <PercentageText data-testid="yes-percentage-text">
+                  <PercentageText>
                     {t("outcome.votes.yes")}
                     <Box
+                      data-testid={`${title}-yes-votes-submitted`}
                       component="span"
                       sx={{
                         fontWeight: 600,
@@ -209,9 +210,10 @@ export const VoteSection = ({
                       )}%)`}
                     </Box>
                   </PercentageText>
-                  <PercentageText data-testid="no-percentage-text">
+                  <PercentageText>
                     {t("outcome.votes.no")}
                     <Box
+                      data-testid={`${title}-no-votes-submitted`}
                       component="span"
                       sx={{
                         fontWeight: 600,
@@ -232,7 +234,7 @@ export const VoteSection = ({
             <FieldSet title={t("outcome.votes.voteMetrics")}>
               <Box display="flex" flexDirection="column" gap={1}>
                 <Typography
-                  data-testid="total-controlled-amount"
+                  data-testid={`${title}-total-controlled-amount`}
                   sx={{
                     fontWeight: 400,
                     fontSize: 13,
@@ -256,7 +258,7 @@ export const VoteSection = ({
                   </Box>
                 </Typography>
                 <Typography
-                  data-testid="outcome-abstain-votes"
+                  data-testid={`${title}-outcome-abstain-votes`}
                   sx={{
                     fontWeight: 400,
                     fontSize: 13,
@@ -264,10 +266,7 @@ export const VoteSection = ({
                   }}
                   color="textBlack"
                 >
-                  {isCC
-                    ? t("outcome.votes.abstainVotes")
-                    : t("outcome.votes.abstainVotesStake")}
-                  :
+                  {t("outcome.votes.abstainVotes")}:
                   <Box
                     component="span"
                     sx={{
@@ -281,7 +280,7 @@ export const VoteSection = ({
                 </Typography>
 
                 <Typography
-                  data-testid="outcome-not-voted-votes"
+                  data-testid={`${title}-outcome-not-voted-votes`}
                   sx={{
                     fontWeight: 400,
                     fontSize: 13,
@@ -289,10 +288,7 @@ export const VoteSection = ({
                   }}
                   color="textBlack"
                 >
-                  {isCC
-                    ? t("outcome.votes.notVoted")
-                    : t("outcome.votes.notVotedStake")}
-                  :
+                  {t("outcome.votes.notVoted")}:
                   <Box
                     component="span"
                     sx={{

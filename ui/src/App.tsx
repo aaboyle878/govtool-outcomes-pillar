@@ -1,6 +1,5 @@
 import { ThemeProvider } from "@mui/material";
 import { SnackbarProvider } from "./contexts/Snackbar";
-import "./index.scss";
 import { theme } from "./theme";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { setAxiosBaseURL } from "./services/axiosInstance";

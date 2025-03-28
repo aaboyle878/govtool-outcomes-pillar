@@ -16,14 +16,12 @@ LatestEpoch AS (
         no DESC
     LIMIT 1
 ),
-EpochBlocks AS (
-    SELECT DISTINCT ON (epoch_no)
-        epoch_no,
-        time as block_time
+EpochTimes AS (
+    SELECT
+        no,
+        end_time
     FROM
-        block
-    ORDER BY
-        epoch_no, time DESC
+        epoch
 ),
 CommitteeData AS (
     SELECT DISTINCT ON (ch.raw)
@@ -211,10 +209,10 @@ SELECT
         'expired_epoch', gov_action_proposal.expired_epoch
     ) AS status,
     JSON_BUILD_OBJECT(
-        'ratified_time', ratified_block.block_time,
-        'enacted_time', enacted_block.block_time,
-        'dropped_time', dropped_block.block_time,
-        'expired_time', expired_block.block_time
+        'ratified_time', e_ratified.end_time,
+        'enacted_time', e_enacted.end_time,
+        'dropped_time', e_dropped.end_time,
+        'expired_time', e_expired.end_time
     ) AS status_times
 FROM
     RankedProposals rp
@@ -226,10 +224,10 @@ FROM
     LEFT JOIN off_chain_vote_gov_action_data ON off_chain_vote_gov_action_data.off_chain_vote_data_id = off_chain_vote_data.id
     LEFT JOIN param_proposal AS proposal_params ON gov_action_proposal.param_proposal = proposal_params.id
     LEFT JOIN cost_model ON proposal_params.cost_model_id = cost_model.id
-    LEFT JOIN EpochBlocks ratified_block ON ratified_block.epoch_no = gov_action_proposal.ratified_epoch
-    LEFT JOIN EpochBlocks enacted_block ON enacted_block.epoch_no = gov_action_proposal.enacted_epoch
-    LEFT JOIN EpochBlocks dropped_block ON dropped_block.epoch_no = gov_action_proposal.dropped_epoch
-    LEFT JOIN EpochBlocks expired_block ON expired_block.epoch_no = gov_action_proposal.expired_epoch
+    LEFT JOIN EpochTimes e_ratified ON e_ratified.no = gov_action_proposal.ratified_epoch
+    LEFT JOIN EpochTimes e_enacted ON e_enacted.no = gov_action_proposal.enacted_epoch
+    LEFT JOIN EpochTimes e_dropped ON e_dropped.no = gov_action_proposal.dropped_epoch
+    LEFT JOIN EpochTimes e_expired ON e_expired.no = gov_action_proposal.expired_epoch
 WHERE
     rp.rn = 1
     AND (COALESCE($1, '') = '' OR

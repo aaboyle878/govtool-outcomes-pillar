@@ -71,6 +71,12 @@ export default function GovernanceActionStatus({
       gap={isCard ? 0 : isMobile ? 3 : 8.65}
       width="100%"
       alignItems="center"
+      flexWrap="wrap"
+      sx={{
+        "& > .MuiTypography-root": {
+          marginBottom: "4px",
+        },
+      }}
     >
       <Typography
         sx={{

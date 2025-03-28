@@ -1,7 +1,6 @@
 import {
   Box,
   CircularProgress,
-  Grid,
   Skeleton,
   styled,
   Tab,
@@ -278,6 +277,7 @@ function GovernanceAction({ id }: GovernanceActionProps) {
 
   return (
     <Box
+      className="outcome-container"
       data-testid={`single-action-${idCIP129}-page`}
       display="flex"
       flex={1}
@@ -291,162 +291,160 @@ function GovernanceAction({ id }: GovernanceActionProps) {
         isMetadataLoading={isMetadataLoading}
         isDataMissing={isDataMissing}
       />
-      <Grid container spacing={2} marginTop={0.5}>
-        <Grid item xs={12} lg={7.5} sx={{ marginBottom: { xs: 3, lg: 0 } }}>
-          <Box
-            data-testid={`single-action-${idCIP129}-description`}
-            sx={{
-              height: "auto",
-              boxShadow: "0px 4px 15px 0px #DDE3F5",
-              borderRadius: "16px",
-              paddingX: 2,
-              paddingY: 2.75,
-              backgroundColor: "white",
-              ...(!metadataValid && {
-                border: "1px solid #F6D5D5",
-              }),
-            }}
-          >
-            {governanceAction && (
-              <Box display="flex" flexDirection="column" gap={2.5}>
-                <Header
-                  title={content.title}
-                  isGovernanceActionLoading={isGovernanceActionLoading}
-                  isMetadataLoading={isMetadataLoading}
-                  isDataMissing={isDataMissing}
-                />
-                <DataMissingInfoBox isDataMissing={isDataMissing} />
-                <ActionIdentity
-                  governanceAction={governanceAction}
-                  metadata={metadata}
-                />
-                {!hasAnyContent && (!governanceAction || isMetadataLoading) && (
-                  <>
-                    <Skeleton variant="rounded" width="20%" height={15} />
-                    <Skeleton variant="rounded" width="100%" height={400} />
-                  </>
-                )}
-                {visibleTabs.length > 0 && (
-                  <>
-                    {visibleTabs.length === 1 ? (
-                      visibleTabs[0].content
-                    ) : (
-                      <>
-                        <Tabs
-                          sx={{
-                            display: "flex",
-                            fontSize: 16,
-                            fontWeight: 500,
-                          }}
-                          value={selectedTab}
-                          indicatorColor="secondary"
-                          onChange={handleChange}
-                          aria-label="Governance action content description"
-                        >
-                          {visibleTabs.map((tab) => (
-                            <StyledTab
-                              key={tab.dataTestId}
-                              data-testid={tab.dataTestId}
-                              label={tab.label}
-                              isMobile={isMobile}
-                            />
-                          ))}
-                        </Tabs>
-                        {renderAllTabContent()}
-                      </>
-                    )}
-                  </>
-                )}
-                {governanceAction?.description &&
-                  governanceAction?.type ===
-                    GovernanceActionType.TreasuryWithdrawals &&
-                  Array.isArray(governanceAction?.description) &&
-                  governanceAction?.description?.map((withdrawal) => (
-                    <GovernanceActionCardTreasuryWithdrawalElement
-                      key={withdrawal.receivingAddress}
-                      receivingAddress={withdrawal.receivingAddress}
-                      amount={withdrawal.amount}
-                    />
-                  ))}
-                {governanceAction?.type !==
-                  GovernanceActionType.NewConstitution && (
-                  <>
-                    <GovernanceActionElement
-                      title={t("outcome.metadataLink")}
-                      type="link"
-                      content={governanceAction?.url}
-                      isCopyable
-                      dataTestId="metadata-anchor-link"
-                    />
-                    <GovernanceActionElement
-                      title={t("outcome.metadataHash")}
-                      type="text"
-                      content={governanceAction?.data_hash}
-                      isCopyable
-                      dataTestId="metadata-anchor-hash"
-                    />
-                  </>
-                )}
-                {metadataValid && content.references.length > 0 && (
-                  <References links={content.references} />
-                )}
-                <Box
+      <Box className="action-details-container" marginTop={0.5}>
+        <Box
+          className="action-details"
+          data-testid={`single-action-${idCIP129}-description`}
+          sx={{
+            height: "auto",
+            boxShadow: "0px 4px 15px 0px #DDE3F5",
+            borderRadius: "16px",
+            paddingX: 2,
+            paddingY: 2.75,
+            backgroundColor: "white",
+            ...(!metadataValid && {
+              border: "1px solid #F6D5D5",
+            }),
+          }}
+        >
+          {governanceAction && (
+            <Box display="flex" flexDirection="column" gap={2.5}>
+              <Header
+                title={content.title}
+                isGovernanceActionLoading={isGovernanceActionLoading}
+                isMetadataLoading={isMetadataLoading}
+                isDataMissing={isDataMissing}
+              />
+              <DataMissingInfoBox isDataMissing={isDataMissing} />
+              <ActionIdentity
+                governanceAction={governanceAction}
+                metadata={metadata}
+              />
+              {!hasAnyContent && (!governanceAction || isMetadataLoading) && (
+                <>
+                  <Skeleton variant="rounded" width="20%" height={15} />
+                  <Skeleton variant="rounded" width="100%" height={400} />
+                </>
+              )}
+              {visibleTabs.length > 0 && (
+                <>
+                  {visibleTabs.length === 1 ? (
+                    visibleTabs[0].content
+                  ) : (
+                    <>
+                      <Tabs
+                        sx={{
+                          display: "flex",
+                          fontSize: 16,
+                          fontWeight: 500,
+                        }}
+                        value={selectedTab}
+                        indicatorColor="secondary"
+                        onChange={handleChange}
+                        aria-label="Governance action content description"
+                      >
+                        {visibleTabs.map((tab) => (
+                          <StyledTab
+                            key={tab.dataTestId}
+                            data-testid={tab.dataTestId}
+                            label={tab.label}
+                            isMobile={isMobile}
+                          />
+                        ))}
+                      </Tabs>
+                      {renderAllTabContent()}
+                    </>
+                  )}
+                </>
+              )}
+              {governanceAction?.description &&
+                governanceAction?.type ===
+                  GovernanceActionType.TreasuryWithdrawals &&
+                Array.isArray(governanceAction?.description) &&
+                governanceAction?.description?.map((withdrawal) => (
+                  <GovernanceActionCardTreasuryWithdrawalElement
+                    key={withdrawal.receivingAddress}
+                    receivingAddress={withdrawal.receivingAddress}
+                    amount={withdrawal.amount}
+                  />
+                ))}
+              {governanceAction?.type !==
+                GovernanceActionType.NewConstitution && (
+                <>
+                  <GovernanceActionElement
+                    title={t("outcome.metadataLink")}
+                    type="link"
+                    content={governanceAction?.url}
+                    isCopyable
+                    dataTestId="metadata-anchor-link"
+                  />
+                  <GovernanceActionElement
+                    title={t("outcome.metadataHash")}
+                    type="text"
+                    content={governanceAction?.data_hash}
+                    isCopyable
+                    dataTestId="metadata-anchor-hash"
+                  />
+                </>
+              )}
+              {metadataValid && content.references.length > 0 && (
+                <References links={content.references} />
+              )}
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 0.5,
+                }}
+              >
+                <Typography
+                  data-testid={`related-proposal-label`}
                   sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 0.5,
+                    color: "textGray",
+                    fontWeight: 600,
+                    fontSize: 14,
                   }}
                 >
+                  {t("proposalDiscussion.title")}
+                </Typography>
+                {isProposalLoading ? (
+                  <ProposalCardLoader />
+                ) : proposal?.data?.length > 0 ? (
+                  <ProposalCard proposal={proposal?.data?.[0]} />
+                ) : (
                   <Typography
-                    data-testid={`related-proposal-label`}
                     sx={{
-                      color: "textGray",
-                      fontWeight: 600,
-                      fontSize: 14,
+                      fontSize: 16,
+                      fontWeight: 400,
+                      color: "neutralGray",
                     }}
                   >
-                    {t("proposalDiscussion.title")}
+                    {t("proposalDiscussion.notFound")}
                   </Typography>
-                  {isProposalLoading ? (
-                    <ProposalCardLoader />
-                  ) : proposal?.data?.length > 0 ? (
-                    <ProposalCard proposal={proposal?.data?.[0]} />
-                  ) : (
-                    <Typography
-                      sx={{
-                        fontSize: 16,
-                        fontWeight: 400,
-                        color: "neutralGray",
-                      }}
-                    >
-                      {t("proposalDiscussion.notFound")}
-                    </Typography>
-                  )}
-                </Box>
+                )}
               </Box>
-            )}
-          </Box>
-        </Grid>
-        <Grid item xs={12} lg={4.5} sx={{ position: "relative" }}>
-          <Box
-            data-testid={`single-action-outcome-numbers`}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              boxShadow: "0px 4px 15px 0px #DDE3F5",
-              borderRadius: "16px",
-              backgroundColor: "white",
-              paddingX: 2,
-              paddingY: 2.75,
-              position: "sticky",
-              top: "96px",
-            }}
-          >
-            <GovernanceVotingUI action={governanceAction} />
-          </Box>
-        </Grid>
-      </Grid>
+            </Box>
+          )}
+        </Box>
+
+        <Box
+          className="action-votes"
+          data-testid={`single-action-outcome-numbers`}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            boxShadow: "0px 4px 15px 0px #DDE3F5",
+            borderRadius: "16px",
+            backgroundColor: "white",
+            paddingX: 2,
+            paddingY: 2.75,
+            height: "auto",
+          }}
+        >
+          <GovernanceVotingUI action={governanceAction} />
+        </Box>
+      </Box>
     </Box>
   );
 }
