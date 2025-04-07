@@ -1,21 +1,22 @@
 import { ThemeProvider } from "@mui/material";
 import { SnackbarProvider } from "./contexts/Snackbar";
-import "./index.scss";
 import { theme } from "./theme";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { setAxiosBaseURL } from "./services/axiosInstance";
 import GlobalWrapper from "./Components/GlobalWrapper";
 import { AppContextProvider } from "./contexts/AppContext";
+import { I18nProvider } from "./contexts/I18nContext";
 
 export type AppProps = {
   apiUrl?: string;
   ipfsGateway?: string;
   walletAPI?: any;
+  i18n?: any;
 };
 
 const queryClient = new QueryClient();
 
-function App({ apiUrl, ipfsGateway, walletAPI }: AppProps) {
+function App({ apiUrl, ipfsGateway, walletAPI, i18n }: AppProps) {
   setAxiosBaseURL(apiUrl);
 
   return (
@@ -30,7 +31,9 @@ function App({ apiUrl, ipfsGateway, walletAPI }: AppProps) {
         <ThemeProvider theme={theme}>
           <AppContextProvider ipfsGateway={ipfsGateway} walletAPI={walletAPI}>
             <SnackbarProvider>
-              <GlobalWrapper />
+              <I18nProvider i18n={i18n}>
+                <GlobalWrapper />
+              </I18nProvider>
             </SnackbarProvider>
           </AppContextProvider>
         </ThemeProvider>

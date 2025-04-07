@@ -1,4 +1,4 @@
-import { Avatar, Box, IconButton } from "@mui/material";
+import { Avatar, Box } from "@mui/material";
 import { Typography } from "../Atoms/Typography";
 import CloseIcon from "../../Assets/Icons/CloseIcon";
 import CheckMarkIcon from "../../Assets/Icons/CheckMarkIcon";

@@ -1,6 +1,9 @@
 import { Box, Typography } from "@mui/material";
+import { useTranslation } from "../../contexts/I18nContext";
 
 const AbstractLoader = () => {
+  const { t } = useTranslation();
+
   return (
     <Box>
       <Typography
@@ -15,7 +18,7 @@ const AbstractLoader = () => {
           whiteSpace: "nowrap",
         }}
       >
-        Abstract
+        {t("outcome.abstract")}
       </Typography>
       <Typography
         sx={{
@@ -33,8 +36,7 @@ const AbstractLoader = () => {
           color: "gray",
         }}
       >
-        Loading governance action abstract, Loading governance action abstract,
-        Loading governance action abstract...
+        {t("loaders.loadingAbstract")}
       </Typography>
     </Box>
   );
