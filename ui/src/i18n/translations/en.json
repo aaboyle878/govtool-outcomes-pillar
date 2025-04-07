@@ -7,6 +7,7 @@
     },
     "showMore": "Show More Actions",
     "searchPlaceholder": "Search Action...",
+    "clearSearchInput": "Clear search input",
     "filters": {
       "title": "Filters",
       "clear": "Clear"
@@ -80,7 +81,8 @@
       "yes": "Yes",
       "no": "No",
       "abstainVotes": "Abstain Votes",
-      "votingNotAvailable": "Voting for this action is not available for",
+      "votingNotAvailable": "do not vote",
+      "onThisTypeOfAction": "on this type of action",
       "totalStake": "Total Votes",
       "numberOfCCs": "Number of Active CCs",
       "notVoted": "Not voted",
@@ -91,12 +93,12 @@
       "parameters": "Parameters",
       "details": "Details"
     },
-    "viewDetails": "View Details"
+    "viewDetails": "View Details",
+    "seeDiscussion":"See discussion"
   },
   "proposalDiscussion": {
-    "title": "Proposal Discussion",
-    "notFound": "Discussion history unavailable for this action!",
-    "proposalDate": "Proposal was proposed on",
+    "title": "Discussion forum",
+    "notFound": "No discussion for this action in GovTool.",
     "proposedOn": "Proposed on:"
   },
   "tooltips": {

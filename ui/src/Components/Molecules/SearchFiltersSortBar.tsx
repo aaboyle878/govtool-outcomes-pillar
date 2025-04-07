@@ -1,16 +1,17 @@
-import { Box, InputBase } from "@mui/material";
+import { Box, IconButton, InputBase } from "@mui/material";
 import { useEffect, useState } from "react";
-import { IconSearch } from "@intersect.mbo/intersectmbo.org-icons-set";
+import { IconSearch, IconX } from "@intersect.mbo/intersectmbo.org-icons-set";
 import { theme } from "../../theme";
 import FiltersComponent from "./FiltersComponent";
 import SortComponent from "./SortComponent";
 import { useScreenDimension } from "../../hooks/useDimensions";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "../../contexts/I18nContext";
+import { primaryBlue } from "../../consts/colors";
 
 export default function SearchFiltersSortBar() {
   const {
-    palette: { neutralGray },
+    palette: { textBlack },
   } = theme;
   const { isMobile } = useScreenDimension();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -22,8 +23,8 @@ export default function SearchFiltersSortBar() {
     const timer = setTimeout(() => {
       const newParams = new URLSearchParams(searchParams);
       if (searchTerm) {
-        newParams.set("q", searchTerm);
-      } else {
+          newParams.set("q", searchTerm);
+        } else {
         newParams.delete("q");
       }
       setSearchParams(newParams);
@@ -47,19 +48,37 @@ export default function SearchFiltersSortBar() {
         placeholder={t("outcomesList.searchPlaceholder")}
         value={searchTerm}
         startAdornment={
-          <IconSearch width={18} height={18} fill={neutralGray} />
+          <IconSearch
+            width={20}
+            height={18}
+            fill={primaryBlue.c200}
+            strokeWidth={5}
+          />
+        }
+        endAdornment={
+          searchTerm && (
+            <IconButton
+              onClick={() => setSearchTerm("")}
+              data-testid="clear-search-input"
+              aria-label={t("outcomesList.clearSearchInput")}
+              role="button"
+            >
+              <IconX width={18} height={18} fill={textBlack} />
+            </IconButton>
+          )
         }
         sx={{
           bgcolor: "neutralWhite",
           border: 1,
-          borderColor: "secondaryBlue",
-          borderRadius: 50,
-          fontSize: 11,
-          fontWeight: 500,
+          borderColor: "borderGrey",
+          borderRadius: 1,
+          fontSize: 15,
+          fontWeight: 400,
           height: 48,
-          padding: "16px 24px",
+          paddingY: 2,
+          paddingLeft: 2.5,
           "& .MuiInputBase-input": {
-            paddingLeft: "4px",
+            paddingLeft: 1,
           },
         }}
       />

@@ -10,13 +10,13 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { IconFilter } from "@intersect.mbo/intersectmbo.org-icons-set";
 import { theme } from "../../theme";
 import { GOVERNANCE_ACTION_FILTERS } from "../../consts/filters";
 import { GOVERNANCE_ACTION_STATUS_FILTERS } from "../../consts/status-filters";
 import { useSearchParams } from "react-router-dom";
 import { fadedPurple } from "../../consts/colors";
 import { useTranslation } from "../../contexts/I18nContext";
+import { IconCheveronDown } from "@intersect.mbo/intersectmbo.org-icons-set";
 
 export default function FiltersComponent() {
   const [isHovered, setIsHovered] = useState(false);
@@ -25,7 +25,9 @@ export default function FiltersComponent() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const {
-    palette: { primaryBlue, neutralWhite },
+    palette: {
+      badgeColors: { grey },
+    },
   } = theme;
 
   const handleTypeChange = (value: string) => {
@@ -112,18 +114,17 @@ export default function FiltersComponent() {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         sx={{
-          backgroundColor: open ? "secondary.main" : "neutralWhite",
+          backgroundColor: open ? "secondary.main" : "white",
           border: 1,
-          borderColor: open ? "secondary.main" : "secondaryBlue",
-          borderRadius: 10,
+          borderColor: "borderGrey",
+          borderRadius: 1,
           fontSize: 14,
-          fontWeight: 500,
+          fontWeight: 400,
           height: 48,
-          padding: "0 16px",
+          padding: "0 12px",
           cursor: "pointer",
           ":hover": {
             backgroundColor: "secondary.main",
-            borderColor: "secondary.main",
           },
         }}
         onMouseEnter={() => setIsHovered(true)}
@@ -158,20 +159,18 @@ export default function FiltersComponent() {
               }}
             />
           )}
-          <IconFilter
-            width={18}
-            height={18}
-            fill={isHovered || open ? neutralWhite : primaryBlue}
-          />
-          <Typography
-            sx={{
-              color: isHovered || open ? "neutralWhite" : "primaryBlue",
-              fontWeight: 500,
-              paddingLeft: 0.5,
-            }}
-          >
-            {t("outcomesList.filters.title")}
-          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1.25 }}>
+            <Typography
+              sx={{
+                color: isHovered || open ? "textBlack" : grey,
+                fontWeight: 400,
+                paddingLeft: 0.5,
+              }}
+            >
+              {t("outcomesList.filters.title")}
+            </Typography>
+            <IconCheveronDown width={18} height={18} fill="textBlack" />
+          </Box>
         </Box>
       </Button>
       <Menu

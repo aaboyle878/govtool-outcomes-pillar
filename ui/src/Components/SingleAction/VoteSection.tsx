@@ -161,7 +161,11 @@ export const VoteSection = ({
           }}
           color="textBlack"
         >
-          {`${t("outcome.votes.votingNotAvailable")} ${t(title)}`}
+          {t(title)}{" "}
+          <span>
+            <strong>{t("outcome.votes.votingNotAvailable")}</strong>{" "}
+            {t("outcome.votes.onThisTypeOfAction")}
+          </span>
         </Typography>
       )}
       {isDisplayed && (

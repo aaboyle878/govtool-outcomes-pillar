@@ -42,11 +42,6 @@ const ProposalCard = ({ proposal }: { proposal: any }) => {
             borderRadius: "14px",
           }}
         >
-          <Tooltip paragraphOne={t("proposalDiscussion.proposalDate")}>
-            <Box display={"flex"} alignItems={"center"}>
-              <IconInformationCircle color="textBlack" />
-            </Box>
-          </Tooltip>
           <Typography
             variant="body2"
             component="p"
@@ -69,7 +64,7 @@ const ProposalCard = ({ proposal }: { proposal: any }) => {
               data-testid={`proposal-${proposal?.id}-view-details`}
               fullWidth
             >
-              {t("outcome.viewDetails")}
+              {t("outcome.seeDiscussion")}
             </Button>
           </Link>
         </Box>

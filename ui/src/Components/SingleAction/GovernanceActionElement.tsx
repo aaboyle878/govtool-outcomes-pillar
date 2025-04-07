@@ -71,7 +71,7 @@ export default function GovernanceActionElement({
   return (
     <Box
       data-testid={dataTestId}
-      sx={{ width: "100%", display: "flex", flexDirection: "column", gap: 0.5 }}
+      sx={{ width: "100%", display: "flex", flexDirection: "column" }}
     >
       <Typography
         sx={{

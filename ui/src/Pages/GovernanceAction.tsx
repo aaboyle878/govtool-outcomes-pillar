@@ -417,6 +417,7 @@ function GovernanceAction({ id }: GovernanceActionProps) {
                       fontSize: 16,
                       fontWeight: 400,
                       color: "neutralGray",
+                      p: 0,
                     }}
                   >
                     {t("proposalDiscussion.notFound")}

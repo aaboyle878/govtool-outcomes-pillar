@@ -22,7 +22,6 @@ function References({ links }: ReferencesProps) {
           fontSize: 14,
           color: "textGray",
           fontWeight: 600,
-          marginBottom: 0.5,
         }}
       >
         {t("outcome.supportingLinks")}
