@@ -17,6 +17,10 @@
       "fullTitle": "Sort Governance Actions"
     }
   },
+  "common":{
+    "expand": "Expand",
+    "collapse": "Collapse"
+  },
   "outcome": {
     "label": "Outcome",
     "abstract": "Abstract",
@@ -73,20 +77,32 @@
       "submitted": "Submitted:"
     },
     "votes": {
-      "title": "Governance Action Voting Results",
+      "title": "Votes Submitted for this Governance Action:",
       "dReps": "DReps",
       "sPos": "SPOs",
       "cCommitteeFull": "Constitutional Committee",
       "cCommitteeShort": "CC",
       "yes": "Yes",
       "no": "No",
+      "noConfidence": "No Confidence",
+      "notVoted": "Not Voted",
       "abstainVotes": "Abstain Votes",
       "votingNotAvailable": "do not vote",
       "onThisTypeOfAction": "on this type of action",
       "totalStake": "Total Votes",
       "numberOfCCs": "Number of Active CCs",
-      "notVoted": "Not voted",
-      "voteMetrics": "Vote Metrics"
+      "metric": "Metric",
+      "value": "Value",
+      "totalActiveStake": "Total Active Stake",
+      "totalAbstain": "Total Abstain",
+      "autoAbstain": "Auto-Abstain",
+      "explicit": "Explicit",
+      "thresholdStake": "Threshold Stake"
+    },
+    "ratifiedStatus": {
+      "title": "Outcome",
+      "valueRatified": "Ratified",
+      "valueNotRatified": "Not Ratified"
     },
     "tabs": {
       "reasoning": "Reasoning",
@@ -94,7 +110,7 @@
       "details": "Details"
     },
     "viewDetails": "View Details",
-    "seeDiscussion":"See discussion"
+    "seeDiscussion": "See discussion"
   },
   "proposalDiscussion": {
     "title": "Discussion forum",

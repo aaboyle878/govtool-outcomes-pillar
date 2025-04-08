@@ -256,6 +256,13 @@ export const getGovActionVotingThresholdKey = ({
   }
 };
 
+export const formatValue = (
+  value: number,
+  isCC: boolean,
+  addAdaPrefix: boolean = true
+) =>
+  isCC ? value : `${addAdaPrefix ? "₳" : ""} ${correctAdaFormatWithSuffix(value)}`;
+
 export const correctAdaFormatWithSuffix = (
   lovelace: number | undefined,
   precision = 2

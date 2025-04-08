@@ -9,6 +9,7 @@ import { useNetworkMetrics } from "../../hooks/useNetworkMetrics";
 import { SECURITY_RELEVANT_PARAMS_MAP } from "../../consts/params";
 import { theme } from "../../theme";
 import { useTranslation } from "../../contexts/I18nContext";
+import StatusChip from "../Molecules/StatusChip";
 
 type GovernanceVotingProps = {
   action: GovernanceAction;
@@ -26,6 +27,7 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
     cc_abstain_votes,
     proposal_params,
     type,
+    status,
   } = action;
   const {
     networkMetrics,
@@ -48,6 +50,41 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
       ),
     [proposal_params]
   );
+
+  const getStatus = () => {
+    const { ratified_epoch, enacted_epoch, dropped_epoch, expired_epoch } =
+      status;
+
+    if (!ratified_epoch && !enacted_epoch && !dropped_epoch && !expired_epoch) {
+      return t("outcome.status.inProgress");
+    }
+
+    if (ratified_epoch && enacted_epoch) {
+      return t("outcome.status.enacted");
+    }
+
+    if (ratified_epoch && !enacted_epoch) {
+      return t("outcome.status.ratified");
+    }
+
+    if (!ratified_epoch && enacted_epoch) {
+      return t("outcome.status.enacted");
+    }
+
+    if (expired_epoch && dropped_epoch) {
+      return t("outcome.status.expired");
+    }
+
+    if (dropped_epoch) {
+      return t("outcome.status.dropped");
+    }
+
+    if (expired_epoch) {
+      return t("outcome.status.expired");
+    }
+
+    return t("outcome.status.inProgress");
+  };
 
   // Metrics collection
   const totalStakeControlledByAlwaysAbstain =
@@ -75,6 +112,9 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
   // DRep votes collection
   const dRepYesVotes = Number(yes_votes);
   const dRepNoVotes = Number(no_votes);
+  const dRepNoTotalVotes = dRepYesVotes
+    ? totalStakeControlledByDReps - dRepYesVotes
+    : undefined;
   const dRepAbstainVotes =
     Number(abstain_votes) + totalStakeControlledByAlwaysAbstain;
   const dRepNotVotedVotes = Number(
@@ -90,6 +130,7 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
     action.type !== "NoConfidence"
       ? Number(pool_no_votes) + totalStakeControlledByNoConfidenceForSPOs
       : Number(pool_no_votes);
+  const poolNoTotalVotes = totalStakeControlledBySPOs - poolYesVotes;
   const poolAbstainVotes =
     Number(pool_abstain_votes) + totalStakeControlledByAlwaysAbstainForSPOs;
   const poolNotVotedVotes = Number(
@@ -174,6 +215,26 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
 
   return (
     <Box>
+      <Box
+        display={"flex"}
+        flexDirection={"row"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+        sx={{
+          width: "100%",
+        }}
+        mb={3}
+      >
+        <Typography
+          sx={{
+            fontWeight: 500,
+            fontSize: 14,
+          }}
+        >
+          {t("outcome.ratifiedStatus.title")}
+        </Typography>
+        <StatusChip status={getStatus()} />
+      </Box>
       <Typography
         sx={{
           fontSize: 22,
@@ -193,9 +254,13 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
         title={t("outcome.votes.dReps")}
         yesVotes={dRepYesVotes}
         noVotes={dRepNoVotes}
+        noTotalVotes={dRepNoTotalVotes}
         totalControlled={totalStakeControlledByDReps}
-        abstainVotes={dRepAbstainVotes}
+        totalAbstainVotes={dRepAbstainVotes}
+        autoAbstainVotes={totalStakeControlledByAlwaysAbstain}
+        explicitAbstainVotes={abstain_votes}
         notVotedVotes={dRepNotVotedVotes}
+        noConfidenceVotes={totalStakeControlledByNoConfidence}
         threshold={(() => {
           const votingThresholdKey = getGovActionVotingThresholdKey({
             govActionType: type as GovernanceActionType,
@@ -210,6 +275,7 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
           type as GovernanceActionType,
           isSecurityGroup()
         )}
+        thresholdStake={totalStakeControlledByDReps}
         isLoading={isLoading}
         isDataReady={!isLoading && Boolean(networkMetrics)}
         dataTestId="DReps-voting-results-data"
@@ -221,8 +287,13 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
         title={t("outcome.votes.sPos")}
         yesVotes={poolYesVotes}
         noVotes={poolNoVotes}
+        noTotalVotes={poolNoTotalVotes}
         totalControlled={totalStakeControlledBySPOs}
-        abstainVotes={poolAbstainVotes}
+        thresholdStake={totalStakeControlledBySPOs}
+        totalAbstainVotes={poolAbstainVotes}
+        autoAbstainVotes={totalStakeControlledByAlwaysAbstainForSPOs}
+        noConfidenceVotes={totalStakeControlledByNoConfidenceForSPOs}
+        explicitAbstainVotes={pool_abstain_votes}
         notVotedVotes={poolNotVotedVotes}
         threshold={(() => {
           const votingThresholdKey = getGovActionVotingThresholdKey({
@@ -250,7 +321,7 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
         yesVotes={ccYesVotes}
         noVotes={ccNoVotes}
         totalControlled={noOfCommitteeMembers}
-        abstainVotes={ccAbstainVotes}
+        totalAbstainVotes={ccAbstainVotes}
         notVotedVotes={ccNotVotedVotes}
         threshold={Number(ccThreshold)}
         yesPercentage={ccYesVotesPercentage}
