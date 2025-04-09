@@ -16,7 +16,7 @@ import {
   IconCheveronDown,
 } from "@intersect.mbo/intersectmbo.org-icons-set";
 import { theme } from "../../theme";
-import { formatValue } from "../../lib/utils";
+import { getRawAdaValue } from "../../lib/utils";
 import { VoteMetric } from "./VoteSection";
 
 const {
@@ -132,7 +132,7 @@ const VoteMetricsTable = ({
                       color: "textBlack",
                     }}
                   >
-                    {formatValue(Number(metric.value), isCC, false)}
+                    {getRawAdaValue(Number(metric.value)).toLocaleString()}
                   </Box>
                 </TableCell>
               </TableRow>

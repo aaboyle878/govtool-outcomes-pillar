@@ -284,6 +284,13 @@ export const correctAdaFormatWithSuffix = (
   }
 };
 
+export const getRawAdaValue = (
+  lovelace: number | undefined
+) => {
+  if (!lovelace) return 0;
+  return Math.ceil(lovelace / LOVELACE)
+};
+
 export function getItemFromLocalStorage(key: string) {
   const item = window.localStorage.getItem(key);
   return item ? JSON.parse(item) : null;

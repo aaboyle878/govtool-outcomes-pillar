@@ -97,7 +97,7 @@
       "totalAbstain": "Total Abstain",
       "autoAbstain": "Auto-Abstain",
       "explicit": "Explicit",
-      "thresholdStake": "Threshold Stake"
+      "ratificationThreshold": "Ratification Threshold"
     },
     "ratifiedStatus": {
       "title": "Outcome",

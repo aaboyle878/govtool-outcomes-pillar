@@ -97,9 +97,13 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
     Number(networkMetrics?.spos_no_confidence_voting_power) ?? 0;
   const totalStakeControlledByDReps =
     Number(networkMetrics?.total_stake_controlled_by_active_dreps) ?? 0;
-  const totalStakeControlledBySPOs =
-    Number(networkMetrics?.total_stake_controlled_by_stake_pools) -
-    totalStakeControlledByAlwaysAbstainForSPOs;
+  const totalActiveStakeControlledByDReps =
+    totalStakeControlledByDReps - totalStakeControlledByAlwaysAbstain;
+  const totalStakeControlledBySPOs = Number(
+    networkMetrics?.total_stake_controlled_by_stake_pools
+  );
+  const totalActiveStakeControlledBySPOs =
+    totalStakeControlledBySPOs - totalStakeControlledByAlwaysAbstainForSPOs;
   const noOfCommitteeMembers =
     Number(networkMetrics?.no_of_committee_members) ?? 0;
   const ccThreshold = (
@@ -110,18 +114,24 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
   ).toPrecision(2);
 
   // DRep votes collection
+  const dRepAbstainVotes =
+    Number(abstain_votes) + totalStakeControlledByAlwaysAbstain;
+  const dRepRatificationThresholdStake =
+    totalStakeControlledByDReps - dRepAbstainVotes;
   const dRepYesVotes = Number(yes_votes);
   const dRepNoVotes = Number(no_votes);
   const dRepNoTotalVotes = dRepYesVotes
-    ? totalStakeControlledByDReps - dRepYesVotes
+    ? dRepRatificationThresholdStake - dRepYesVotes
     : undefined;
-  const dRepAbstainVotes =
-    Number(abstain_votes) + totalStakeControlledByAlwaysAbstain;
   const dRepNotVotedVotes = Number(
-    totalStakeControlledByDReps - (dRepYesVotes + dRepNoVotes)
+    dRepRatificationThresholdStake - (dRepYesVotes + dRepNoVotes)
   );
 
   // SPO votes collection
+  const poolAbstainVotes =
+    Number(pool_abstain_votes) + totalStakeControlledByAlwaysAbstainForSPOs;
+  const poolRatificationThresholdStake =
+    totalStakeControlledBySPOs - poolAbstainVotes;
   const poolYesVotes =
     action.type === "NoConfidence"
       ? Number(pool_yes_votes) + totalStakeControlledByNoConfidenceForSPOs
@@ -130,11 +140,9 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
     action.type !== "NoConfidence"
       ? Number(pool_no_votes) + totalStakeControlledByNoConfidenceForSPOs
       : Number(pool_no_votes);
-  const poolNoTotalVotes = totalStakeControlledBySPOs - poolYesVotes;
-  const poolAbstainVotes =
-    Number(pool_abstain_votes) + totalStakeControlledByAlwaysAbstainForSPOs;
+  const poolNoTotalVotes = poolRatificationThresholdStake - poolYesVotes;
   const poolNotVotedVotes = Number(
-    totalStakeControlledBySPOs - (poolYesVotes + poolNoVotes)
+    poolRatificationThresholdStake - (poolYesVotes + poolNoVotes)
   );
 
   // CC votes  collection
@@ -146,8 +154,8 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
   );
 
   // DReps vote percentages
-  const dRepYesVotesPercentage = totalStakeControlledByDReps
-    ? (dRepYesVotes / totalStakeControlledByDReps) * 100
+  const dRepYesVotesPercentage = totalActiveStakeControlledByDReps
+    ? (dRepYesVotes / totalActiveStakeControlledByDReps) * 100
     : undefined;
   const dRepNoVotesPercentage =
     dRepYesVotesPercentage !== undefined
@@ -155,8 +163,8 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
       : undefined;
 
   // SPOs vote percentages
-  const poolYesVotesPercentage = totalStakeControlledBySPOs
-    ? (poolYesVotes / totalStakeControlledBySPOs) * 100
+  const poolYesVotesPercentage = totalActiveStakeControlledBySPOs
+    ? (poolYesVotes / totalActiveStakeControlledBySPOs) * 100
     : undefined;
   const poolNoVotesPercentage =
     poolYesVotesPercentage !== undefined
@@ -275,7 +283,7 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
           type as GovernanceActionType,
           isSecurityGroup()
         )}
-        thresholdStake={totalStakeControlledByDReps}
+        ratificationThreshold={dRepRatificationThresholdStake}
         isLoading={isLoading}
         isDataReady={!isLoading && Boolean(networkMetrics)}
         dataTestId="DReps-voting-results-data"
@@ -289,7 +297,7 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
         noVotes={poolNoVotes}
         noTotalVotes={poolNoTotalVotes}
         totalControlled={totalStakeControlledBySPOs}
-        thresholdStake={totalStakeControlledBySPOs}
+        ratificationThreshold={poolRatificationThresholdStake}
         totalAbstainVotes={poolAbstainVotes}
         autoAbstainVotes={totalStakeControlledByAlwaysAbstainForSPOs}
         noConfidenceVotes={totalStakeControlledByNoConfidenceForSPOs}

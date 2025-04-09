@@ -33,7 +33,7 @@ type VoteSectionProps = {
   notVotedVotes?: number;
   threshold?: number | null;
   thresholdBarValue?: number;
-  thresholdStake?: number;
+  ratificationThreshold?: number;
   yesPercentage?: number;
   noPercentage?: number;
   isCC?: boolean;
@@ -121,6 +121,7 @@ const ThresholdText = styled(Typography)({
   fontWeight: 600,
   color: "textBlack",
   lineHeight: 1.2,
+  textWrap: 'nowrap'
 });
 
 const ThresholdArrow = styled(Box)({
@@ -146,7 +147,7 @@ export const VoteSection = ({
   threshold = null,
   yesPercentage = 0,
   noPercentage = 0,
-  thresholdStake = 0,
+  ratificationThreshold = 0,
   isCC = false,
   isDisplayed,
   isLoading = true,
@@ -174,9 +175,9 @@ export const VoteSection = ({
     {
       label: isCC
         ? t("outcome.votes.notVoted")
-        : t("outcome.votes.thresholdStake"),
-      value: isCC ? notVotedVotes : thresholdStake,
-      testId: `${title}-threshold-stake`,
+        : t("outcome.votes.ratificationThreshold"),
+      value: isCC ? notVotedVotes : ratificationThreshold,
+      testId: `${title}-ratification-threshold`,
     },
   ];
 
@@ -187,9 +188,9 @@ export const VoteSection = ({
       testId: `${title}-total-controlled-amount`,
     },
     {
-      label: t("outcome.votes.thresholdStake"),
-      value: thresholdStake,
-      testId: `${title}-threshold-stake`,
+      label: t("outcome.votes.ratificationThreshold"),
+      value: ratificationThreshold,
+      testId: `${title}-ratification-threshold`,
       isHighlighted: true,
       isIndented: true,
       indentDepth: 1,
@@ -253,7 +254,7 @@ export const VoteSection = ({
   const thresholdValue = threshold
     ? isCC
       ? Number(Math.ceil((totalControlled - totalAbstainVotes) * threshold))
-      : threshold * thresholdStake
+      : threshold * ratificationThreshold
     : 0;
 
   const noVotesValue = isCC ? noVotes : noTotalVotes;
@@ -296,9 +297,9 @@ export const VoteSection = ({
                   <ThresholdIndicator left={threshold * 100}>
                     <ThresholdBubble>
                       <ThresholdText data-testid={`${title}-outcome-threshold`}>
-                        {formatValue(thresholdValue, isCC)} (
+                        {formatValue(thresholdValue, isCC)} -{" "}
                         {(threshold * 100).toFixed(0)}
-                        %)
+                        %
                       </ThresholdText>
                     </ThresholdBubble>
                     <ThresholdArrow />
@@ -340,14 +341,14 @@ export const VoteSection = ({
                 data-testid={`${title}-yes-votes-submitted`}
                 component="span"
               >
-                {`${formatValue(yesVotes, isCC)} (${yesPercentage?.toFixed(
+                {`${formatValue(yesVotes, isCC)} - ${yesPercentage?.toFixed(
                   2
-                )}%)`}
+                )}%`}
               </Box>
               <Box data-testid={`${title}-no-votes-submitted`} component="span">
-                {`${formatValue(noVotesValue, isCC)} (${noPercentage?.toFixed(
+                {`${formatValue(noVotesValue, isCC)} - ${noPercentage?.toFixed(
                   2
-                )}%)`}
+                )}%`}
               </Box>
             </Box>
           </Grid>
