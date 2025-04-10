@@ -20,7 +20,7 @@ export const GovernanceActionCardTreasuryWithdrawalElement = ({
       sx={{
         display: "flex",
         flexDirection: "column",
-        gap: 2.5,
+        gap: 3,
       }}
     >
       <Box

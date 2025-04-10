@@ -256,6 +256,13 @@ export const getGovActionVotingThresholdKey = ({
   }
 };
 
+export const formatValue = (
+  value: number,
+  isCC: boolean,
+  addAdaPrefix: boolean = true
+) =>
+  isCC ? value : `${addAdaPrefix ? "₳" : ""} ${correctAdaFormatWithSuffix(value)}`;
+
 export const correctAdaFormatWithSuffix = (
   lovelace: number | undefined,
   precision = 2
@@ -275,6 +282,13 @@ export const correctAdaFormatWithSuffix = (
       return (ada / divisors[i]).toFixed(precision) + suffixes[i];
     }
   }
+};
+
+export const getRawAdaValue = (
+  lovelace: number | undefined
+) => {
+  if (!lovelace) return 0;
+  return Math.ceil(lovelace / LOVELACE)
 };
 
 export function getItemFromLocalStorage(key: string) {

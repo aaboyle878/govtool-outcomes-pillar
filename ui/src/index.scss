@@ -66,9 +66,4 @@
 
 .action-votes {
   grid-area: votes;
-
-  @container outcome-container (min-width: 1000px) {
-    position: sticky;
-    top: 96px;
-  }
 }

@@ -10,7 +10,7 @@ export const GovernanceActionNewConstitutionDetailsTabContent = ({
 
   return (
     <Box
-      sx={{ width: "100%", display: "flex", flexDirection: "column", gap: 2.5 }}
+      sx={{ width: "100%", display: "flex", flexDirection: "column", gap: 3 }}
     >
       <GovernanceActionElement
         title={t("outcome.newConstitutionLink")}

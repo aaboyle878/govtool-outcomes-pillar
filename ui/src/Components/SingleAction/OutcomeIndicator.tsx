@@ -1,8 +1,10 @@
 import { Avatar, Box } from "@mui/material";
 import { Typography } from "../Atoms/Typography";
-import CloseIcon from "../../Assets/Icons/CloseIcon";
-import CheckMarkIcon from "../../Assets/Icons/CheckMarkIcon";
 import { errorRed, successGreen } from "../../consts/colors";
+import {
+  IconThumbDown,
+  IconThumbUp,
+} from "@intersect.mbo/intersectmbo.org-icons-set";
 
 type OutcomeIndicatorProps = {
   title: string;
@@ -52,20 +54,22 @@ export const OutcomeIndicator = ({
             alignItems="center"
             justifyContent="center"
             sx={{
-              width: 13,
-              height: 13,
+              width: 20,
+              height: 20,
             }}
           >
-            {passed ? (
-              <CheckMarkIcon width={13} height={13} />
+            {!isDisplayed ? (
+              "-"
+            ) : passed ? (
+              <IconThumbUp fill="#0f5132" />
             ) : (
-              <CloseIcon width={11} height={11} />
+              <IconThumbDown fill="#7f1d1d" />
             )}
           </Box>
           <Typography
             data-testid="voter-type-label"
             sx={{
-              fontWeight: 400,
+              fontWeight: 500,
               fontSize: 13,
               lineHeight: 1.75,
             }}

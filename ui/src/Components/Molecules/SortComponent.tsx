@@ -9,6 +9,7 @@ import {
   RadioGroup,
   FormControlLabel,
   FormControl,
+  IconButton,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import React from "react";
@@ -16,7 +17,10 @@ import { useSearchParams } from "react-router-dom";
 import { GOVERNANCE_ACTION_SORT_OPTIONS } from "../../consts/sort-options";
 import { useTranslation } from "../../contexts/I18nContext";
 import { theme } from "../../theme";
-import { IconCheveronDown } from "@intersect.mbo/intersectmbo.org-icons-set";
+import {
+  IconCheveronDown,
+  IconCheveronUp,
+} from "@intersect.mbo/intersectmbo.org-icons-set";
 
 export default function SortComponent() {
   const [isHovered, setIsHovered] = useState(false);
@@ -79,18 +83,16 @@ export default function SortComponent() {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         sx={{
-          backgroundColor: open ? "secondary.main" : "white",
+          backgroundColor: "neutralWhite",
           border: 1,
           borderColor: "borderGrey",
           borderRadius: 1,
           fontSize: 14,
           fontWeight: 400,
           height: 48,
-          padding: "0 12px",
+          paddingRight: "4px",
+          paddingLeft: "12px",
           cursor: "pointer",
-          ":hover": {
-            backgroundColor: "secondary.main",
-          },
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -108,7 +110,13 @@ export default function SortComponent() {
             {t("outcomesList.sort.title")}
             {sortValue() ? `: ${getDisplayLabel(sortValue())}` : ""}
           </Typography>
-          <IconCheveronDown width={18} height={18} fill="textBlack" />
+          <IconButton>
+            {open ? (
+              <IconCheveronUp width={18} height={18} fill="textBlack" />
+            ) : (
+              <IconCheveronDown width={18} height={18} fill="textBlack" />
+            )}
+          </IconButton>
         </Box>
       </Button>
       <Menu

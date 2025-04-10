@@ -90,7 +90,7 @@ const GovernanceActionsList = () => {
             {isFetchingNextPage ? (
               <CircularProgress size={20} sx={{ mr: 1 }} />
             ) : null}
-            {isFetchingNextPage ? t("loaders.loading") : t("showMore")}
+            {isFetchingNextPage ? t("loaders.loading") : t("outcomesList.showMore")}
           </Button>
         </Box>
       )}
