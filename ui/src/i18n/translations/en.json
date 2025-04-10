@@ -17,7 +17,7 @@
       "fullTitle": "Sort Governance Actions"
     }
   },
-  "common":{
+  "common": {
     "expand": "Expand",
     "collapse": "Collapse"
   },
@@ -97,7 +97,7 @@
       "totalAbstain": "Total Abstain",
       "autoAbstain": "Auto-Abstain",
       "explicit": "Explicit",
-      "ratificationThreshold": "Ratification Threshold"
+      "ratificationThreshold": "Ratification Threshold Stake"
     },
     "ratifiedStatus": {
       "title": "Outcome",

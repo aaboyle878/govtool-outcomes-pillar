@@ -6,6 +6,7 @@ import {
   Divider,
   Fade,
   FormControlLabel,
+  IconButton,
   Menu,
   Typography,
 } from "@mui/material";
@@ -16,7 +17,10 @@ import { GOVERNANCE_ACTION_STATUS_FILTERS } from "../../consts/status-filters";
 import { useSearchParams } from "react-router-dom";
 import { fadedPurple } from "../../consts/colors";
 import { useTranslation } from "../../contexts/I18nContext";
-import { IconCheveronDown } from "@intersect.mbo/intersectmbo.org-icons-set";
+import {
+  IconCheveronDown,
+  IconCheveronUp,
+} from "@intersect.mbo/intersectmbo.org-icons-set";
 
 export default function FiltersComponent() {
   const [isHovered, setIsHovered] = useState(false);
@@ -114,18 +118,15 @@ export default function FiltersComponent() {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         sx={{
-          backgroundColor: open ? "secondary.main" : "white",
+          backgroundColor: "neutralWhite",
           border: 1,
           borderColor: "borderGrey",
           borderRadius: 1,
           fontSize: 14,
           fontWeight: 400,
           height: 48,
-          padding: "0 12px",
+          paddingLeft: "12px",
           cursor: "pointer",
-          ":hover": {
-            backgroundColor: "secondary.main",
-          },
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -169,7 +170,13 @@ export default function FiltersComponent() {
             >
               {t("outcomesList.filters.title")}
             </Typography>
-            <IconCheveronDown width={18} height={18} fill="textBlack" />
+            <IconButton>
+              {open ? (
+                <IconCheveronUp width={18} height={18} fill="textBlack" />
+              ) : (
+                <IconCheveronDown width={18} height={18} fill="textBlack" />
+              )}
+            </IconButton>
           </Box>
         </Box>
       </Button>

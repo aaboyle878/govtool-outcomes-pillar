@@ -14,7 +14,6 @@ import { GOVERNANCE_ACTION_SORT_OPTIONS } from "../../consts/sort-options";
 import { localStorageKeys } from "../../consts/localStorage";
 import ChipWithDelete from "../Atoms/ChipWithDelete";
 
-
 export default function SearchFiltersSortBar() {
   const {
     palette: { textBlack },
@@ -41,7 +40,9 @@ export default function SearchFiltersSortBar() {
     }
 
     if (typeFilters.length === 0 && statusFilters.length === 0) {
-      const savedFilters = localStorage.getItem(localStorageKeys.FILTERS_STORAGE_KEY);
+      const savedFilters = localStorage.getItem(
+        localStorageKeys.FILTERS_STORAGE_KEY
+      );
       if (savedFilters) {
         try {
           const parsedFilters = JSON.parse(savedFilters);
@@ -140,7 +141,7 @@ export default function SearchFiltersSortBar() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        gap: 2,
+        gap: 3,
       }}
     >
       <Box

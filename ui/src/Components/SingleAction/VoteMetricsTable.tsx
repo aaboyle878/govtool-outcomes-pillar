@@ -91,10 +91,24 @@ const VoteMetricsTable = ({
                 px: 2,
               }}
             >
-              <TableCell sx={{ p: "inherit", textAlign: "start" }}>
+              <TableCell
+                sx={{
+                  p: "inherit",
+                  textAlign: "start",
+                  fontWeight: 500,
+                  fontSize: 14,
+                }}
+              >
                 {t("outcome.votes.metric")}
               </TableCell>
-              <TableCell sx={{ p: "inherit", textAlign: "end" }}>
+              <TableCell
+                sx={{
+                  p: "inherit",
+                  textAlign: "end",
+                  fontWeight: 500,
+                  fontSize: 14,
+                }}
+              >
                 {t("outcome.votes.value")} {!isCC && " (₳)"}
               </TableCell>
             </TableRow>
@@ -146,7 +160,7 @@ const VoteMetricsTable = ({
         data-testid={`${title}-expand-button`}
         isVisible={!isCC}
         sx={{
-          my: 2,
+          mt: 2,
         }}
       >
         {expanded ? (
@@ -155,7 +169,7 @@ const VoteMetricsTable = ({
             sx={{ display: "flex", alignItems: "center", gap: 1 }}
           >
             {t("common.collapse")}
-            <IconCheveronUp fontSize="small" fill={primaryBlue} />
+            <IconCheveronUp fontSize="medium" fill={primaryBlue} />
           </Box>
         ) : (
           <Box
@@ -163,7 +177,7 @@ const VoteMetricsTable = ({
             sx={{ display: "flex", alignItems: "center", gap: 1 }}
           >
             {t("common.expand")}
-            <IconCheveronDown fontSize="small" fill={primaryBlue} />
+            <IconCheveronDown fontSize="medium" fill={primaryBlue} />
           </Box>
         )}
       </ExpandButton>

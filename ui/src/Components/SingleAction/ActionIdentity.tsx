@@ -38,7 +38,7 @@ function ActionIdentity({ governanceAction, metadata }: ActionIdentityProps) {
       sx={{
         display: "flex",
         flexDirection: "column",
-        gap: 2.5,
+        gap: 3,
       }}
     >
       <Box

@@ -39,7 +39,10 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
   } = useNetworkMetrics(action);
   const { t } = useTranslation();
   const {
-    palette: { textBlack },
+    palette: {
+      textBlack,
+      badgeColors: { grey },
+    },
   } = theme;
 
   const isSecurityGroup = useCallback(
@@ -237,6 +240,7 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
           sx={{
             fontWeight: 500,
             fontSize: 14,
+            color: grey,
           }}
         >
           {t("outcome.ratifiedStatus.title")}

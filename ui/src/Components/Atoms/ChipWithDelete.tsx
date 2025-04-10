@@ -1,4 +1,4 @@
-import { Chip, ChipProps } from "@mui/material";
+import { Chip, ChipProps, IconButton } from "@mui/material";
 import { IconX } from "@intersect.mbo/intersectmbo.org-icons-set";
 import { primaryBlue } from "../../consts/colors";
 
@@ -40,7 +40,11 @@ const ChipWithDelete = ({
     width: iconSize,
     height: iconSize,
   };
-  const deleteIcon = customDeleteIcon || <IconX style={deleteIconStyle} />;
+  const deleteIcon = customDeleteIcon || (
+    <IconButton>
+      <IconX style={deleteIconStyle} />
+    </IconButton>
+  );
 
   return (
     <Chip
@@ -54,8 +58,9 @@ const ChipWithDelete = ({
         backgroundColor: bgColor,
         borderRadius: 100,
         height: "auto",
-        py: 1,
-        px: 2.25,
+        py: 0.5,
+        pl: 1.5,
+        pr: 2.25,
         "& .MuiChip-label": {
           fontSize: 12,
           fontWeight: 400,

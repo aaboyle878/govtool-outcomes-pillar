@@ -39,7 +39,7 @@ export const GovernanceActionNewCommitteeDetailsTabContent = ({
     }));
 
   return (
-    <Box display="flex" flexDirection="column" gap={2.5}>
+    <Box display="flex" flexDirection="column" gap={3}>
       {membersToBeAdded.length > 0 && (
         <Box
           data-testid="members-to-be-added-to-the-committee"

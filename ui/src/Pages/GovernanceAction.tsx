@@ -308,7 +308,7 @@ function GovernanceAction({ id }: GovernanceActionProps) {
           }}
         >
           {governanceAction && (
-            <Box display="flex" flexDirection="column" gap={2.5}>
+            <Box display="flex" flexDirection="column" gap={3}>
               <Header
                 title={content.title}
                 isGovernanceActionLoading={isGovernanceActionLoading}
