@@ -1,9 +1,10 @@
-import { Box, Icon, Tooltip } from "@mui/material";
+import { Box, Icon } from "@mui/material";
 import { IconInformationCircle } from "@intersect.mbo/intersectmbo.org-icons-set";
 import { MetadataValidationStatus } from "../../types/api";
 import { getMetadataDataMissingStatusTranslation } from "../../lib/getMetadataDataMissingStatusTranslation";
-import { dataMissingErrors } from "../../consts/dataMissingErrors";
 import { Typography } from "../Atoms/Typography";
+import { useTranslation } from "../../contexts/I18nContext";
+import { Tooltip } from "../Atoms/Tooltip";
 
 type GovernanceActionCardHeaderProps = {
   title?: string;
@@ -18,10 +19,12 @@ export const GovernanceActionCardHeader = ({
   isMetadataLoading,
   dataTestId,
 }: GovernanceActionCardHeaderProps) => {
+  const { t } = useTranslation();
+
   const showLoader =
     isMetadataLoading ||
     (!(
-      isDataMissing && getMetadataDataMissingStatusTranslation(isDataMissing)
+      isDataMissing && getMetadataDataMissingStatusTranslation(t, isDataMissing)
     ) &&
       !title);
 
@@ -49,7 +52,7 @@ export const GovernanceActionCardHeader = ({
             color: "gray",
           }}
         >
-          Loading governance action title...
+          {t("loaders.loadingTitle")}
         </Typography>
       ) : (
         <Typography
@@ -66,6 +69,7 @@ export const GovernanceActionCardHeader = ({
         >
           {(isDataMissing &&
             getMetadataDataMissingStatusTranslation(
+              t,
               isDataMissing as MetadataValidationStatus
             )) ||
             title}
@@ -73,33 +77,11 @@ export const GovernanceActionCardHeader = ({
       )}
       {isDataMissing && typeof isDataMissing === "string" && (
         <Tooltip
-          title={
-            <Box sx={{ bgcolor: "rgb(36, 34, 50)", p: 1, borderRadius: 1 }}>
-              <Typography variant="body1" color={"white"}>
-                {getMetadataDataMissingStatusTranslation(
-                  isDataMissing as MetadataValidationStatus
-                )}
-              </Typography>
-              <Typography variant="body2" color={"gray"}>
-                {dataMissingErrors.dataMissingTooltipExplanation}
-              </Typography>
-            </Box>
-          }
-          arrow
-          slotProps={{
-            tooltip: {
-              sx: {
-                backgroundColor: "transparent",
-                p: 0,
-                m: 0,
-              },
-            },
-            arrow: {
-              sx: {
-                color: "rgb(36, 34, 50)",
-              },
-            },
-          }}
+          heading={getMetadataDataMissingStatusTranslation(
+            t,
+            isDataMissing as MetadataValidationStatus
+          )}
+          paragraphOne={t("dataMissingErrors.dataMissingTooltipExplanation")}
         >
           <Icon>
             <IconInformationCircle width={19} height={19} />

@@ -4,6 +4,7 @@ import { Typography } from "../Atoms/Typography";
 import { MetadataValidationStatus } from "../../types/api";
 import { getMetadataDataMissingStatusTranslation } from "../../lib/getMetadataDataMissingStatusTranslation";
 import { useScreenDimension } from "../../hooks/useDimensions";
+import { useTranslation } from "../../contexts/I18nContext";
 
 type BreadcrumbsProps = {
   elementOne: string;
@@ -21,10 +22,11 @@ export const Breadcrumbs = ({
   isDataMissing,
 }: BreadcrumbsProps) => {
   const { isMobile } = useScreenDimension();
+  const { t } = useTranslation();
   const showLoader =
     isMetadataLoading ||
     (!(
-      isDataMissing && getMetadataDataMissingStatusTranslation(isDataMissing)
+      isDataMissing && getMetadataDataMissingStatusTranslation(t, isDataMissing)
     ) &&
       !elementTwo);
 
@@ -60,7 +62,12 @@ export const Breadcrumbs = ({
         orientation="vertical"
         flexItem
         color="textBlack"
-        sx={{ margin: "0 12px" }}
+        sx={{
+          margin: "0 12px",
+          height: "15px",
+          width: "0.5px",
+          alignSelf: "center",
+        }}
       />
       {showLoader ? (
         <Skeleton variant="rounded" width={200} height={15} />
@@ -77,6 +84,7 @@ export const Breadcrumbs = ({
         >
           {(isDataMissing &&
             getMetadataDataMissingStatusTranslation(
+              t,
               isDataMissing as MetadataValidationStatus
             )) ||
             elementTwo}

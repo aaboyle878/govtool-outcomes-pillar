@@ -1,5 +1,5 @@
 import { IconInformationCircle } from "@intersect.mbo/intersectmbo.org-icons-set";
-import { Box, Icon, Tooltip } from "@mui/material";
+import { Box, Icon } from "@mui/material";
 import { GovernanceAction } from "../../types/api";
 import {
   encodeCIP129Identifier,
@@ -8,6 +8,8 @@ import {
 } from "../../lib/utils";
 import { Typography } from "../Atoms/Typography";
 import { useScreenDimension } from "../../hooks/useDimensions";
+import { useTranslation } from "../../contexts/I18nContext";
+import { Tooltip } from "../Atoms/Tooltip";
 
 interface GovActionDatesInfoProps {
   action: GovernanceAction;
@@ -19,6 +21,8 @@ const GovActionDatesInfo = ({
   isCard = false,
 }: GovActionDatesInfoProps) => {
   const { isMobile } = useScreenDimension();
+  const { t } = useTranslation();
+
   const proposalStatus = getProposalStatus(action.status);
 
   const isExpired = ["Expired", "Not Ratified", "Enacted"].includes(
@@ -34,31 +38,8 @@ const GovActionDatesInfo = ({
   const renderSubmissionInfoTooltip = () => {
     return (
       <Tooltip
-        title={
-          <Box sx={{ bgcolor: "rgb(36, 34, 50)", p: 1, borderRadius: 1 }}>
-            <Typography variant="body1" color={"white"}>
-              Submission Date
-            </Typography>
-            <Typography variant="body2" color={"gray"}>
-              The date when the governance action was submitted on-chain.
-            </Typography>
-          </Box>
-        }
-        arrow
-        slotProps={{
-          tooltip: {
-            sx: {
-              backgroundColor: "transparent",
-              p: 0,
-              m: 0,
-            },
-          },
-          arrow: {
-            sx: {
-              color: "rgb(36, 34, 50)",
-            },
-          },
-        }}
+        heading={t("outcome.dates.submission.title")}
+        paragraphOne={t("outcome.dates.submission.description")}
       >
         <Icon>
           <IconInformationCircle width={19} height={19} />
@@ -70,35 +51,9 @@ const GovActionDatesInfo = ({
   const renderExpirationInfoTooltip = () => {
     return (
       <Tooltip
-        title={
-          <Box sx={{ bgcolor: "rgb(36, 34, 50)", p: 1, borderRadius: 1 }}>
-            <Typography variant="body1" color={"white"}>
-              {isExpired ? "Expired Date" : "Expiry Date"}
-            </Typography>
-            <Typography variant="body2" color={"gray"}>
-              The date when the governance action will expiry if it doesn&apos;t
-              reach ratification thresholds.
-              <br /> IMPORTANT: If the governance action is ratified before the
-              expiry date it will be considered ratified and it will not be
-              available to vote on afterwards.
-            </Typography>
-          </Box>
-        }
-        arrow
-        slotProps={{
-          tooltip: {
-            sx: {
-              backgroundColor: "transparent",
-              p: 0,
-              m: 0,
-            },
-          },
-          arrow: {
-            sx: {
-              color: "rgb(36, 34, 50)",
-            },
-          },
-        }}
+        heading={t("outcome.dates.expired.title")}
+        paragraphOne={t("outcome.dates.expired.paragraphOne")}
+        paragraphTwo={t("outcome.dates.expired.paragraphTwo")}
       >
         <Icon>
           <IconInformationCircle width={19} height={19} />
@@ -127,7 +82,7 @@ const GovActionDatesInfo = ({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          gap: 1,
+          gap: 0.5,
           padding: "6px 0",
           borderTopLeftRadius: "inherit",
           borderTopRightRadius: "inherit",
@@ -135,7 +90,7 @@ const GovActionDatesInfo = ({
         }}
       >
         <Typography variant="caption" sx={{ fontSize: 12 }}>
-          Submitted:{" "}
+          {t("outcome.dates.submitted")}{" "}
           <Typography component="span" fontWeight={600} variant="caption">
             {formatTimeStamp(
               action.time,
@@ -143,16 +98,18 @@ const GovActionDatesInfo = ({
             )}
           </Typography>
         </Typography>
-        {action.epoch_no && (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            flexWrap: "nowrap",
+          }}
+        >
           <Typography variant="caption">
-            (Epoch{" "}
-            <Typography component="span" variant="caption">
-              {action.epoch_no}
-            </Typography>
-            )
+            ({t("outcome.epoch")} {action.epoch_no})
           </Typography>
-        )}
-        {renderSubmissionInfoTooltip()}
+          {renderSubmissionInfoTooltip()}
+        </Box>
       </Box>
       <Box
         data-testid={`${idCIP129}-${isExpired ? "Expired" : "Expires"}-date`}
@@ -160,14 +117,17 @@ const GovActionDatesInfo = ({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          gap: 1,
+          gap: 0.5,
           padding: "6px 0",
           borderBottomLeftRadius: "inherit",
           borderBottomRightRadius: "inherit",
+          flexWrap: "wrap",
         }}
       >
         <Typography variant="caption">
-          {isExpired ? "Expired: " : "Expires: "}
+          {isExpired
+            ? t("outcome.dates.expired.label")
+            : t("outcome.dates.expires")}{" "}
           <Typography component="span" fontWeight={600} variant="caption">
             {action.status.expired_epoch !== null
               ? formatTimeStamp(
@@ -180,16 +140,22 @@ const GovActionDatesInfo = ({
                 )}
           </Typography>
         </Typography>
-        <Typography variant="caption">
-          (Epoch{" "}
-          <Typography component="span" variant="caption">
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            flexWrap: "nowrap",
+          }}
+        >
+          <Typography variant="caption">
+            ({t("outcome.epoch")}{" "}
             {action.status.expired_epoch !== null
               ? action.status.expired_epoch
               : action.expiration}
+            )
           </Typography>
-          )
-        </Typography>
-        {renderExpirationInfoTooltip()}
+          {renderExpirationInfoTooltip()}
+        </Box>
       </Box>
     </Box>
   );

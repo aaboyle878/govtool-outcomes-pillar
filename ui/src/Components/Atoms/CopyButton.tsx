@@ -1,16 +1,20 @@
-import { IconButton, Tooltip } from "@mui/material";
+import { IconButton } from "@mui/material";
 import CopyIcon from "../../Assets/Icons/CopyIcon";
 import { useSnackbar } from "../../contexts/Snackbar";
+import { Tooltip } from "./Tooltip";
+import { useTranslation } from "../../contexts/I18nContext";
 
 function CopyButton({ text }: { text: string }) {
   const { addSuccessAlert } = useSnackbar();
+  const { t } = useTranslation();
+
   const handleCopyClick = () => {
     navigator.clipboard.writeText(text);
-    addSuccessAlert("Copied to clipboard!");
+    addSuccessAlert(t("copiedToClipboard"));
   };
 
   return (
-    <Tooltip title="Copy to clipboard">
+    <Tooltip paragraphOne={t("copyToClipboard")}>
       <IconButton
         data-testid="copy-button"
         onClick={handleCopyClick}

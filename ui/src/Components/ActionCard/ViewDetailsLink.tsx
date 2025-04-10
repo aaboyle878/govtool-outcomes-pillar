@@ -1,10 +1,12 @@
 import { NavLink } from "react-router-dom";
 import { Button } from "../Atoms/Button";
+import { useTranslation } from "../../contexts/I18nContext";
 
 type ViewDetailsLinkProps = {
   id: string;
 };
 function ViewDetailsLink({ id }: ViewDetailsLinkProps) {
+  const { t } = useTranslation();
   return (
     <NavLink
       data-testid={`${id}-view-details`}
@@ -26,7 +28,7 @@ function ViewDetailsLink({ id }: ViewDetailsLinkProps) {
         }}
         aria-label={`${id}-view-details`}
       >
-        View Details
+        {t("outcome.viewDetails")}
       </Button>
     </NavLink>
   );

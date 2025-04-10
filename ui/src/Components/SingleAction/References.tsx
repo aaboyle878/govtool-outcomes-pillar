@@ -2,6 +2,7 @@ import { Box, Link } from "@mui/material";
 import { Typography } from "../Atoms/Typography";
 import { openInNewTab } from "../../lib/openInNewTab";
 import { useAppContext } from "../../contexts/AppContext";
+import { useTranslation } from "../../contexts/I18nContext";
 interface Reference {
   "@type": string;
   label: string;
@@ -12,6 +13,8 @@ type ReferencesProps = {
 };
 function References({ links }: ReferencesProps) {
   const { ipfsGateway } = useAppContext();
+  const { t } = useTranslation();
+
   return (
     <Box>
       <Typography
@@ -19,10 +22,9 @@ function References({ links }: ReferencesProps) {
           fontSize: 14,
           color: "textGray",
           fontWeight: 600,
-          marginBottom: 0.5,
         }}
       >
-        Supporting Links
+        {t("outcome.supportingLinks")}
       </Typography>
       <Box display="flex" flexDirection="column" gap={2}>
         {links &&

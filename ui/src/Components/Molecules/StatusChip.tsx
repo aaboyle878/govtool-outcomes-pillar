@@ -8,7 +8,7 @@ type StatusChipProps = {
 };
 
 const bgColorMap: Record<StatusChipProps["status"], string> = {
-  Live: successGreen.c100,
+  "In Progress": successGreen.c100,
   Ratified: successGreen.c100,
   Enacted: successGreen.c100,
   Expired: errorRed.c100,

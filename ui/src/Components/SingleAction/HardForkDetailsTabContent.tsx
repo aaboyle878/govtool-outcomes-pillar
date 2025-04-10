@@ -3,6 +3,7 @@ import { Typography } from "../Atoms/Typography";
 import { GovernanceAction } from "../../types/api";
 import { useAppContext } from "../../contexts/AppContext";
 import CopyButton from "../Atoms/CopyButton";
+import { useTranslation } from "../../contexts/I18nContext";
 
 export const HardForkDetailsTabContent = ({
   description,
@@ -11,9 +12,10 @@ export const HardForkDetailsTabContent = ({
   prevGovActionId: string | null;
 }) => {
   const { epochParams } = useAppContext();
+  const { t } = useTranslation();
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
       <Box
         data-testid="hard-fork-current-version"
         sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}
@@ -26,7 +28,7 @@ export const HardForkDetailsTabContent = ({
             fontSize: 14,
           }}
         >
-          Current version
+          {t("outcome.currentVersion")}
         </Typography>
         <Typography variant="body1">
           {epochParams
@@ -46,7 +48,7 @@ export const HardForkDetailsTabContent = ({
             fontSize: 14,
           }}
         >
-          Proposed version
+          {t("outcome.proposedVersion")}
         </Typography>
         <Typography variant="body1">
           {description ? `${description.major}.${description.minor}` : "-"}
@@ -64,7 +66,7 @@ export const HardForkDetailsTabContent = ({
             fontSize: 14,
           }}
         >
-          Previous Governance Action ID
+          {t("outcome.prevGovernanceActionId")}
         </Typography>
         {prevGovActionId ? (
           <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>

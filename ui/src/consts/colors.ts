@@ -8,7 +8,8 @@ type ColorKey =
   | "c600"
   | "c700"
   | "c800"
-  | "c900";
+  | "c900"
+  | "c1000";
 
 type ColorType = Record<ColorKey, string>;
 
@@ -23,9 +24,10 @@ export const primaryBlue: ColorType = {
   c700: "#001A57",
   c800: "#000D2B",
   c900: "#000511",
+  c1000: "#B8CDFF"
 };
 
-export const orange: ColorType = {
+export const orange: Omit<ColorType, "c1000"> = {
   c50: "#FFF0E7",
   c100: "#FFE0CE",
   c200: "#FFC19D",
@@ -38,7 +40,7 @@ export const orange: ColorType = {
   c900: "#1A0A01",
 };
 
-export const cyan: ColorType = {
+export const cyan: Omit<ColorType, "c1000"> = {
   c50: "#E9F5F8",
   c100: "#D2EAF0",
   c200: "#A4D4E0",
@@ -51,7 +53,7 @@ export const cyan: ColorType = {
   c900: "#030F12",
 };
 
-export const fadedPurple: ColorType = {
+export const fadedPurple: Omit<ColorType, "c1000"> = {
   c50: "#F5F5F8",
   c100: "#EAE9F0",
   c200: "#D5D3E1",
@@ -64,7 +66,7 @@ export const fadedPurple: ColorType = {
   c900: "#0F0F12",
 };
 
-export const gray: ColorType = {
+export const gray: Omit<ColorType, "c1000"> = {
   c50: "#F4F4F4",
   c100: "#E8E9E8",
   c200: "#D2D3D2",
@@ -77,7 +79,7 @@ export const gray: ColorType = {
   c900: "#000000",
 };
 
-export const successGreen: ColorType = {
+export const successGreen: Omit<ColorType, "c1000"> = {
   c50: "#F0F9EE",
   c100: "#E0F2DC",
   c200: "#C0E4BA",
@@ -90,7 +92,7 @@ export const successGreen: ColorType = {
   c900: "#0A1308",
 };
 
-export const progressYellow: ColorType = {
+export const progressYellow: Omit<ColorType, "c1000"> = {
   c50: "#FCF6EA",
   c100: "#F8ECD4",
   c200: "#F2D9A9",
@@ -103,7 +105,7 @@ export const progressYellow: ColorType = {
   c900: "#161004",
 };
 
-export const errorRed: ColorType = {
+export const errorRed: Omit<ColorType, "c1000"> = {
   c50: "#FBEBEB",
   c100: "#F6D5D5",
   c200: "#EDACAC",

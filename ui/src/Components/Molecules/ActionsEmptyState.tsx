@@ -1,6 +1,8 @@
 import { Card, Typography } from "@mui/material";
+import { useTranslation } from "../../contexts/I18nContext";
 
 export const ActionsEmptyState = () => {
+  const { t } = useTranslation();
   return (
     <Card
       variant="outlined"
@@ -16,11 +18,10 @@ export const ActionsEmptyState = () => {
       }}
     >
       <Typography fontSize={22} fontWeight={500}>
-        No governance actions found
+        {t("outcomesList.noResults.title")}
       </Typography>
       <Typography fontWeight={400}>
-        Governance actions are searchable by their ID both CIP-105 (legacy) and
-        CIP-129 formats, title and abstract contents.
+        {t("outcomesList.noResults.description")}
       </Typography>
     </Card>
   );

@@ -9,18 +9,30 @@ import {
   RadioGroup,
   FormControlLabel,
   FormControl,
+  IconButton,
 } from "@mui/material";
-import { theme } from "../../theme";
 import { useEffect, useState } from "react";
-import UpDownArrowsIcon from "../../Assets/Icons/UpdownArrows";
 import React from "react";
 import { useSearchParams } from "react-router-dom";
 import { GOVERNANCE_ACTION_SORT_OPTIONS } from "../../consts/sort-options";
+import { useTranslation } from "../../contexts/I18nContext";
+import { theme } from "../../theme";
+import {
+  IconCheveronDown,
+  IconCheveronUp,
+} from "@intersect.mbo/intersectmbo.org-icons-set";
 
 export default function SortComponent() {
   const [isHovered, setIsHovered] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [sortParams, setSortParams] = useSearchParams();
+  const { t } = useTranslation();
+
+  const {
+    palette: {
+      badgeColors: { grey },
+    },
+  } = theme;
 
   useEffect(() => {
     const currentSort = sortParams.get("sort");
@@ -71,34 +83,41 @@ export default function SortComponent() {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         sx={{
-          backgroundColor: open ? "secondary.main" : "neutralWhite",
+          backgroundColor: "neutralWhite",
           border: 1,
-          borderColor: open ? "secondary.main" : "secondaryBlue",
-          borderRadius: 10,
+          borderColor: "borderGrey",
+          borderRadius: 1,
           fontSize: 14,
-          fontWeight: 500,
+          fontWeight: 400,
           height: 48,
-          padding: "0 16px",
+          paddingRight: "4px",
+          paddingLeft: "12px",
           cursor: "pointer",
-          ":hover": {
-            backgroundColor: "secondary.main",
-            borderColor: "secondary.main",
-          },
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={handleShowOptions}
       >
-        <Typography
-          sx={{
-            color: isHovered || open ? "neutralWhite" : "primaryBlue",
-            fontWeight: 500,
-            paddingX: 0.5,
-            whiteSpace: "nowrap",
-          }}
-        >
-          Sort{sortValue() ? `: ${getDisplayLabel(sortValue())}` : ""}
-        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.25 }}>
+          <Typography
+            sx={{
+              color: isHovered || open ? "textBlack" : grey,
+              fontWeight: 400,
+              paddingX: 0.5,
+              whiteSpace: "nowrap",
+            }}
+          >
+            {t("outcomesList.sort.title")}
+            {sortValue() ? `: ${getDisplayLabel(sortValue())}` : ""}
+          </Typography>
+          <IconButton>
+            {open ? (
+              <IconCheveronUp width={18} height={18} fill="textBlack" />
+            ) : (
+              <IconCheveronDown width={18} height={18} fill="textBlack" />
+            )}
+          </IconButton>
+        </Box>
       </Button>
       <Menu
         id="sort-menu"
@@ -119,7 +138,7 @@ export default function SortComponent() {
             <Typography
               sx={{ fontSize: 14, fontWeight: 500, color: "#9792B5" }}
             >
-              Sort Governance Actions
+              {t("outcomesList.sort.fullTitle")}
             </Typography>
           </Box>
           <Divider sx={{ marginTop: 1, backgroundColor: "neutralGray" }} />

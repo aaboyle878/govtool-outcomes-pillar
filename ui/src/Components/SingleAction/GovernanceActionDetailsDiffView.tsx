@@ -4,6 +4,7 @@ import "react-diff-view/style/index.css";
 import { Box, Typography } from "@mui/material";
 
 import "./react-diff-view.overrides.css";
+import { useTranslation } from "../../contexts/I18nContext";
 
 type Props = {
   oldJson?: JSON | Record<string, unknown> | null;
@@ -14,6 +15,8 @@ export const GovernanceActionDetailsDiffView = ({
   oldJson,
   newJson,
 }: Props) => {
+  const { t } = useTranslation();
+
   const diffText = formatLines(
     diffLines(
       JSON.stringify(oldJson, null, 2),
@@ -44,7 +47,7 @@ export const GovernanceActionDetailsDiffView = ({
             fontWeight: 600,
           }}
         >
-          Existing
+          {t("outcome.existing")}
         </Typography>
         <Typography
           sx={{
@@ -54,7 +57,7 @@ export const GovernanceActionDetailsDiffView = ({
             fontWeight: 600,
           }}
         >
-          Proposed
+          {t("outcome.proposed")}
         </Typography>
       </Box>
       <Diff

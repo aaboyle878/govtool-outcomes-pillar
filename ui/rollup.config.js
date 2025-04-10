@@ -7,7 +7,7 @@ import postcss from "rollup-plugin-postcss";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import dts from "rollup-plugin-dts";
 import babel from "@rollup/plugin-babel";
-import image from '@rollup/plugin-image';
+import image from "@rollup/plugin-image";
 
 const packageJson = require("./package.json");
 
@@ -55,8 +55,14 @@ export default [
       typescript({
         tsconfig: "./tsconfig.json",
       }),
+      postcss({
+        modules: false,
+        extract: false,
+        inject: true,
+        use: ["sass"],
+        minimize: true,
+      }),
       terser(),
-      postcss({ extract: true, inject: true, use: "sass" }),
       json(),
     ],
   },

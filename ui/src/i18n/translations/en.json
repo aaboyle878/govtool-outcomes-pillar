@@ -1,0 +1,151 @@
+{
+  "outcomesList": {
+    "title": "Outcomes",
+    "noResults": {
+      "title": "No governance actions found",
+      "description": "Governance actions are searchable by their ID both CIP-105 (legacy) and CIP-129 formats, title and abstract contents."
+    },
+    "showMore": "Show More Actions",
+    "searchPlaceholder": "Search Action...",
+    "clearSearchInput": "Clear search input",
+    "filters": {
+      "title": "Filters",
+      "clear": "Clear"
+    },
+    "sort": {
+      "title": "Sort",
+      "fullTitle": "Sort Governance Actions"
+    }
+  },
+  "common": {
+    "expand": "Expand",
+    "collapse": "Collapse"
+  },
+  "outcome": {
+    "label": "Outcome",
+    "abstract": "Abstract",
+    "motivation": "Motivation",
+    "rationale": "Rationale",
+    "existing": "Existing",
+    "proposed": "Proposed",
+    "currentVersion": "Current version",
+    "proposedVersion": "Proposed version",
+    "prevGovernanceActionId": "Previous Governance Action ID",
+    "membersToBeAddedToCommittee": "Members to be added to the Committee",
+    "membersToBeRemovedToCommittee": "Members to be removed from the Committee",
+    "changeToTermsOfExistingMembers": "Change to terms of existing members",
+    "governanceActionType": "Governance Action Type",
+    "governanceActionId105": "Governance Action ID",
+    "governanceActionId129": "(CIP-129) Governance Action ID",
+    "metadataLink": "Metadata anchor link",
+    "metadataHash": "Metadata anchor hash",
+    "newConstitutionLink": "New constitution link",
+    "newConstitutionHash": "New constitution hash",
+    "newConstitutionScriptHash": "New constitution script hash",
+    "epoch": "Epoch",
+    "authors": "Author(s)",
+    "toEpoch": "To Epoch",
+    "fromEpoch": "from Epoch",
+    "newThreshold": "New threshold value",
+    "supportingLinks": "Supporting links",
+    "treasury": {
+      "receivingAddress": "Receiving Address:",
+      "amount": "Amount:"
+    },
+    "status": {
+      "title": "Status",
+      "fullTitle": "Governance Action Status",
+      "inProgress": "In Progress",
+      "ratified": "Ratified",
+      "enacted": "Enacted",
+      "expired": "Expired",
+      "dropped": "Not Ratified"
+    },
+    "dates": {
+      "submission": {
+        "title": "Submission Date",
+        "description": "The date when the governance action was submitted on-chain."
+      },
+      "expired": {
+        "title": "Expiration Date",
+        "label": "Expired:",
+        "paragraphOne": "The date when the governance action will expiry if it doesn't reach ratification thresholds.",
+        "paragraphTwo": "IMPORTANT: If the governance action is ratified before the expiry date it will be considered ratified and it will not be available to vote on afterwards."
+      },
+      "expiry": "Expiry Date",
+      "expires": "Expires:",
+      "submitted": "Submitted:"
+    },
+    "votes": {
+      "title": "Votes Submitted for this Governance Action:",
+      "dReps": "DReps",
+      "sPos": "SPOs",
+      "cCommitteeFull": "Constitutional Committee",
+      "cCommitteeShort": "CC",
+      "yes": "Yes",
+      "no": "No",
+      "noConfidence": "No Confidence",
+      "notVoted": "Not Voted",
+      "abstainVotes": "Abstain Votes",
+      "votingNotAvailable": "do not vote",
+      "onThisTypeOfAction": "on this type of action",
+      "totalStake": "Total Votes",
+      "numberOfCCs": "Number of Active CCs",
+      "metric": "Metric",
+      "value": "Value",
+      "totalActiveStake": "Total Active Stake",
+      "totalAbstain": "Total Abstain",
+      "autoAbstain": "Auto-Abstain",
+      "explicit": "Explicit",
+      "ratificationThreshold": "Ratification Threshold Stake"
+    },
+    "ratifiedStatus": {
+      "title": "Outcome",
+      "valueRatified": "Ratified",
+      "valueNotRatified": "Not Ratified"
+    },
+    "tabs": {
+      "reasoning": "Reasoning",
+      "parameters": "Parameters",
+      "details": "Details"
+    },
+    "viewDetails": "View Details",
+    "seeDiscussion": "See discussion"
+  },
+  "proposalDiscussion": {
+    "title": "Discussion forum",
+    "notFound": "No discussion for this action in GovTool.",
+    "proposedOn": "Proposed on:"
+  },
+  "tooltips": {
+    "shareAction": "Share governance action"
+  },
+  "copiedToClipboard": "Copied to clipboard!",
+  "copyToClipboard": "Copy to clipboard",
+  "learnMore": "Learn More",
+  "dataMissingErrors": {
+    "dataMissingTooltipExplanation": "Please click “View Details” for more information.",
+    "dataMissing": "Data Missing",
+    "notVerifiable": "Data Not Verifiable",
+    "incorrectFormat": "Data Formatted Incorrectly"
+  },
+  "errors": {
+    "gAMetadata": {
+      "description": {
+        "notVerifiable": "GovTool uses external sources for Governance Action data, and these sources are maintained by the proposers of the Actions. This error means that the data stored by the Proposer does not match the data when the Governance Action was originally posted.",
+        "dataMissing": "GovTool uses external sources for Governance Action data, and these sources are maintained by the proposers of the Actions. This error means that GovTool cannot locate the data on the URL specified when the Governance Action was originally posted.",
+        "incorrectFormat": "GovTool uses external sources for Governance Action data, and these sources are maintained by the proposers of the Actions. This error means that the data stored by the Proposer does not match the data format as defined by the Cardano community."
+      },
+      "message": {
+        "notVerifiable": "The data that was originally used when this Governance Action was created has changed.",
+        "dataMissing": "The data that was originally used when this Governance Action was created has not been found.",
+        "incorrectFormat": "The data that was originally used when this Governance Action was created has been formatted incorrectly."
+      }
+    }
+  },
+  "loaders": {
+    "loading": "Loading...",
+    "loadingTitle": "Loading governance action title...",
+    "loadingAbstract": "Loading governance action abstract, Loading governance action abstract, Loading governance action abstract..."
+  }
+}

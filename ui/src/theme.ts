@@ -15,7 +15,7 @@ export const theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         ":root": {
-          fonfFamily: "Poppins, Arial",
+          fontFamily: "Poppins, Arial",
         },
       },
     },
@@ -147,6 +147,7 @@ export const theme = createTheme({
     specialCyanBorder: "#77BFD1",
     textBlack: "#242232",
     textGray: "#525252",
+    borderGrey: "#BFC8D961",
     badgeColors: {
       primary: "#0034AE",
       error: "#CC0000",
@@ -174,3 +175,5 @@ theme.shadows[4] =
 theme.shadows[5] =
   "0px 4px 4px 0px rgba(0, 51, 173, 0.08), 0px 8px 20px 6px rgba(0, 51, 173, 0.15)";
 theme.shadows[6] = "rgba(47, 98, 220, 0.2) 2px 2px 20px 0px";
+theme.shadows[7] = 
+  "0px 10px 10px -5px rgba(33, 42, 61, 0.08)";

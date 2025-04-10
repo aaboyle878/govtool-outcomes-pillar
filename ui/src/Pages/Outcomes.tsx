@@ -4,17 +4,20 @@ import GovernanceActionsList from "../Components/Molecules/GovernanceActionsList
 import { useAppContext } from "../contexts/AppContext";
 import { Typography } from "../Components/Atoms/Typography";
 import { useScreenDimension } from "../hooks/useDimensions";
+import { useTranslation } from "../contexts/I18nContext";
 
 export default function Outcomes() {
   const { walletAPI } = useAppContext();
   const { isMobile } = useScreenDimension();
+  const { t } = useTranslation();
 
   return (
     <Box
       component="section"
-      display={"flex"}
-      flexDirection={"column"}
+      display="flex"
+      flexDirection="column"
       flexGrow={1}
+      className="outcomes-container"
     >
       {!walletAPI?.isEnabled && (
         <Typography
@@ -22,11 +25,11 @@ export default function Outcomes() {
           variant={isMobile ? "title1" : "headline3"}
           component="h1"
         >
-          Outcomes
+          {t("outcomesList.title")}
         </Typography>
       )}
       <SearchFiltersSortBar />
-      <Box marginTop={4}>
+      <Box marginTop={3}>
         <GovernanceActionsList />
       </Box>
     </Box>

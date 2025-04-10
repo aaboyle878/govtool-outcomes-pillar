@@ -3,6 +3,7 @@ import { GovernanceAction } from "../../types/api";
 import { encodeCIP129Identifier } from "../../lib/utils";
 import { Typography } from "../Atoms/Typography";
 import CopyButton from "../Atoms/CopyButton";
+import { useTranslation } from "../../contexts/I18nContext";
 
 type CCMember = {
   expirationEpoch: number;
@@ -14,6 +15,8 @@ type CCMember = {
 export const GovernanceActionNewCommitteeDetailsTabContent = ({
   description,
 }: Pick<GovernanceAction, "description">) => {
+  const { t } = useTranslation();
+
   const membersToBeAdded = ((description?.members as CCMember[]) || [])
     .filter((member) => member.newExpirationEpoch === undefined)
     .map((member) => ({
@@ -36,7 +39,7 @@ export const GovernanceActionNewCommitteeDetailsTabContent = ({
     }));
 
   return (
-    <Box display="flex" flexDirection="column" gap={2.5}>
+    <Box display="flex" flexDirection="column" gap={3}>
       {membersToBeAdded.length > 0 && (
         <Box
           data-testid="members-to-be-added-to-the-committee"
@@ -58,7 +61,7 @@ export const GovernanceActionNewCommitteeDetailsTabContent = ({
               whiteSpace: "nowrap",
             }}
           >
-            Members to be added to the Committee
+            {t("outcome.membersToBeAddedToCommittee")}
           </Typography>
           <Box display="flex" flexDirection="column">
             {membersToBeAdded.map(({ cip129Identifier }) => (
@@ -110,7 +113,7 @@ export const GovernanceActionNewCommitteeDetailsTabContent = ({
               whiteSpace: "nowrap",
             }}
           >
-            Members to be removed from the Committee
+            {t("outcome.membersToBeRemovedToCommittee")}
           </Typography>
           <Box display="flex" flexDirection="column">
             {(description?.membersToBeRemoved as string[]).map((hash) => (
@@ -171,7 +174,7 @@ export const GovernanceActionNewCommitteeDetailsTabContent = ({
               whiteSpace: "nowrap",
             }}
           >
-            Change to terms of existing members
+            {t("outcome.changeToTermsOfExistingMembers")}
           </Typography>
           {membersToBeUpdated.map(
             ({ cip129Identifier, newExpirationEpoch, expirationEpoch }) => (
@@ -208,9 +211,9 @@ export const GovernanceActionNewCommitteeDetailsTabContent = ({
                     color: "textGray",
                   }}
                 >
-                  {`To epoch ${
-                    newExpirationEpoch ? newExpirationEpoch : "-"
-                  } from epoch ${expirationEpoch ? expirationEpoch : "-"}`}
+                  {`${t("outcome.toEpoch")} ${newExpirationEpoch || "-"} ${t(
+                    "outcome.fromEpoch"
+                  )} ${expirationEpoch || "-"}`}
                 </Typography>
               </Box>
             )
@@ -238,7 +241,7 @@ export const GovernanceActionNewCommitteeDetailsTabContent = ({
               whiteSpace: "nowrap",
             }}
           >
-            New threshold value
+            {t("outcome.newThreshold")}
           </Typography>
           <Typography
             data-testid="new-threshold-value"
