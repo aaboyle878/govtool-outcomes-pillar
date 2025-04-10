@@ -125,6 +125,7 @@ export default function FiltersComponent() {
           fontSize: 14,
           fontWeight: 400,
           height: 48,
+          paddingRight: "4px",
           paddingLeft: "12px",
           cursor: "pointer",
         }}

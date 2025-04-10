@@ -41,7 +41,7 @@ const ChipWithDelete = ({
     height: iconSize,
   };
   const deleteIcon = customDeleteIcon || (
-    <IconButton>
+    <IconButton sx={{ padding: "4px" }}>
       <IconX style={deleteIconStyle} />
     </IconButton>
   );
@@ -58,8 +58,8 @@ const ChipWithDelete = ({
         backgroundColor: bgColor,
         borderRadius: 100,
         height: "auto",
-        py: 0.5,
-        pl: 1.5,
+        py: 0.75,
+        pl: 1.75,
         pr: 2.25,
         "& .MuiChip-label": {
           fontSize: 12,

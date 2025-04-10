@@ -29,7 +29,7 @@ export default function Outcomes() {
         </Typography>
       )}
       <SearchFiltersSortBar />
-      <Box marginTop={4}>
+      <Box marginTop={3}>
         <GovernanceActionsList />
       </Box>
     </Box>
