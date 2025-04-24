@@ -21,6 +21,7 @@ declare module "@mui/material/styles" {
     neutralGray: string;
     orangeDark: string;
     neutralWhite: string;
+    midRed:string;
     positiveGreen: string;
     primaryBlue: string;
     secondaryBlue: string;
@@ -37,6 +38,7 @@ declare module "@mui/material/styles" {
       errorLight: string;
       secondary: string;
       lightPurple: string;
+      darkPurple: string
       success_text: string;
       success: string;
       grey: string;
@@ -60,6 +62,7 @@ declare module "@mui/material/styles" {
     neutralGray?: string;
     orangeDark?: string;
     neutralWhite?: string;
+    midRed: string;
     positiveGreen?: string;
     primaryBlue?: string;
     secondaryBlue?: string;
@@ -77,6 +80,7 @@ declare module "@mui/material/styles" {
       errorLight: string;
       secondary: string;
       lightPurple: string;
+      darkPurple: string;
       success_text: string;
       success: string;
       grey: string;

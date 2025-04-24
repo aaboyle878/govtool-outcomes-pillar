@@ -1,9 +1,8 @@
 import { Box, IconButton, Link } from "@mui/material";
 import { IconExternalLink } from "@intersect.mbo/intersectmbo.org-icons-set";
-import { openInNewTab } from "../../lib/openInNewTab";
-import { useAppContext } from "../../contexts/AppContext";
 import { Typography } from "../Atoms/Typography";
 import CopyButton from "../Atoms/CopyButton";
+import { useModal } from "../../contexts/modal";
 
 interface GovernanceActionElementProps {
   title: string;
@@ -20,7 +19,7 @@ export default function GovernanceActionElement({
   isCopyable = false,
   dataTestId,
 }: GovernanceActionElementProps) {
-  const { ipfsGateway } = useAppContext();
+  const { openModal } = useModal();
   if (!content) return;
 
   const contentTypographyStyles = {
@@ -53,7 +52,14 @@ export default function GovernanceActionElement({
     if (type === "link") {
       return (
         <Link
-          onClick={() => openInNewTab(content, ipfsGateway)}
+          onClick={() => {
+            openModal({
+              type: "externalLink",
+              state: {
+                externalLink: content,
+              },
+            });
+          }}
           sx={{ ...contentContainerStyles, cursor: "pointer" }}
           style={{ textDecoration: "none" }}
         >

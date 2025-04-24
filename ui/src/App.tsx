@@ -6,6 +6,7 @@ import { setAxiosBaseURL } from "./services/axiosInstance";
 import GlobalWrapper from "./Components/GlobalWrapper";
 import { AppContextProvider } from "./contexts/AppContext";
 import { I18nProvider } from "./contexts/I18nContext";
+import { ModalProvider } from "./contexts/modal";
 
 export type AppProps = {
   apiUrl?: string;
@@ -32,7 +33,9 @@ function App({ apiUrl, ipfsGateway, walletAPI, i18n }: AppProps) {
           <AppContextProvider ipfsGateway={ipfsGateway} walletAPI={walletAPI}>
             <SnackbarProvider>
               <I18nProvider i18n={i18n}>
-                <GlobalWrapper />
+                <ModalProvider>
+                  <GlobalWrapper />
+                </ModalProvider>
               </I18nProvider>
             </SnackbarProvider>
           </AppContextProvider>
