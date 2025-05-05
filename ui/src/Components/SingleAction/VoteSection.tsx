@@ -8,7 +8,7 @@ import { useTranslation } from "../../contexts/I18nContext";
 import VoteMetricsTable from "./VoteMetricsTable";
 
 const {
-  palette: { badgeColors },
+  palette: { badgeColors, midRed },
 } = theme;
 
 export type VoteMetric = {
@@ -60,9 +60,9 @@ const ProgressContainer = styled(Box)({
 const StyledLinearProgress = styled(LinearProgress)({
   height: "100%",
   borderRadius: 10,
-  backgroundColor: errorRed.c100,
+  backgroundColor: midRed,
   ".MuiLinearProgress-bar": {
-    backgroundColor: successGreen.c100,
+    backgroundColor: successGreen.c500,
   },
 });
 
@@ -79,7 +79,7 @@ const PercentageOverlay = styled(Box)({
 
 const PercentageText = styled(Typography)({
   fontSize: 13,
-  fontWeight: 400,
+  fontWeight: 600,
   color: "textBlack",
   padding: "0 10px",
   zIndex: 10,
@@ -93,7 +93,7 @@ const ThresholdLine = styled(Box)({
   position: "absolute",
   width: "2px",
   height: "100%",
-  backgroundColor: badgeColors.lightPurple,
+  backgroundColor: badgeColors.darkPurple,
   zIndex: 4,
 });
 
@@ -109,17 +109,17 @@ const ThresholdIndicator = styled(Box)<{ left: number }>(({ left }) => ({
 }));
 
 const ThresholdBubble = styled(Box)({
-  backgroundColor: badgeColors.lightPurple,
+  backgroundColor: badgeColors.darkPurple,
   borderRadius: "12px",
   padding: "2px 8px",
-  border: `1px solid ${badgeColors.lightPurple}`,
+  border: `1px solid ${badgeColors.darkPurple}`,
   boxShadow: "0px 1px 2px rgba(0,0,0,0.08)",
 });
 
 const ThresholdText = styled(Typography)({
   fontSize: 12,
   fontWeight: 600,
-  color: "textBlack",
+  color: "white",
   lineHeight: 1.2,
   textWrap: 'nowrap'
 });
@@ -129,7 +129,7 @@ const ThresholdArrow = styled(Box)({
   height: 0,
   borderLeft: "6px solid transparent",
   borderRight: "6px solid transparent",
-  borderTop: `6px solid ${badgeColors.lightPurple}`,
+  borderTop: `6px solid ${badgeColors.darkPurple}`,
   marginTop: "-1px",
 });
 

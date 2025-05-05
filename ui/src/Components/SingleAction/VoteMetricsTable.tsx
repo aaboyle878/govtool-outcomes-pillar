@@ -128,7 +128,7 @@ const VoteMetricsTable = ({
                     data-testid={metric.testId}
                     sx={{
                       fontWeight: metric.isHighlighted ? 600 : 400,
-                      fontSize: 13,
+                      fontSize: 14,
                       lineHeight: 1.75,
                       marginLeft: metric.isIndented
                         ? getIndentUnits(metric.indentDepth as number)
@@ -146,7 +146,9 @@ const VoteMetricsTable = ({
                       color: "textBlack",
                     }}
                   >
-                    {getRawAdaValue(Number(metric.value)).toLocaleString()}
+                    {isCC
+                      ? metric.value
+                      : getRawAdaValue(Number(metric.value)).toLocaleString()}
                   </Box>
                 </TableCell>
               </TableRow>

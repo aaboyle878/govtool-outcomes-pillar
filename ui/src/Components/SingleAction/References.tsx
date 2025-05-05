@@ -1,8 +1,7 @@
 import { Box, Link } from "@mui/material";
 import { Typography } from "../Atoms/Typography";
-import { openInNewTab } from "../../lib/openInNewTab";
-import { useAppContext } from "../../contexts/AppContext";
 import { useTranslation } from "../../contexts/I18nContext";
+import { useModal } from "../../contexts/modal";
 interface Reference {
   "@type": string;
   label: string;
@@ -12,8 +11,8 @@ type ReferencesProps = {
   links: Reference[];
 };
 function References({ links }: ReferencesProps) {
-  const { ipfsGateway } = useAppContext();
   const { t } = useTranslation();
+  const { openModal } = useModal();
 
   return (
     <Box>
@@ -41,7 +40,14 @@ function References({ links }: ReferencesProps) {
                 {link?.label}
               </Typography>
               <Link
-                onClick={() => openInNewTab(link?.uri, ipfsGateway)}
+                onClick={() => {
+                  openModal({
+                    type: "externalLink",
+                    state: {
+                      externalLink: link?.uri,
+                    },
+                  });
+                }}
                 style={{ textDecoration: "none" }}
                 sx={{
                   cursor: "pointer",

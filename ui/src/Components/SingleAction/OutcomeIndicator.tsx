@@ -61,9 +61,9 @@ export const OutcomeIndicator = ({
             {!isDisplayed ? (
               "-"
             ) : passed ? (
-              <IconThumbUp fill="#0f5132" />
+              <IconThumbUp fill="textBlack" />
             ) : (
-              <IconThumbDown fill="#7f1d1d" />
+              <IconThumbDown fill="textBlack" />
             )}
           </Box>
           <Typography
