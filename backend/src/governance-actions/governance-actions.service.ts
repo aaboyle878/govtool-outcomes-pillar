@@ -73,9 +73,6 @@ export class GovernanceActionsService {
             responseType: "json",
           })
           .pipe(
-            finalize(() =>
-              Logger.log(`Fetching proposal with hash ${hash} completed`)
-            ),
             catchError((error) => {
               Logger.error(
                 `Error fetching proposal with hash ${hash}`,

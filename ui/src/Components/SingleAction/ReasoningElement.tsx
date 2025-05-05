@@ -41,7 +41,7 @@ function ReasoningElement({ label, text, dataTestId }: ReasoningElementProps) {
                   sx={{
                     fontSize: 16,
                     fontWeight: 400,
-                    lineHeight: "24px",
+                    lineHeight: 2,
                     maxWidth: "auto",
                     color: "textBlack",
                   }}

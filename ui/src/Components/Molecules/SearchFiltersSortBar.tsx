@@ -178,7 +178,7 @@ export default function SearchFiltersSortBar() {
             )
           }
           sx={{
-            bgcolor: "neutralWhite",
+            bgcolor: "white",
             border: 1,
             borderColor: "borderGrey",
             borderRadius: 1,

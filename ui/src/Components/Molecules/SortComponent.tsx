@@ -83,7 +83,7 @@ export default function SortComponent() {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         sx={{
-          backgroundColor: "neutralWhite",
+          backgroundColor: "white",
           border: 1,
           borderColor: "borderGrey",
           borderRadius: 1,

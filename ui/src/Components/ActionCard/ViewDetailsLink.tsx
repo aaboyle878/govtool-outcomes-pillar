@@ -22,7 +22,7 @@ function ViewDetailsLink({ id }: ViewDetailsLinkProps) {
         variant="contained"
         sx={{
           borderRadius: "50px",
-          color: "neutralWhite",
+          color: "white",
           backgroundColor: "primaryBlue",
           width: "100%",
         }}

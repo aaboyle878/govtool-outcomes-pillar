@@ -1,9 +1,8 @@
 import { Box, Link, SxProps, Typography } from "@mui/material";
 import { MetadataValidationStatus } from "../../types/api";
-import { openInNewTab } from "../../lib/openInNewTab";
 import { URLS } from "../../consts/urls";
-import { useAppContext } from "../../contexts/AppContext";
 import { useTranslation } from "../../contexts/I18nContext";
+import { useModal } from "../../contexts/modal";
 
 export const DataMissingInfoBox = ({
   isDataMissing,
@@ -12,8 +11,8 @@ export const DataMissingInfoBox = ({
   isDataMissing: MetadataValidationStatus | null;
   sx?: SxProps;
 }) => {
-  const { ipfsGateway } = useAppContext();
   const { t } = useTranslation();
+  const { openModal } = useModal();
   if (!isDataMissing) return null;
 
   // Governance Action metadata error messages
@@ -80,7 +79,14 @@ export const DataMissingInfoBox = ({
       </Typography>
       <Link
         data-testid="metadata-error-learn-more"
-        onClick={() => openInNewTab(URLS.DREP_ERROR_CONDITIONS, ipfsGateway)}
+        onClick={() => {
+          openModal({
+            type: "externalLink",
+            state: {
+              externalLink: URLS.DREP_ERROR_CONDITIONS,
+            },
+          });
+        }}
         sx={{
           fontFamily: "Poppins",
           fontSize: "16px",
