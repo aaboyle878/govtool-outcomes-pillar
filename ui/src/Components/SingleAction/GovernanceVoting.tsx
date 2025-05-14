@@ -123,9 +123,7 @@ const GovernanceVoting = ({ action }: GovernanceVotingProps) => {
     totalStakeControlledByDReps - dRepAbstainVotes;
   const dRepYesVotes = Number(yes_votes);
   const dRepNoVotes = Number(no_votes);
-  const dRepNoTotalVotes = dRepYesVotes
-    ? dRepRatificationThresholdStake - dRepYesVotes
-    : undefined;
+  const dRepNoTotalVotes = dRepRatificationThresholdStake - dRepYesVotes;
   const dRepNotVotedVotes = Number(
     dRepRatificationThresholdStake - (dRepYesVotes + dRepNoVotes)
   );

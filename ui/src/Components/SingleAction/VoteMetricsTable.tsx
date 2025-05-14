@@ -32,19 +32,19 @@ type VoteMetricsTableProps = {
   defaultExpanded?: boolean;
 };
 
-const ExpandButton = styled(Box)<{ isVisible?: boolean }>(
-  ({ isVisible = true }) => ({
-    display: isVisible ? "flex" : "none",
-    justifyContent: "center",
-    alignItems: "center",
-    cursor: "pointer",
-    color: primaryBlue,
-    padding: "8px 0",
-    fontWeight: 600,
-    fontFamily: "Poppins",
-    fontSize: 14,
-  })
-);
+const ExpandButton = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "isVisible",
+})<{ isVisible?: boolean }>(({ isVisible = true }) => ({
+  display: isVisible ? "flex" : "none",
+  justifyContent: "center",
+  alignItems: "center",
+  cursor: "pointer",
+  color: primaryBlue,
+  padding: "8px 0",
+  fontWeight: 600,
+  fontFamily: "Poppins",
+  fontSize: 14,
+}));
 
 const VoteMetricsTable = ({
   collapsedMetrics,
