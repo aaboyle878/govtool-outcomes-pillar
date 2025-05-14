@@ -171,13 +171,29 @@ export default function FiltersComponent() {
             >
               {t("outcomesList.filters.title")}
             </Typography>
-            <IconButton>
+            <Box
+              sx={{
+                padding: "2px",
+                borderRadius: "50%",
+                color: "action.active",
+                transition:
+                  "background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                "&:hover": {
+                  backgroundColor: "action.hover",
+                },
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "28px",
+                height: "28px",
+              }}
+            >
               {open ? (
                 <IconCheveronUp width={18} height={18} fill="textBlack" />
               ) : (
                 <IconCheveronDown width={18} height={18} fill="textBlack" />
               )}
-            </IconButton>
+            </Box>
           </Box>
         </Box>
       </Button>

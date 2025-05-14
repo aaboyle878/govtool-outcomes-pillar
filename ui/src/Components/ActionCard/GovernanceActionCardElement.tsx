@@ -4,6 +4,8 @@ import { Typography } from "../Atoms/Typography";
 import Markdown from "react-markdown";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import remarkGfm from "remark-gfm";
+import remarkBreaks from "remark-breaks";
 
 type GovernanceActionCardElementProps = {
   title: string;
@@ -80,7 +82,7 @@ export default function GovernanceActionCardElement({
                 );
               },
             }}
-            remarkPlugins={[remarkMath]}
+            remarkPlugins={[remarkMath, remarkBreaks, remarkGfm]}
             rehypePlugins={[rehypeKatex]}
           >
             {truncatedDescription}

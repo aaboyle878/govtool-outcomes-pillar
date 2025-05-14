@@ -1,6 +1,6 @@
 import { Box, Grid, LinearProgress, styled } from "@mui/material";
 import { formatValue } from "../../lib/utils";
-import { errorRed, successGreen } from "../../consts/colors";
+import { successGreen } from "../../consts/colors";
 import { Typography } from "../Atoms/Typography";
 import { VoteSectionLoader } from "../Loaders/VoteSectionLoader";
 import { theme } from "../../theme";
