@@ -6,6 +6,7 @@ on:
     - dev
     - beta
     - main
+  workflow_dispatch:
 
 permissions:
   contents: write
